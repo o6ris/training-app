@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-		"baseUrl": "./app",
+		"baseUrl": ".",
     "target": "es6",
 		"paths": {
-      "@components/*": ["components/*"],
-      "@modules/*": ["modules/*"],
+      "@lib/*": ["lib/*"],
+      "@components/*": ["app/components/*"],
+      "@modules/*": ["app/modules/*"],
 		}
   },
   "exclude": ["node_modules"]
