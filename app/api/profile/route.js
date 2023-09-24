@@ -3,13 +3,24 @@ import connectDb from "lib/mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  const data = await request.json();
-  await connectDb();
-  console.log("connected to db");
-  console.log(data)
-  await Profile.create(data);
-  console.log(
-    NextResponse.json({ message: "Profile Created" }, { status: 201 })
-  );
-  return NextResponse.json({ message: "Profile Created" }, { status: 201 })
+  try {
+    const profile = await request.json();
+    await connectDb();
+    await Profile.create(profile);
+    return NextResponse.json({ message: "Profile Created" }, { status: 201 })
+  } catch (err) {
+    const { errors } = err
+    return NextResponse.json(errors, {status: 400})
+  }
+}
+
+export async function GET() {
+  try {
+    await connectDb();
+    const profiles = await Profile.find();
+    return NextResponse.json(profiles, { status: 200 })
+  } catch (err) {
+    const { errors } = err
+    return NextResponse.json(errors)
+  } 
 }
