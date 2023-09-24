@@ -6,8 +6,8 @@ export async function POST(request) {
   try {
     const profile = await request.json();
     await connectDb();
-    await Profile.create(profile);
-    return NextResponse.json({ message: "Profile Created" }, { status: 201 });
+    const newProfile = await Profile.create(profile);
+    return NextResponse.json(newProfile, { message: "Profile Created" }, { status: 201 });
   } catch (err) {
     const { errors } = err;
     return NextResponse.json(errors, { status: 400 });
