@@ -11,6 +11,17 @@ export async function PATCH(request, { params }) {
     return NextResponse.json(profile, { status: 200 });
   } catch (err) {
     const { errors } = err;
-    return NextResponse.json(errors, { status: 400 });
+    return NextResponse.json(errors, { status: 404 });
+  }
+}
+
+export async function DELETE(request, { params }) {
+  try {
+    const { id } = params
+    await connectDb();
+    await Profile.findByIdAndDelete(id);
+    return NextResponse.json({message: "Profile deleted"})
+  } catch (err) {
+    return NextResponse.json({message: "Error"}, {status: 404});
   }
 }
