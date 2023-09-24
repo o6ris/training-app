@@ -25,3 +25,15 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({message: "Error"}, {status: 404});
   }
 }
+
+export async function GET(request, { params }) {
+  try {
+    const { id } = params;
+    await connectDb();
+    const profile = await Profile.findById(id);
+    return NextResponse.json(profile, {status: 200});
+  } catch(err) {
+    const { errors } = err;
+    return NextResponse.json(errors, {status: 404});
+  }
+}
