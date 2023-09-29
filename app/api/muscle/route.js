@@ -17,7 +17,7 @@ export async function POST(request) {
 export async function GET() {
   try {
     await connectDb();
-    const muscles = await muscles.find();
+    const muscles = await Muscle.find();
     return NextResponse.json(muscles, { status: 200 });
   } catch (err) {
     const { errors } = err;
