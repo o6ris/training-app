@@ -37,6 +37,8 @@ export async function GET(request, { params }) {
     const { id } = params;
     await connectDb();
     const exercise = await Exercise.findById(id);
+    await exercise.populate({ path: "muscle", select: "name" });
+    console.log(exercise);
     return NextResponse.json(exercise, { status: 200 });
   } catch (err) {
     const { errors } = err;
