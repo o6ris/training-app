@@ -6,7 +6,13 @@ import checkId from "@modules/server/utils/checkId";
 export async function PATCH(request, { params }) {
   try {
     const { id } = params;
+    if (!checkId(id)) {
+      throw { message: "Wrong id", status: 500 };
+    }
     const exercise = await request.json();
+    if (!exercise) {
+      throw { message: "Not found", status: 400 };
+    }
     await connectDb();
     const updatedExercise = await Exercise.findByIdAndUpdate(
       id,
@@ -14,22 +20,25 @@ export async function PATCH(request, { params }) {
       { new: true },
       { runValidators: true }
     );
-    console.log(updatedExercise);
     return NextResponse.json(updatedExercise, { status: 200 });
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 404 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
 export async function DELETE(request, { params }) {
   try {
     const { id } = params;
+    if (!checkId(id)) {
+      throw { message: "Wrong id", status: 500 };
+    }
     await connectDb();
     const deletedExercise = await Exercise.findByIdAndDelete(id);
     return NextResponse.json(deletedExercise);
   } catch (err) {
-    return NextResponse.json({ message: "Error" }, { status: 404 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
@@ -39,11 +48,11 @@ export async function GET(request, { params }) {
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    await connectDb();
     const exercise = await Exercise.findById(id);
     if (!exercise) {
       throw { message: "Not found", status: 400 };
     }
+    await connectDb();
     await exercise.populate({ path: "muscle", select: "name" });
     return NextResponse.json(exercise, { status: 200 });
   } catch (err) {
