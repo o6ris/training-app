@@ -1,5 +1,30 @@
 import mongoose, { Schema } from "mongoose";
 
+const exerciseSchema = new Schema({
+  exercise_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exercise",
+    required: true,
+  },
+  reps: {
+    type: Number,
+    required: true,
+  },
+  weight: {
+    type: Number,
+    required: true,
+  },
+});
+
+const muscleSchema = new Schema({
+  muscle_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Muscle",
+    required: true,
+  },
+  exercises: [exerciseSchema],
+});
+
 const trainingSchema = new Schema({
   profile_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -8,31 +33,11 @@ const trainingSchema = new Schema({
   },
   date: {
     type: Date,
-    required: [true, "Name is required"],
+    default: Date.now(),
+    required: true,
     trim: true,
   },
-  training: new Schema({
-    muscle_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Muscle",
-      required: true,
-    },
-    exercices: new Schema({
-      exercise_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Exercise",
-        required: true,
-      },
-      reps: {
-        type: Number,
-        required: true,
-      },
-      weight: {
-        type: Number,
-        required: true,
-      },
-    }),
-  }),
+  training: [muscleSchema],
 });
 
 const Training =
