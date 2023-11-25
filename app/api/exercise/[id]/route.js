@@ -1,6 +1,7 @@
 import Exercise from "@modules/server/models/exercise";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
+import checkId from "@modules/server/utils/checkId";
 
 export async function PATCH(request, { params }) {
   try {
@@ -35,13 +36,18 @@ export async function DELETE(request, { params }) {
 export async function GET(request, { params }) {
   try {
     const { id } = params;
+    if (!checkId(id)) {
+      throw { message: "Wrong id", status: 500 };
+    }
     await connectDb();
     const exercise = await Exercise.findById(id);
+    if (!exercise) {
+      throw { message: "Not found", status: 400 };
+    }
     await exercise.populate({ path: "muscle", select: "name" });
-    console.log(exercise);
     return NextResponse.json(exercise, { status: 200 });
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 404 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
