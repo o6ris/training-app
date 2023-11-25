@@ -3,9 +3,11 @@ import Muscle from "@modules/server/models/muscle";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 import { models } from "mongoose";
+import checkId from "@modules/server/utils/checkId";
 
 export async function POST(request) {
   try {
+    // TODO: validate body data before POST
     const body = await request.json();
     await connectDb();
     const muscle = await Muscle.findById(body.muscle);
@@ -20,39 +22,39 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 400 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
 export async function GET(request, { params }) {
   try {
     const muscle_id = request?.url.split("=")[1];
-    await connectDb();
     const findExercises = async () => {
       if (muscle_id) {
-        console.log(muscle_id);
+        if (!checkId(muscle_id)) {
+          throw { message: "Wrong id", status: 500 };
+        }
         return Exercise.find({ muscle: muscle_id });
       }
       return Exercise.find();
     };
-    console.log("before", await findExercises());
     const exercises = await findExercises();
+    if (!exercises) {
+      throw { message: "Not found", status: 400 };
+    }
+    await connectDb();
     const populatedExercises = [];
     for (const exercise of exercises) {
-      const populatedExercise = await exercise
-        .populate({
-          path: "muscle",
-          select: "name",
-        })
+      const populatedExercise = await exercise.populate({
+        path: "muscle",
+        select: "name",
+      });
       populatedExercises.push(populatedExercise);
-      console.log("populatedExercise", populatedExercise);
     }
-
-    console.log("after", populatedExercises);
     return NextResponse.json(populatedExercises, { status: 200 });
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 404 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
