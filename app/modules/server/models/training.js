@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const exerciseSchema = new Schema({
-  exercise_id: {
+  exercise: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exercise",
     required: true,
@@ -17,7 +17,7 @@ const exerciseSchema = new Schema({
 });
 
 const muscleSchema = new Schema({
-  muscle_id: {
+  muscle: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Muscle",
     required: true,
