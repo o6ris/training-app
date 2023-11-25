@@ -22,7 +22,10 @@ const muscleSchema = new Schema({
     ref: "Muscle",
     required: true,
   },
-  exercises: [exerciseSchema],
+  exercises: {
+    type: [exerciseSchema],
+    required: true,
+  },
 });
 
 const trainingSchema = new Schema({
@@ -37,7 +40,10 @@ const trainingSchema = new Schema({
     required: true,
     trim: true,
   },
-  training: [muscleSchema],
+  training: {
+    type: [muscleSchema],
+    required: true,
+  },
 });
 
 const Training =
