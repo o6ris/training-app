@@ -20,7 +20,7 @@ export async function PATCH(request, { params }) {
       { new: true },
       { runValidators: true }
     );
-    return NextResponse.json(updatedExercise, { status: 200 });
+    return NextResponse.json(updatedExercise, { message: "Exercise updated", status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
@@ -35,7 +35,7 @@ export async function DELETE(request, { params }) {
     }
     await connectDb();
     const deletedExercise = await Exercise.findByIdAndDelete(id);
-    return NextResponse.json(deletedExercise);
+    return NextResponse.json(deletedExercise, { message: "Exercise deleted" }, { status: 202 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
