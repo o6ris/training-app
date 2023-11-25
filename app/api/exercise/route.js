@@ -44,14 +44,23 @@ export async function GET(request, { params }) {
       throw { message: "Not found", status: 400 };
     }
     await connectDb();
-    const populatedExercises = [];
-    for (const exercise of exercises) {
-      const populatedExercise = await exercise.populate({
-        path: "muscle",
-        select: "name",
-      });
-      populatedExercises.push(populatedExercise);
-    }
+    const populatedExercises = await Promise.all(
+      exercises.map(async (exercise) => {
+        const populatedExercise = await Exercise.populate(exercise, {
+          path: "muscle",
+          select: "name",
+        });
+        return populatedExercise;
+      })
+    );
+    // const populatedExercises = [];
+    // for (const exercise of exercises) {
+    //   const populatedExercise = await exercise.populate({
+    //     path: "muscle",
+    //     select: "name",
+    //   });
+    //   populatedExercises.push(populatedExercise);
+    // }
     return NextResponse.json(populatedExercises, { status: 200 });
   } catch (err) {
     const { message, status } = err;
