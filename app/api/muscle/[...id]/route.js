@@ -20,7 +20,11 @@ export async function PATCH(request, { params }) {
       { new: true },
       { runValidators: true }
     );
-    return NextResponse.json(updatedMuscle, { message: "Muscle updated", status: 200 });
+    return NextResponse.json(
+      updatedMuscle,
+      { message: "Muscle updated" },
+      { status: 200 }
+    );
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
@@ -35,7 +39,11 @@ export async function DELETE(request, { params }) {
     }
     await connectDb();
     const deletedMuscle = await Muscle.findByIdAndDelete(id);
-    return NextResponse.json(deletedMuscle);
+    return NextResponse.json(
+      deletedMuscle,
+      { message: "Muscle deleted" },
+      { status: 200 }
+    );
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
