@@ -52,7 +52,7 @@ export async function DELETE(request, { params }) {
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
