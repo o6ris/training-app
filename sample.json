@@ -1,0 +1,61 @@
+{
+  "one_session": {
+    "training": [
+      {
+        "exercise": "6559e924d02b9f36fd7f574d",
+        "reps": 40,
+        "weight": 50
+      },
+      {
+        "exercise": "6559f1f2d02b9f36fd7f57ab",
+        "reps": 30,
+        "weight": 80
+      },
+      {
+        "exercise": "6559fcd5d02b9f36fd7f5859",
+        "reps": 40,
+        "weight": 50
+      }
+    ]
+  },
+  "multiple_sessions": [
+    {
+      "training": [
+        {
+          "exercise": "6559e924d02b9f36fd7f574d",
+          "reps": 40,
+          "weight": 50
+        },
+        {
+          "exercise": "6559f1f2d02b9f36fd7f57ab",
+          "reps": 30,
+          "weight": 80
+        },
+        {
+          "exercise": "6559fcd5d02b9f36fd7f5859",
+          "reps": 40,
+          "weight": 50
+        }
+      ]
+    },
+    {
+      "training": [
+        {
+          "exercise": "6559e924d02b9f36fd7f574d",
+          "reps": 40,
+          "weight": 50
+        },
+        {
+          "exercise": "6559f1f2d02b9f36fd7f57ab",
+          "reps": 30,
+          "weight": 80
+        },
+        {
+          "exercise": "6559fcd5d02b9f36fd7f5859",
+          "reps": 40,
+          "weight": 50
+        }
+      ]
+    }
+  ]
+}
