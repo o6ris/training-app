@@ -1,20 +1,77 @@
 {
+  "stats": {
+    "date": "2024-03-05T00:00:00.000Z",
+    "exercise": "6559e924d02b9f36fd7f574d",
+    "profile": "650ebd8267cb93cb766bfe52",
+    "rest_time": 180000,
+    "training_time": 960000,
+    "series": [
+      {
+        "reps": 11,
+        "weight": 100
+      },
+      {
+        "reps": 10,
+        "weight": 110
+      },
+      {
+        "reps": 9,
+        "weight": 120
+      },
+      {
+        "reps": 8,
+        "weight": 120
+      }
+    ],
+    "one_rm": 180
+  },
   "one_session": {
     "training": [
       {
-        "exercise": "6559e924d02b9f36fd7f574d",
-        "reps": 40,
-        "weight": 50
+        "exercise": "6559e924d02b9f36fd7f574d"
       },
       {
-        "exercise": "6559f1f2d02b9f36fd7f57ab",
-        "reps": 30,
-        "weight": 80
+        "exercise": "6559f1f2d02b9f36fd7f57ab"
       },
       {
-        "exercise": "6559fcd5d02b9f36fd7f5859",
-        "reps": 40,
-        "weight": 50
+        "exercise": "6559fcd5d02b9f36fd7f5859"
+      }
+    ]
+  },
+  "program": {
+    "sessions": ["660ff3f4cb19fac7160f532e", "660ffb98cb19fac7160f5366"],
+    "name": "Push - pull - legs",
+    "frequency": 4,
+    "start_date": "2024-03-04T00:00:00.000Z",
+    "period": 90,
+    "training_days": [
+      {
+        "day": 1,
+        "session": "660ff3f4cb19fac7160f532e"
+      },
+      {
+        "day": 2,
+        "session": null
+      },
+      {
+        "day": 3,
+        "session": "660ffb98cb19fac7160f5366"
+      },
+      {
+        "day": 4,
+        "session": null
+      },
+      {
+        "day": 5,
+        "session": "660ff3f4cb19fac7160f532e"
+      },
+      {
+        "day": 6,
+        "session": null
+      },
+      {
+        "day": 7,
+        "session": null
       }
     ]
   },
@@ -22,38 +79,26 @@
     {
       "training": [
         {
-          "exercise": "6559e924d02b9f36fd7f574d",
-          "reps": 40,
-          "weight": 50
+          "exercise": "6559e924d02b9f36fd7f574d"
         },
         {
-          "exercise": "6559f1f2d02b9f36fd7f57ab",
-          "reps": 30,
-          "weight": 80
+          "exercise": "6559f1f2d02b9f36fd7f57ab"
         },
         {
-          "exercise": "6559fcd5d02b9f36fd7f5859",
-          "reps": 40,
-          "weight": 50
+          "exercise": "6559fcd5d02b9f36fd7f5859"
         }
       ]
     },
     {
       "training": [
         {
-          "exercise": "6559e924d02b9f36fd7f574d",
-          "reps": 40,
-          "weight": 50
+          "exercise": "6559e924d02b9f36fd7f574d"
         },
         {
-          "exercise": "6559f1f2d02b9f36fd7f57ab",
-          "reps": 30,
-          "weight": 80
+          "exercise": "6559f1f2d02b9f36fd7f57ab"
         },
         {
-          "exercise": "6559fcd5d02b9f36fd7f5859",
-          "reps": 40,
-          "weight": 50
+          "exercise": "6559fcd5d02b9f36fd7f5859"
         }
       ]
     }

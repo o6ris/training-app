@@ -6,28 +6,17 @@ const exerciseSchema = new Schema({
     ref: "Exercise",
     required: true,
   },
-  reps: {
-    type: Number,
-    required: true,
-  },
-  weight: {
-    type: Number,
-    required: true,
-  },
 });
 
 const sessionSchema = new Schema({
-  date: {
-    type: Date,
-    default: Date.now(),
-    required: true,
-    trim: true,
-  },
   training: {
     type: [exerciseSchema],
     required: true,
   },
   name: {
+    type: String,
+  },
+  color: {
     type: String,
   },
 });
