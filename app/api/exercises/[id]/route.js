@@ -1,5 +1,5 @@
-import Profile from "@modules/server/models/profile";
-import connectDb from "lib/mongodb";
+import Exercise from "@modules/server/models/exercise";
+import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 import checkId from "@modules/server/utils/checkId";
 
@@ -9,19 +9,18 @@ export async function PATCH(request, { params }) {
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    const profile = await request.json();
-    if (!profile) {
+    const exercise = await request.json();
+    if (!exercise) {
       throw { message: "Not found", status: 400 };
     }
     await connectDb();
-    const updatedProfile = await Profile.findByIdAndUpdate(id, profile, {
-      runValidators: true,
-    });
-    return NextResponse.json(
-      updatedProfile,
-      { message: "Profile updated" },
-      { status: 202 }
+    const updatedExercise = await Exercise.findByIdAndUpdate(
+      id,
+      exercise,
+      { new: true },
+      { runValidators: true }
     );
+    return NextResponse.json(updatedExercise, { message: "Exercise updated", status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
@@ -35,12 +34,8 @@ export async function DELETE(request, { params }) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const deletedProfile = await Profile.findByIdAndDelete(id);
-    return NextResponse.json(
-      deletedProfile,
-      { message: "Profile deleted" },
-      { status: 202 }
-    );
+    const deletedExercise = await Exercise.findByIdAndDelete(id);
+    return NextResponse.json(deletedExercise, { message: "Exercise deleted" }, { status: 202 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
@@ -53,12 +48,13 @@ export async function GET(request, { params }) {
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    await connectDb();
-    const profile = await Profile.findById(id);
-    if (!profile) {
+    const exercise = await Exercise.findById(id);
+    if (!exercise) {
       throw { message: "Not found", status: 400 };
     }
-    return NextResponse.json(profile, { status: 200 });
+    await connectDb();
+    await exercise.populate({ path: "muscle", select: "name" });
+    return NextResponse.json(exercise, { status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });

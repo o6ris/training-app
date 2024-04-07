@@ -7,10 +7,14 @@ export async function POST(request) {
     const muscle = await request.json();
     await connectDb();
     const newMuscle = await Muscle.create(muscle);
-    return NextResponse.json(newMuscle, { message: "Muscle Created" }, { status: 201 });
+    return NextResponse.json(
+      newMuscle,
+      { message: "Muscle Created" },
+      { status: 201 }
+    );
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 400 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
@@ -20,7 +24,7 @@ export async function GET() {
     const muscles = await Muscle.find();
     return NextResponse.json(muscles, { status: 200 });
   } catch (err) {
-    const { errors } = err;
-    return NextResponse.json(errors, { status: 404 });
+    const { message, status } = err;
+    return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }

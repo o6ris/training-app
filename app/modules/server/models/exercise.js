@@ -11,7 +11,7 @@ const exerciseSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Muscle',
       required: true,
-    }
+    },
   }
 );
 

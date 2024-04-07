@@ -1,5 +1,5 @@
-import Profile from "@modules/server/models/profile";
-import connectDb from "lib/mongodb";
+import Muscle from "@modules/server/models/muscle";
+import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 import checkId from "@modules/server/utils/checkId";
 
@@ -9,18 +9,21 @@ export async function PATCH(request, { params }) {
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    const profile = await request.json();
-    if (!profile) {
+    const muscle = await request.json();
+    if (!muscle) {
       throw { message: "Not found", status: 400 };
     }
     await connectDb();
-    const updatedProfile = await Profile.findByIdAndUpdate(id, profile, {
-      runValidators: true,
-    });
+    const updatedMuscle = await Muscle.findByIdAndUpdate(
+      id,
+      muscle,
+      { new: true },
+      { runValidators: true }
+    );
     return NextResponse.json(
-      updatedProfile,
-      { message: "Profile updated" },
-      { status: 202 }
+      updatedMuscle,
+      { message: "Muscle updated" },
+      { status: 200 }
     );
   } catch (err) {
     const { message, status } = err;
@@ -35,11 +38,11 @@ export async function DELETE(request, { params }) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const deletedProfile = await Profile.findByIdAndDelete(id);
+    const deletedMuscle = await Muscle.findByIdAndDelete(id);
     return NextResponse.json(
-      deletedProfile,
-      { message: "Profile deleted" },
-      { status: 202 }
+      deletedMuscle,
+      { message: "Muscle deleted" },
+      { status: 200 }
     );
   } catch (err) {
     const { message, status } = err;
@@ -49,16 +52,16 @@ export async function DELETE(request, { params }) {
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const id = Array.isArray(params.id) ? params.id[0] : params.id;
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const profile = await Profile.findById(id);
-    if (!profile) {
+    const muscle = await Muscle.findById(id);
+    if (!muscle) {
       throw { message: "Not found", status: 400 };
     }
-    return NextResponse.json(profile, { status: 200 });
+    return NextResponse.json(muscle, { status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });

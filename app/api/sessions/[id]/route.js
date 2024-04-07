@@ -1,27 +1,23 @@
-import Profile from "@modules/server/models/profile";
-import connectDb from "lib/mongodb";
+import Session from "@modules/server/models/session";
+import Exercise from "@modules/server/models/exercise";
+import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 import checkId from "@modules/server/utils/checkId";
 
-export async function PATCH(request, { params }) {
+export async function GET(request, { params }) {
   try {
     const { id } = params;
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    const profile = await request.json();
-    if (!profile) {
-      throw { message: "Not found", status: 400 };
-    }
     await connectDb();
-    const updatedProfile = await Profile.findByIdAndUpdate(id, profile, {
-      runValidators: true,
+    const session = await Session.findById(id).populate({
+      path: "training.exercise",
+      model: Exercise,
+      select: "name",
     });
-    return NextResponse.json(
-      updatedProfile,
-      { message: "Profile updated" },
-      { status: 202 }
-    );
+
+    return NextResponse.json(session, { status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
@@ -35,11 +31,11 @@ export async function DELETE(request, { params }) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const deletedProfile = await Profile.findByIdAndDelete(id);
+    const deletedSession = await Session.findByIdAndDelete(id);
     return NextResponse.json(
-      deletedProfile,
-      { message: "Profile deleted" },
-      { status: 202 }
+      deletedSession,
+      { message: "Session deleted" },
+      { status: 200 }
     );
   } catch (err) {
     const { message, status } = err;
@@ -47,18 +43,25 @@ export async function DELETE(request, { params }) {
   }
 }
 
-export async function GET(request, { params }) {
+export async function PATCH(request, { params }) {
   try {
     const { id } = params;
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
+    const session = await request.json();
     await connectDb();
-    const profile = await Profile.findById(id);
-    if (!profile) {
-      throw { message: "Not found", status: 400 };
-    }
-    return NextResponse.json(profile, { status: 200 });
+    const updtatedSession = await Session.findByIdAndUpdate(
+      id,
+      session,
+      { new: true },
+      { runValidators: true }
+    );
+    return NextResponse.json(
+      updtatedSession,
+      { message: "Session deleted" },
+      { status: 200 }
+    );
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
