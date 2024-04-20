@@ -26,19 +26,44 @@ export const authOptions = {
             if (isPasswordCorrect) {
               return user;
             }
+          } else {
+            throw { message: "User doesn't exist" };
           }
         } catch (err) {
           const { message, status } = err;
-          console.log(err)
-          throw new Error({message, status});
+          throw new Error(message);
         }
       },
     }),
-    // GoogleProvider({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET,
-    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+      if (account?.provider === "google") {
+        await connectDb();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              email: user.email,
+            });
+            await newUser.save();
+            return true;
+          }
+          return true;
+        } catch (err) {
+          console.error("err", err);
+          return false;
+        }
+      }
+    },
+  },
 };
 
 export const handler = NextAuth(authOptions);

@@ -3,23 +3,27 @@ import { getSession, useSession, signIn, signOut } from "next-auth/react";
 
 function Login() {
   const [credentials, setCredentials] = useState();
-  console.log(credentials);
   const handleOnChange = (name, value) => {
     const t = { ...credentials };
     t[name] = value;
     setCredentials(t);
   };
   const session = useSession();
-  console.log(session);
   const handleLogin = async () => {
-    await signIn("credentials", {
+    const res = await signIn("credentials", {
       redirect: false,
       email: credentials.email,
       password: credentials.password,
     });
+    if (res.ok) {
+      return res;
+    } else {
+      console.error(res.error);
+    }
   };
   return (
     <div>
+      <p>{session?.data?.user?.email}</p>
       <input
         onChange={(e) => handleOnChange("email", e.target.value)}
         style={{ color: "black" }}
@@ -33,6 +37,7 @@ function Login() {
       <button type="button" onClick={() => handleLogin()}>
         Login
       </button>
+      <button onClick={() => signIn("google")}> Sign In with Google</button>
       <div>
         {session?.status === "authenticated" ? (
           <>

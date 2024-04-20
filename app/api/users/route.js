@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt'
 export async function POST(request) {
   try {
     const { email, password } = await request.json();
-    console.log("email", email)
     await connectDb();
     const emailExist = await User.findOne({email});
     if (emailExist) {
