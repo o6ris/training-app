@@ -1,9 +1,9 @@
-import Exercise from "@modules/server/models/exercise";
+import Exercise from "modules/server/models/exercise";
 import Muscle from "@modules/server/models/muscle";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 import { models } from "mongoose";
-import checkId from "@modules/server/utils/checkId";
+import checkId from "modules/server/utils/checkId";
 
 export async function POST(request) {
   try {

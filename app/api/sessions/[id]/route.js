@@ -1,8 +1,8 @@
 import Session from "@modules/server/models/session";
-import Exercise from "@modules/server/models/exercise";
+import Exercise from "modules/server/models/exercise";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
-import checkId from "@modules/server/utils/checkId";
+import checkId from "modules/server/utils/checkId";
 
 export async function GET(request, { params }) {
   try {

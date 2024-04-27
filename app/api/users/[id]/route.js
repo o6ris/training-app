@@ -1,7 +1,7 @@
 import User from "@modules/server/models/user";
 import connectDb from "lib/mongodb";
 import { NextResponse } from "next/server";
-import checkId from "@modules/server/utils/checkId";
+import checkId from "modules/server/utils/checkId";
 
 export async function PATCH(request, { params }) {
   try {

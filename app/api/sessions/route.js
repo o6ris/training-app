@@ -1,5 +1,5 @@
 import Session from "@modules/server/models/session";
-import Exercise from "@modules/server/models/exercise";
+import Exercise from "modules/server/models/exercise";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 

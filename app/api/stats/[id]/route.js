@@ -1,5 +1,5 @@
 import Stats from "@modules/server/models/stats";
-import Exercise from "@modules/server/models/exercise";
+import Exercise from "modules/server/models/exercise";
 import User from "@modules/server/models/user";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
