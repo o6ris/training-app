@@ -1,9 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import NextAuthProvider from "components/NextAuthProvider/NextAuthProvider";
+import {Providers} from "./providers";
 import { getServerSession } from "next-auth";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -14,9 +12,9 @@ export default async function RootLayout({ children }) {
   const session = await getServerSession();
   return (
     <html lang="en">
-      <NextAuthProvider session={session}>
-        <body className={inter.className}>{children}</body>
-      </NextAuthProvider>
+      <body>
+        <Providers session={session}>{children}</Providers>
+      </body>
     </html>
   );
 }
