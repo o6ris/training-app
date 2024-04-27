@@ -1,17 +1,17 @@
 import Stats from "@modules/server/models/stats";
 import Exercise from "@modules/server/models/exercise";
-import Profile from "@modules/server/models/profile";
+import User from "@modules/server/models/user";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
   try {
     const { id } = params;
-    console.log(id)
+    console.log(id);
     await connectDb();
     // TODO: get by profil connected (NextAuth ?)
     const stats = await Stats.find({
-      exercise: id
+      exercise: id,
     }).populate([
       {
         path: "exercise",
@@ -19,8 +19,8 @@ export async function GET(request, { params }) {
         select: "name",
       },
       {
-        path: "profile",
-        model: Profile,
+        path: "user",
+        model: User,
         select: "name",
       },
     ]);

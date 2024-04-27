@@ -12,9 +12,9 @@ const statsSchema = new Schema({
     ref: "Exercise",
     required: true,
   },
-  profile: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: "Profile",
+    ref: "User",
     required: true,
   },
   rest_time: {

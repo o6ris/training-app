@@ -1,4 +1,4 @@
-import Profile from "@modules/server/models/profile";
+import User from "@modules/server/models/user";
 import connectDb from "lib/mongodb";
 import { NextResponse } from "next/server";
 import checkId from "@modules/server/utils/checkId";
@@ -9,17 +9,17 @@ export async function PATCH(request, { params }) {
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
-    const profile = await request.json();
-    if (!profile) {
+    const user = await request.json();
+    if (!user) {
       throw { message: "Not found", status: 400 };
     }
     await connectDb();
-    const updatedProfile = await Profile.findByIdAndUpdate(id, profile, {
+    const updatedProfile = await User.findByIdAndUpdate(id, user, {
       runValidators: true,
     });
     return NextResponse.json(
       updatedProfile,
-      { message: "Profile updated" },
+      { message: "User updated" },
       { status: 202 }
     );
   } catch (err) {
@@ -35,10 +35,10 @@ export async function DELETE(request, { params }) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const deletedProfile = await Profile.findByIdAndDelete(id);
+    const deletedProfile = await User.findByIdAndDelete(id);
     return NextResponse.json(
       deletedProfile,
-      { message: "Profile deleted" },
+      { message: "User deleted" },
       { status: 202 }
     );
   } catch (err) {
@@ -54,11 +54,11 @@ export async function GET(request, { params }) {
       throw { message: "Wrong id", status: 500 };
     }
     await connectDb();
-    const profile = await Profile.findById(id);
-    if (!profile) {
+    const user = await User.findById(id);
+    if (!user) {
       throw { message: "Not found", status: 400 };
     }
-    return NextResponse.json(profile, { status: 200 });
+    return NextResponse.json(user, { status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });

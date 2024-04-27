@@ -1,6 +1,6 @@
 import Stats from "@modules/server/models/stats";
 import Exercise from "@modules/server/models/exercise";
-import Profile from "@modules/server/models/profile";
+import User from "@modules/server/models/user";
 import connectDb from "@lib/mongodb";
 import { NextResponse } from "next/server";
 
@@ -8,10 +8,10 @@ export async function POST(request) {
   try {
     const stats = await request.json();
     const exerciseId = stats.exercise;
-    const profileId = stats.profile;
+    const profileId = stats.user;
     await connectDb();
     const exerciseExist = await Exercise.exists({ _id: exerciseId });
-    const profileExist = await Profile.exists({ _id: profileId });
+    const profileExist = await User.exists({ _id: profileId });
     if (!exerciseExist) {
       throw {
         message: `Exercise with ID ${exerciseId} does not exist`,
@@ -20,7 +20,7 @@ export async function POST(request) {
     }
     if (!profileExist) {
       throw {
-        message: `Profile with ID ${profileId} does not exist`,
+        message: `User with ID ${profileId} does not exist`,
         status: 400,
       };
     }
@@ -48,8 +48,8 @@ export async function GET(request) {
         select: "name",
       },
       {
-        path: "profile",
-        model: Profile,
+        path: "user",
+        model: User,
         select: "name",
       },
     ]);
