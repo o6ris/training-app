@@ -3,4 +3,16 @@
 	--primary-accent-color: #2694F9;
 	--secondary-color: #1C2647;
 	--primary-light-color: #EDF1FF;
+
+	--font-xs: 10px;
+	--font-s: 12px;
+	--fond-r: 14px;
+	--font-l: 16px;
+	--font-xl: 18px;
+	--font-xxl: 20px;
+	--font-light: 100;
+	--font-regular: 300;
+	--font-bold: 600;
+	--font-black: 900;
+
 }
