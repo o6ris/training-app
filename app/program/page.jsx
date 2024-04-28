@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./program.module.css";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import ButtonLink from "@core/ui/Button/ButtonLink";
 
 function page() {
   const users = [
@@ -45,7 +46,7 @@ function page() {
         labelPlacement="outside"
       />
       <p className="font-black">OR</p>
-      
+      <ButtonLink buttonStyle={classes.link_button} url="/" buttonContent="Create a program" />
     </div>
   );
 }
