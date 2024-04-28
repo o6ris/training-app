@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import "./variables.css"
 import {Providers} from "./providers";
 import { getServerSession } from "next-auth";
 
