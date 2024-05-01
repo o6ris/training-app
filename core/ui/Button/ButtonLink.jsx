@@ -2,11 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
-import classes from "./button.module.css"
+import classes from "./button.module.css";
 
-function ButtonLink({ url, buttonContent, buttonStyle }) {
+function ButtonLink({ url, buttonContent, buttonStyle, onAction }) {
   return (
-    <Link className={`${classes.button} ${buttonStyle}`} href={url}>
+    <Link onClick={() => onAction()} className={`${classes.button} ${buttonStyle}`} href={url}>
       {buttonContent}
     </Link>
   );

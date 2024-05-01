@@ -46,7 +46,7 @@ function page() {
         labelPlacement="outside"
       />
       <p className="font-black">OR</p>
-      <ButtonLink buttonStyle={classes.link_button} url="/" buttonContent="Create a program" />
+      <ButtonLink buttonStyle={classes.link_button} url="/program/custom?step=1" buttonContent="Create a program" />
     </div>
   );
 }
