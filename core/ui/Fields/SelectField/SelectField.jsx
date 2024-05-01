@@ -12,8 +12,13 @@ export default function SelectField({
   placeholder,
   labelPlacement,
   classNames,
+  selectOnChange,
+  value,
 }) {
-  const [value, setValue] = useState(new Set([]));
+
+  console.log("items", items)
+  // const [value, setValue] = useState(new Set([]));
+  // console.log(value)
 
   return (
     <div className={baseStyle.input_container}>
@@ -36,7 +41,7 @@ export default function SelectField({
                 listbox: classes.listbox,
               }
         }
-        onSelectionChange={setValue}
+        onSelectionChange={selectOnChange}
         renderValue={(items) => {
           return items.map((item) => (
             <div key={item.key}>
@@ -46,7 +51,7 @@ export default function SelectField({
         }}
       >
         {(item) => (
-          <SelectItem key={item.id} textValue={item.name}>
+          <SelectItem key={item.key} textValue={item.value}>
             <div className={classes.select_item}>
               <p>{item.value}</p>
               <span>{item.desc}</span>

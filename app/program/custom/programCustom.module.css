@@ -17,7 +17,8 @@
   text-transform: uppercase;
 }
 
-.steps {
+/* TODO: implement steps */
+/* .steps {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -31,7 +32,7 @@
   width: 30px;
   background-color: var(--primary-light-color);
   border-radius: 50%;
-}
+} */
 
 .step_desc {
   display: flex;
@@ -58,4 +59,10 @@
 
 .link_button {
   background-color: var(--primary-accent-color);
+}
+
+/* PAGE CSS */
+
+.program_container {
+  width: 100%;
 }
