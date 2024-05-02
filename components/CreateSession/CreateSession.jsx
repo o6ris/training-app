@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import InputField from "@core/ui/Fields/InputField/InputField";
 import classes from "app/program/custom/programCustom.module.css";
 
 function CreateSession() {
@@ -126,6 +127,15 @@ function CreateSession() {
         value={exerciseIds}
         isMultiline={true}
         selectionMode="multiple"
+      />
+      {/* Choose session name */}
+      <InputField
+        label="Session name"
+        variant="bordered"
+        placeholder="Exemple: PUSH"
+        labelPlacement="outside"
+        value={session.name}
+        onChange={(value) => handleOnChangeSession("name", value)}
       />
     </div>
   );
