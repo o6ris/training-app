@@ -18,7 +18,19 @@ function CreateSession() {
     [exerciseIds]
   );
 
-  console.log("selectedExercises", selectedExercises)
+  const [session, setSession] = useState({
+    exercises: [],
+    name: "",
+    color: "",
+  });
+
+  const handleOnChangeSession = (name, value) => {
+    const t = { ...session };
+    t[name] = value;
+    setSession(t);
+  };
+
+  console.log("session", session);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getMuscles = async () => {
@@ -70,6 +82,10 @@ function CreateSession() {
       getExercises();
     }
   }, [selectedMuscles]);
+
+  useEffect(() => {
+    handleOnChangeSession("exercises", selectedExercises);
+  }, [selectedExercises]);
 
   return (
     <div className={classes.sub_program_container}>
