@@ -16,7 +16,11 @@ export default function SelectField({
   selectOnChange,
   value,
 }) {
-
+  const handleRemoveItem = (item) => {
+    const updatedValue = new Set(value);
+    updatedValue.delete(item);
+    selectOnChange(updatedValue);
+  };
 
   return (
     <div className={baseStyle.input_container}>
@@ -47,7 +51,12 @@ export default function SelectField({
             <div className={isMultiline ? classes.value_container : ""}>
               {items.map((item) =>
                 isMultiline ? (
-                  <Chip key={item.key}>{item.data.value}</Chip>
+                  <Chip
+                    key={item.key}
+                    onClose={() => handleRemoveItem(item.key)}
+                  >
+                    {item.data.value}
+                  </Chip>
                 ) : (
                   <div key={item.key}>
                     <span>{item.data.value}</span>
