@@ -1,0 +1,11 @@
+.colors_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.color {
+  width: 60px;
+  height: 40px;
+  border-radius: 50px;
+}

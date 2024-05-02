@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import InputField from "@core/ui/Fields/InputField/InputField";
+import ColorsField from "@core/ui/Fields/ColorsField/ColorsField";
 import classes from "app/program/custom/programCustom.module.css";
 
 function CreateSession() {
@@ -137,6 +138,8 @@ function CreateSession() {
         value={session.name}
         onChange={(value) => handleOnChangeSession("name", value)}
       />
+      {/* Choose session color */}
+      <ColorsField onChange={handleOnChangeSession} />
     </div>
   );
 }
