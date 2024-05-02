@@ -2,14 +2,23 @@
 
 import { useState, useEffect, useMemo } from "react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import classes from "app/program/custom/programCustom.module.css";
 
 function CreateSession() {
   const [muscles, setMuscles] = useState([]);
-  const [muscleId, setMuscleId] = useState(new Set([]));
-  const muscle = useMemo(
-		() => Array.from(muscleId).join(', '),
-		[muscleId]
-	);
+  const [exercises, setExercises] = useState([]);
+
+  const [muscleIds, setMuscleIds] = useState(new Set([]));
+  const [exerciseIds, setExerciseIds] = useState(new Set([]));
+
+  const selectedMuscles = useMemo(() => Array.from(muscleIds), [muscleIds]);
+
+  const selectedExercises = useMemo(
+    () => Array.from(exerciseIds),
+    [exerciseIds]
+  );
+
+  console.log("selectedExercises", selectedExercises)
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getMuscles = async () => {
@@ -17,16 +26,34 @@ function CreateSession() {
       const response = await fetch(
         `${baseUrl}/api/muscles`,
         { method: "GET" },
-        {
-          next: { revalidate: 10 },
-        }
+        { next: { revalidate: 10 } }
       );
       if (response) {
-        console.log("response", response);
         const muscles = await response.json();
         if (muscles) {
-          console.log("muscles", muscles);
           setMuscles(muscles);
+        }
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const getExercises = async () => {
+    try {
+      const queryString = selectedMuscles
+        .map((muscleId) => `muscle=${muscleId}`)
+        .join("&");
+      const url = `${baseUrl}/api/exercises?${queryString}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const exercises = await response.json();
+        if (exercises) {
+          setExercises(exercises);
         }
       }
     } catch (err) {
@@ -38,9 +65,15 @@ function CreateSession() {
     getMuscles();
   }, []);
 
+  useEffect(() => {
+    if (selectedMuscles.length > 0) {
+      getExercises();
+    }
+  }, [selectedMuscles]);
+
   return (
-    <>
-      {" "}
+    <div className={classes.sub_program_container}>
+      {/* Choose muscles */}
       <SelectField
         items={muscles?.map((muscle) => {
           return {
@@ -54,10 +87,31 @@ function CreateSession() {
         placeholder="Choose muscle"
         labelPlacement="outside"
         variant="bordered"
-        selectOnChange={setMuscleId}
-        value={muscleId}
+        selectOnChange={setMuscleIds}
+        value={muscleIds}
+        isMultiline={true}
+        selectionMode="multiple"
       />
-    </>
+      {/* Choose Exercises */}
+      <SelectField
+        items={exercises?.map((exercise) => {
+          return {
+            key: exercise._id,
+            value: `${exercise.name
+              .charAt(0)
+              .toUpperCase()}${exercise.name.slice(1)}`,
+          };
+        })}
+        label="Exercises"
+        placeholder="Choose exercises"
+        labelPlacement="outside"
+        variant="bordered"
+        selectOnChange={setExerciseIds}
+        value={exerciseIds}
+        isMultiline={true}
+        selectionMode="multiple"
+      />
+    </div>
   );
 }
 

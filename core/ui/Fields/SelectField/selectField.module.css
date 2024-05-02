@@ -27,3 +27,21 @@
   font-weight: var(--font-light);
   color: var(--primary-accent-color);
 }
+
+/* MULTILINE STYLE */
+.value_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.value_container div {
+  color: white;
+  background-color: var(--secondary-color);
+  /* height: 40px; */
+}
+
+.value_container div span {
+  font-weight: var(--font-bold);
+  font-size: var(--font-xl);
+}

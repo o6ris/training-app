@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import baseStyle from "../field.module.css";
 import classes from "./selectField.module.css";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, Chip } from "@nextui-org/react";
 
 export default function SelectField({
   items,
@@ -11,14 +10,13 @@ export default function SelectField({
   variant,
   placeholder,
   labelPlacement,
+  isMultiline,
+  selectionMode,
   classNames,
   selectOnChange,
   value,
 }) {
 
-  console.log("items", items)
-  // const [value, setValue] = useState(new Set([]));
-  // console.log(value)
 
   return (
     <div className={baseStyle.input_container}>
@@ -29,6 +27,8 @@ export default function SelectField({
         variant={variant}
         placeholder={placeholder}
         labelPlacement={labelPlacement}
+        selectionMode={selectionMode}
+        isMultiline={isMultiline}
         selectedKeys={value}
         classNames={
           classNames
@@ -43,11 +43,19 @@ export default function SelectField({
         }
         onSelectionChange={selectOnChange}
         renderValue={(items) => {
-          return items.map((item) => (
-            <div key={item.key}>
-              <span>{item.data.value}</span>
+          return (
+            <div className={isMultiline ? classes.value_container : ""}>
+              {items.map((item) =>
+                isMultiline ? (
+                  <Chip key={item.key}>{item.data.value}</Chip>
+                ) : (
+                  <div key={item.key}>
+                    <span>{item.data.value}</span>
+                  </div>
+                )
+              )}
             </div>
-          ));
+          );
         }}
       >
         {(item) => (
