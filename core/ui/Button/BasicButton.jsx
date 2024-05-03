@@ -10,7 +10,7 @@ function BasicButton({
   onAction,
 }) {
   return (
-    <Button onClick={() => onAction()} className={buttonStyle} startContent={startContent}>
+    <Button onClick={onAction} className={buttonStyle} startContent={startContent}>
       {buttonContent}
     </Button>
   )
