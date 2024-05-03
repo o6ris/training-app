@@ -3,7 +3,7 @@ import { colors } from "@modules/client/utils/colors";
 import { Button } from "@nextui-org/react";
 import classes from "./colorsField.module.css";
 
-function ColorsField({ onChange }) {
+function ColorsField({ onChange, index }) {
   const [selectedColor, setSelectedColor] = useState(null);
 
   const changeStyle = (color) => {
@@ -27,10 +27,10 @@ function ColorsField({ onChange }) {
 
   const handleColorClick = (color) => {
     if (selectedColor === color) {
-      onChange("color", "");
+      onChange(index, "color", "");
       setSelectedColor(null);
     } else {
-      onChange("color", color);
+      onChange(index, "color", color);
       setSelectedColor(color);
     }
   };
