@@ -7,11 +7,13 @@ import InputField from "@core/ui/Fields/InputField/InputField";
 import ColorsField from "@core/ui/Fields/ColorsField/ColorsField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import Icon from "@core/ui/Icons/Icon";
 
 function CreateSession() {
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [muscles, setMuscles] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [onHover, setOnHover] = useState([false]);
 
   const selectedAccordion = useMemo(
     () => Array.from(accordionKey).join(""),
@@ -26,6 +28,12 @@ function CreateSession() {
       color: "",
     },
   ]);
+
+  const handleOnHover = (i, isShowed) => {
+    const t = [...onHover];
+    t[i] = isShowed;
+    setOnHover(t);
+  };
 
   const handleOnChangeSession = (i, name, value) => {
     const arrayTemp = [...sessions];
@@ -45,10 +53,11 @@ function CreateSession() {
     };
     tempSessions.push(newSession);
     setSessions(tempSessions);
-    setAccordionKey(new Set([(tempSessions.length).toString()]));
+    setAccordionKey(new Set([tempSessions.length.toString()]));
   };
 
-  const handleRemoveSession = (i) => {
+  const handleRemoveSession = (e, i) => {
+    e.stopPropagation();
     const t = [...sessions];
     t.splice(i, 1);
     setSessions(t);
@@ -107,22 +116,33 @@ function CreateSession() {
     }
   }, [sessions[parseInt(selectedAccordion - 1)]?.muscles, selectedAccordion]);
 
-  const itemClasses = {
-    title: classes.accordion_head,
-  };
-
   return (
     <>
       <Accordion
         selectedKeys={accordionKey}
         onSelectionChange={setAccordionKey}
         variant="light"
-        itemClasses={itemClasses}
       >
         {sessions.map((session, i) => {
           const key = (i + 1).toString();
           return (
-            <AccordionItem key={key} title={`Session ${i + 1}`}>
+            <AccordionItem
+              key={key}
+              title={
+                <div
+                  onMouseEnter={() => handleOnHover(i, true)}
+                  onMouseLeave={() => handleOnHover(i, false)}
+                  className={classes.title_container}
+                >
+                  <h3>Session {i + 1}</h3>
+                  {onHover[i] && sessions.length > 1 && (
+                    <button onClick={(e) => handleRemoveSession(e, i)}>
+                      <Icon name="Trash" size={14} color="red" />
+                    </button>
+                  )}
+                </div>
+              }
+            >
               <div className={classes.sub_program_container}>
                 {/* Choose muscles */}
                 <SelectField

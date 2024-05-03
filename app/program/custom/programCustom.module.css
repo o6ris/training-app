@@ -76,7 +76,12 @@
   gap: 20px;
 }
 
-.accordion_head {
+.title_container {
+  display: flex;
+  gap: 10px;
+}
+
+.title_container h3 {
   color: var(--primary-accent-color);
 }
 
