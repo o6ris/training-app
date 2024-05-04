@@ -8,8 +8,20 @@ const exerciseSchema = new Schema({
   },
 });
 
+const muscleSchema = new Schema({
+  muscle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Muscle",
+    required: true,
+  },
+});
+
 const sessionSchema = new Schema({
-  training: {
+  muscles: {
+    type: [muscleSchema],
+    required: true,
+  },
+  exercises: {
     type: [exerciseSchema],
     required: true,
   },

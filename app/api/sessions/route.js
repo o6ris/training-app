@@ -36,7 +36,7 @@ export async function GET() {
       sessions.map(async (session) => {
         // For each session go to each exercise and add its name
         const populatedSession = await Session.populate(session, {
-          path: "training.exercise",
+          path: "exercises.exercise",
           model: Exercise,
           select: "name",
         });

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import classes from "app/program/custom/programCustom.module.css";
+import ProgramContext from "@modules/client/contexts/programProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import ColorsField from "@core/ui/Fields/ColorsField/ColorsField";
@@ -10,60 +11,22 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import Icon from "@core/ui/Icons/Icon";
 
 function CreateSession() {
+  const {
+    program,
+    handleOnChangeProgram,
+    handleAddSession,
+    handleRemoveSession,
+  } = useContext(ProgramContext);
+  console.log("program", program);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [muscles, setMuscles] = useState([]);
   const [exercises, setExercises] = useState([]);
-  const [onHover, setOnHover] = useState([false]);
 
   const selectedAccordion = useMemo(
     () => Array.from(accordionKey).join(""),
     [accordionKey]
   );
 
-  const [sessions, setSessions] = useState([
-    {
-      muscles: [],
-      exercises: [],
-      name: "",
-      color: "",
-    },
-  ]);
-
-  const handleOnHover = (i, isShowed) => {
-    const t = [...onHover];
-    t[i] = isShowed;
-    setOnHover(t);
-  };
-
-  const handleOnChangeSession = (i, name, value) => {
-    const arrayTemp = [...sessions];
-    const objTemp = { ...arrayTemp[i] };
-    objTemp[name] = value;
-    arrayTemp[i] = objTemp;
-    setSessions(arrayTemp);
-  };
-
-  const handleAddSession = () => {
-    const tempSessions = [...sessions];
-    const newSession = {
-      muscles: [],
-      exercises: [],
-      name: "",
-      color: "",
-    };
-    tempSessions.push(newSession);
-    setSessions(tempSessions);
-    setAccordionKey(new Set([tempSessions.length.toString()]));
-  };
-
-  const handleRemoveSession = (e, i) => {
-    e.stopPropagation();
-    const t = [...sessions];
-    t.splice(i, 1);
-    setSessions(t);
-  };
-
-  console.log("sessions", sessions);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getMuscles = async () => {
@@ -86,7 +49,9 @@ function CreateSession() {
 
   const getExercises = async () => {
     try {
-      const queryString = sessions[parseInt(selectedAccordion - 1)].muscles
+      const queryString = program.sessions[
+        parseInt(selectedAccordion - 1)
+      ].muscles
         .map((muscleId) => `muscle=${muscleId}`)
         .join("&");
       const url = `${baseUrl}/api/exercises?${queryString}`;
@@ -111,10 +76,13 @@ function CreateSession() {
   }, []);
 
   useEffect(() => {
-    if (sessions[parseInt(selectedAccordion - 1)]?.muscles.length > 0) {
+    if (program.sessions[parseInt(selectedAccordion - 1)]?.muscles.length > 0) {
       getExercises();
     }
-  }, [sessions[parseInt(selectedAccordion - 1)]?.muscles, selectedAccordion]);
+  }, [
+    program.sessions[parseInt(selectedAccordion - 1)]?.muscles,
+    selectedAccordion,
+  ]);
 
   return (
     <>
@@ -123,20 +91,16 @@ function CreateSession() {
         onSelectionChange={setAccordionKey}
         variant="light"
       >
-        {sessions.map((session, i) => {
+        {program.sessions.map((session, i) => {
           const key = (i + 1).toString();
           return (
             <AccordionItem
               key={key}
               title={
-                <div
-                  onMouseEnter={() => handleOnHover(i, true)}
-                  onMouseLeave={() => handleOnHover(i, false)}
-                  className={classes.title_container}
-                >
+                <div className={classes.title_container}>
                   <h3>Session {i + 1}</h3>
-                  {onHover[i] && sessions.length > 1 && (
-                    <button onClick={(e) => handleRemoveSession(e, i)}>
+                  {program.sessions.length > 1 && (
+                    <button onClick={(e) => handleRemoveSession(i)}>
                       <Icon name="Trash" size={14} color="red" />
                     </button>
                   )}
@@ -159,9 +123,9 @@ function CreateSession() {
                   labelPlacement="outside"
                   variant="bordered"
                   selectOnChange={(value) =>
-                    handleOnChangeSession(i, "muscles", Array.from(value))
+                    handleOnChangeProgram("muscles", Array.from(value), i, "sessions")
                   }
-                  value={sessions[i].muscles}
+                  value={program.sessions[i].muscles}
                   isMultiline={true}
                   selectionMode="multiple"
                 />
@@ -180,9 +144,9 @@ function CreateSession() {
                   labelPlacement="outside"
                   variant="bordered"
                   selectOnChange={(value) =>
-                    handleOnChangeSession(i, "exercises", Array.from(value))
+                    handleOnChangeProgram("exercises", Array.from(value), i, "sessions")
                   }
-                  value={sessions[i].exercises}
+                  value={program.sessions[i].exercises}
                   isMultiline={true}
                   selectionMode="multiple"
                 />
@@ -193,13 +157,14 @@ function CreateSession() {
                   placeholder="Exemple: PUSH"
                   labelPlacement="outside"
                   value={session.name}
-                  onChange={(value) => handleOnChangeSession(i, "name", value)}
+                  onChange={(value) => handleOnChangeProgram("name", value, i, "sessions")}
                 />
                 {/* Choose session color */}
                 <ColorsField
-                  value={sessions[i].color}
-                  onChange={handleOnChangeSession}
+                  value={program.sessions[i].color}
+                  onChange={handleOnChangeProgram}
                   index={i}
+                  section="sessions"
                 />
               </div>
             </AccordionItem>
@@ -207,7 +172,7 @@ function CreateSession() {
         })}
       </Accordion>
       <BasicButton
-        onAction={() => handleAddSession()}
+        onAction={() => handleAddSession(setAccordionKey)}
         buttonContent={"+ Add session"}
         buttonStyle={classes.add_session_button}
       />
