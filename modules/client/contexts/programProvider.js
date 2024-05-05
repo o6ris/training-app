@@ -24,6 +24,7 @@ export const ProgramProvider = ({ children }) => {
     } else {
       tempProgram[name] = value
     }
+    localStorage.setItem("program", JSON.stringify(tempProgram));
     setProgram(tempProgram);
   };
 
@@ -55,6 +56,7 @@ export const ProgramProvider = ({ children }) => {
     <ProgramContext.Provider
       value={{
         program,
+        setProgram,
         handleOnChangeProgram,
         handleAddSession,
         handleRemoveSession,

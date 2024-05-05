@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import classes from "./programCustom.module.css";
+import ProgramContext from "@modules/client/contexts/programProvider";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { useSearchParams } from "next/navigation";
-import { ValidateIcon } from "@core/ui/Icons/ValidateIcon"
+import { ValidateIcon } from "@core/ui/Icons/ValidateIcon";
 
 function ProgramCustomLayout({ children }) {
+  const { program, setProgram } = useContext(ProgramContext);
+  console.log("program", program);
   const searchParams = useSearchParams();
   const stepNbr = searchParams.get("step");
+
+  useEffect(() => {
+    const program = localStorage.getItem("program");
+    if (program) {
+      setProgram(JSON.parse(program));
+    }
+  }, []);
+
   // TODO: implement steps
   // const [steps, setSteps] = useState([
   //   {
@@ -31,7 +42,7 @@ function ProgramCustomLayout({ children }) {
   //   const tempObj = { ...tempArr[index - 1] };
   //   tempObj[name] = value;
   //   tempArr[index - 1] = tempObj;
-  //   setSteps(tempArr); 
+  //   setSteps(tempArr);
   // }
 
   const renderUrl = (nextStep) => {
@@ -39,11 +50,11 @@ function ProgramCustomLayout({ children }) {
       if (stepNbr >= 1 && stepNbr < 4) {
         return `custom?step=${parseInt(stepNbr) + 1}`;
       } else {
-        return '';
+        return "";
       }
     } else {
       if (parseInt(stepNbr) === 1) {
-        return '';
+        return "";
       } else {
         return `custom?step=${parseInt(stepNbr) - 1}`;
       }
@@ -78,7 +89,7 @@ function ProgramCustomLayout({ children }) {
         buttonStyle={classes.link_button}
         url={renderUrl(false)}
         buttonContent="Previous Step"
-        onAction={() => stepOnChange(parseInt(stepNbr)-1, "validate", false)}
+        onAction={() => stepOnChange(parseInt(stepNbr) - 1, "validate", false)}
       />
     </div>
   );

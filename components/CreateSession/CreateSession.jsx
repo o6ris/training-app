@@ -17,7 +17,6 @@ function CreateSession() {
     handleAddSession,
     handleRemoveSession,
   } = useContext(ProgramContext);
-  console.log("program", program);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [muscles, setMuscles] = useState([]);
   const [exercises, setExercises] = useState([]);
