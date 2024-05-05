@@ -12,6 +12,7 @@ export const ProgramProvider = ({ children }) => {
         color: "",
       },
     ],
+    frequency: 1,
   });
 
   const handleOnChangeProgram = (name, value, index, section) => {

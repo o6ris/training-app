@@ -2,6 +2,12 @@
   width: 100%;
 }
 
+.label_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .label {
   color: var(--primary-light-color);
   margin-bottom: 5px;
