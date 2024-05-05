@@ -21,6 +21,15 @@ export default function SelectField({
     updatedValue.delete(item);
     selectOnChange(updatedValue);
   };
+  const renderValue = () => {
+    if (Array.isArray(value)) {
+      return value;
+    } else {
+      return [value];
+    }
+  };
+
+  // console.log("value", renderValue())
 
   return (
     <div className={baseStyle.input_container}>
@@ -33,7 +42,7 @@ export default function SelectField({
         labelPlacement={labelPlacement}
         selectionMode={selectionMode}
         isMultiline={isMultiline}
-        selectedKeys={value}
+        selectedKeys={renderValue()}
         classNames={
           classNames
             ? classNames

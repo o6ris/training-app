@@ -25,18 +25,36 @@
     ],
     "one_rm": 180
   },
-  "one_session": {
-    "training": [
+  "one_session_ancient": {
+    "muscles": [
+      {
+        "muscle": "65101d9667cb93cb766bfe7e"
+      },
+      {
+        "muscle": "65101d9667cb93cb766bfe79"
+      }
+    ],
+    "exercises": [
       {
         "exercise": "6559e924d02b9f36fd7f574d"
       },
       {
-        "exercise": "6559f1f2d02b9f36fd7f57ab"
+        "exercise": "6559fcd5d02b9f36fd7f5859"
       },
       {
-        "exercise": "6559fcd5d02b9f36fd7f5859"
+        "exercise": "6559f1f2d02b9f36fd7f57ab"
       }
-    ]
+    ],
+    "name": "Push"
+  },
+  "one_session": {
+    "muscles": ["65101d9667cb93cb766bfe7e", "65101d9667cb93cb766bfe79"],
+    "exercises": [
+      "6559e924d02b9f36fd7f574d",
+      "6559fcd5d02b9f36fd7f5859",
+      "6559f1f2d02b9f36fd7f57ab"
+    ],
+    "name": "Push"
   },
   "program": {
     "sessions": ["660ff3f4cb19fac7160f532e", "660ffb98cb19fac7160f5366"],

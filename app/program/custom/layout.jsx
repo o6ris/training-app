@@ -64,7 +64,7 @@ function ProgramCustomLayout({ children }) {
         </div> */}
         <div className={classes.step_desc}>
           <span>Step {stepNbr} out of 4</span>
-          <h2>Choose tour sessions</h2>
+          <h2>Choose your sessions</h2>
         </div>
       </div>
       {children}
