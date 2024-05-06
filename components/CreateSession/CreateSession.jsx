@@ -164,6 +164,7 @@ function CreateSession() {
                   onChange={handleOnChangeProgram}
                   index={i}
                   section="sessions"
+                  label="Choose color session"
                 />
               </div>
             </AccordionItem>

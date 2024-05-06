@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { colors } from "@modules/client/utils/colors";
 import { Button } from "@nextui-org/react";
-import classes from "./colorsField.module.css";
+import classes from "../field.module.css";
 
-function ColorsField({ value, onChange, index, section }) {
+function ColorsField({ value, onChange, index, section, label }) {
   const [selectedColor, setSelectedColor] = useState(value);
 
   const changeStyle = (color) => {
@@ -36,18 +36,21 @@ function ColorsField({ value, onChange, index, section }) {
   };
 
   return (
-    <div className={classes.colors_container}>
+    <div>
+      <p className={classes.label}>{label}</p>
+    <div className={classes.multiple_buttons_container}>
       {colors.map((color) => {
         return (
           <Button
             isIconOnly
             onPress={() => handleColorClick(color)}
             key={color}
-            className={classes.color}
+            className={classes.multiple_buttons}
             style={{ backgroundColor: color, ...changeStyle(color) }}
           />
         );
       })}
+    </div>
     </div>
   );
 }
