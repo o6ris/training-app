@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo, useContext } from "react";
-import classes from "app/program/custom/programCustom.module.css";
+import { useState, useEffect } from "react";
+import classes from "./createSession.module.css";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import BasicButton from "@core/ui/Button/BasicButton";
 
@@ -67,7 +67,7 @@ function CreateSession() {
 
   return (
     <>
-      <div className={classes.sub_program_container}>
+      <div className={classes.session_container}>
         {/* Choose muscles */}
         <SelectField
           items={muscles?.map((muscle) => {
@@ -102,15 +102,8 @@ function CreateSession() {
             placeholder="Choose exercises"
             labelPlacement="outside"
             variant="bordered"
-            selectOnChange={(value) =>
-              handleOnChangeProgram(
-                "exercises",
-                Array.from(value),
-                i,
-                "sessions"
-              )
-            }
-            value={exercises}
+            selectOnChange={(value) => setExerciseIds(Array.from(value))}
+            value={exerciseIds}
             isMultiline={true}
             selectionMode="multiple"
           />
