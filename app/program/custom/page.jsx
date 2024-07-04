@@ -1,6 +1,6 @@
 "use client";
 
-import CreateSession from "@components/CreateSession/CreateSession";
+import CreateSessions from "@components/CreateSessions/CreateSessions";
 import CreatePlanning from "@components/CreatePlanning/CreatePlanning";
 import { useSearchParams } from "next/navigation";
 import classes from "./programCustom.module.css";
@@ -11,7 +11,7 @@ function ProgramCustom() {
 
   return (
     <div className={classes.program_container}>
-      {stepNbr === "1" && <CreateSession />}
+      {stepNbr === "1" && <CreateSessions />}
       {stepNbr === "2" && <CreatePlanning />}
 
     </div>
