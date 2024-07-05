@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import classes from "./createSession.module.css";
+import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
-import BasicButton from "@core/ui/Button/BasicButton";
+import ButtonLink from "@core/ui/Button/ButtonLink";
 
 function CreateSession() {
   const [muscles, setMuscles] = useState([]);
   const [muscleIds, setMusculeIds] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [exerciseIds, setExerciseIds] = useState([]);
-  console.log("muscleIds", muscleIds);
-  console.log("exercises", exercises);
+  const { createSession, session } = useContext(SessionContext);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -109,11 +109,14 @@ function CreateSession() {
           />
         )}
       </div>
-      <BasicButton
-        onAction={() => handleAddSession(setAccordionKey)}
-        buttonContent={"+ Add session"}
-        buttonStyle={classes.add_session_button}
-      />
+      {exerciseIds.length > 0 && (
+        <ButtonLink
+          url={"/session"}
+          onAction={() => createSession(exerciseIds)}
+          buttonContent={"Create session"}
+          buttonStyle={classes.add_session_button}
+        />
+      )}
     </>
   );
 }

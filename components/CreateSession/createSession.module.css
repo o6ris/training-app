@@ -4,3 +4,7 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.add_session_button {
+  background-color: var(--primary-accent-color);
+}

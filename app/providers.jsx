@@ -1,15 +1,15 @@
 "use client";
 
 import NextAuthProvider from "components/NextAuthProvider/NextAuthProvider";
-import { ProgramProvider } from "@modules/client/contexts/programProvider";
+import { SessionProvider } from "@modules/client/contexts/sessionProvider";
 import { NextUIProvider } from "@nextui-org/react";
 
 export function Providers({ children, session }) {
   return (
     <NextUIProvider>
-      <ProgramProvider>
+      <SessionProvider>
         <NextAuthProvider session={session}>{children}</NextAuthProvider>
-      </ProgramProvider>
+      </SessionProvider>
     </NextUIProvider>
   );
 }
