@@ -5,6 +5,7 @@ import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import useStopwatch from "@modules/client/utils/useStopwatch";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
 import BasicButton from "@core/ui/Button/BasicButton";
@@ -19,7 +20,16 @@ function page() {
   } = useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
-
+  const {
+    time,
+    getSeconds,
+    getMinutes,
+    isRunning,
+    start,
+    pause,
+    reset,
+  } = useStopwatch(false, session.length);
+  
   const selectedAccordion = useMemo(
     () => Array.from(accordionKey).join(""),
     [accordionKey]
@@ -29,24 +39,24 @@ function page() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const restTime = [
-    { key: 30, value: "30 secondes" },
-    { key: 45, value: "45 secondes" },
+    { key: 30, value: "30 seconds" },
+    { key: 45, value: "45 seconds" },
     { key: 60, value: "1 minute" },
-    { key: 75, value: "1 minute 15 secondes" },
-    { key: 90, value: "1 minute 30 secondes" },
-    { key: 105, value: "1 minute 45 secondes" },
+    { key: 75, value: "1 minute 15 seconds" },
+    { key: 90, value: "1 minute 30 seconds" },
+    { key: 105, value: "1 minute 45 seconds" },
     { key: 120, value: "2 minutes" },
-    { key: 135, value: "2 minutes 15 secondes" },
-    { key: 150, value: "2 minutes 30 secondes" },
-    { key: 165, value: "2 minutes 45 secondes" },
+    { key: 135, value: "2 minutes 15 seconds" },
+    { key: 150, value: "2 minutes 30 seconds" },
+    { key: 165, value: "2 minutes 45 seconds" },
     { key: 180, value: "3 minutes" },
-    { key: 195, value: "3 minutes 15 secondes" },
-    { key: 210, value: "3 minutes 30 secondes" },
-    { key: 225, value: "3 minutes 45 secondes" },
+    { key: 195, value: "3 minutes 15 seconds" },
+    { key: 210, value: "3 minutes 30 seconds" },
+    { key: 225, value: "3 minutes 45 seconds" },
     { key: 240, value: "4 minutes" },
-    { key: 255, value: "4 minutes 15 secondes" },
-    { key: 270, value: "4 minutes 30 secondes" },
-    { key: 285, value: "4 minutes 45 secondes" },
+    { key: 255, value: "4 minutes 15 seconds" },
+    { key: 270, value: "4 minutes 30 seconds" },
+    { key: 285, value: "4 minutes 45 seconds" },
     { key: 300, value: "5 minutes" },
   ];
 
@@ -100,6 +110,8 @@ function page() {
                   <h3>{`${findExercise?.name
                     .charAt(0)
                     .toUpperCase()}${findExercise?.name.slice(1)}`}</h3>
+                  <span>{getMinutes(i).toString().padStart(2, "0")}</span>:
+                  <span>{getSeconds(i).toString().padStart(2, "0")}</span>
                 </div>
               }
               classNames={{ base: classes.accordion_item }}
@@ -166,6 +178,13 @@ function page() {
                       </div>
                     );
                   })}
+                </div>
+                {/* stopwatch buttons */}
+                <div className={classes.stopwatch_buttons}>
+                <button onClick={() => isRunning[i] ? pause(i) : start(i)}>
+                    {isRunning[i] ? 'Pause' : 'Start'}
+                  </button>
+                  <button onClick={() => reset(i)}>Reset</button>
                 </div>
               </div>
             </AccordionItem>
