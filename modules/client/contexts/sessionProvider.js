@@ -22,6 +22,7 @@ export const SessionProvider = ({ children }) => {
       });
     });
     setSession(exercisesList);
+    localStorage.setItem("session", JSON.stringify(exercisesList));
   };
 
   const handleArrayOnChange = (name, value, i, array) => {
