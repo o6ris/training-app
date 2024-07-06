@@ -9,6 +9,7 @@ import useStopwatch from "@modules/client/utils/useStopwatch";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
 import BasicButton from "@core/ui/Button/BasicButton";
+import Icon from "@core/ui/Icons/Icon";
 
 function page() {
   const {
@@ -20,21 +21,15 @@ function page() {
   } = useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
-  const {
-    time,
-    getSeconds,
-    getMinutes,
-    isRunning,
-    start,
-    pause,
-    reset,
-  } = useStopwatch(false, session.length);
-  
+  const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
+    useStopwatch(false, session.length);
+    console.log("time", time)
+
   const selectedAccordion = useMemo(
     () => Array.from(accordionKey).join(""),
     [accordionKey]
   );
-  // console.log("session", session);
+  console.log("session", session);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -181,10 +176,27 @@ function page() {
                 </div>
                 {/* stopwatch buttons */}
                 <div className={classes.stopwatch_buttons}>
-                <button onClick={() => isRunning[i] ? pause(i) : start(i)}>
-                    {isRunning[i] ? 'Pause' : 'Start'}
-                  </button>
-                  <button onClick={() => reset(i)}>Reset</button>
+                  <BasicButton
+                    onAction={() => (isRunning[i] ? pause(i) : start(i))}
+                    buttonContent={isRunning[i] ? "Pause" : "Start"}
+                    buttonStyle={`${classes.stopwatch_button} ${classes.start_button}`}
+                  />
+                  <BasicButton
+                    onAction={() => {
+                      pause(i);
+                      handleOnChangeSession("trainingTime", time[i], i);
+                    }}
+                    buttonContent="Finish"
+                    buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
+                  />
+                  <BasicButton
+                    onAction={() => reset(i)}
+                    buttonContent={
+                      <Icon name="RefreshCcw" size={16} color="white" />
+                    }
+                    buttonStyle={`${classes.stopwatch_button} ${classes.reset_button}`}
+                    isIconOnly={true}
+                  />
                 </div>
               </div>
             </AccordionItem>

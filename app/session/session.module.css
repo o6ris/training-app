@@ -25,6 +25,32 @@
   background-color: var(--primary-color) !important;
 }
 
+.stopwatch_buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.2fr;
+  gap: 10px;
+}
+
+.stopwatch_button {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--primary-accent-color);
+  color: var(--primary-light-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.finish_button {
+  background-color: var(--success-color);
+}
+
+.reset_button {
+  background-color: var(--danger-color);
+}
+
 /* SELECT STYLE */
 .select_main_wrapper {
   width: 100%;

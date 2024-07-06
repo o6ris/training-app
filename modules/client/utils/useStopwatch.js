@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
 const useStopwatch = (autoStart = false, length) => {
-  console.log("length", length);
 
   // State to track running status of each stopwatch
   const [isRunning, setIsRunning] = useState(Array(length).fill(autoStart));
@@ -77,10 +76,8 @@ const useStopwatch = (autoStart = false, length) => {
   // Function to get the seconds for a specific stopwatch
   const getSeconds = (index) => time[index] % 60;
 
-  console.log("time", time);
-
   // Return stopwatch controls and status
-  return { getMinutes, getSeconds, isRunning, start, pause, reset };
+  return { time, getMinutes, getSeconds, isRunning, start, pause, reset };
 };
 
 export default useStopwatch;
