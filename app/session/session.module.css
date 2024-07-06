@@ -1,5 +1,16 @@
+.session_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .accordion_item {
   background-color: var(--secondary-color) !important;
+}
+
+.slider_track {
+  background-color: var(--primary-color) !important;
 }
 
 /* SELECT STYLE */

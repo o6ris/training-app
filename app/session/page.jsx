@@ -5,9 +5,10 @@ import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import SliderField from "@core/ui/Fields/SliderField/SliderField";
 
 function page() {
-  const { session, setSession, handleOnChangeSession } =
+  const { session, setSession, handleOnChangeSession, handleSetsOnChange } =
     useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
@@ -96,7 +97,7 @@ function page() {
               }
               classNames={{ base: classes.accordion_item }}
             >
-              <div>
+              <div className={classes.session_container}>
                 {/* Choose rest time */}
                 <SelectField
                   items={restTime}
@@ -118,7 +119,17 @@ function page() {
                   }}
                 />
                 {/* Choose number of sets */}
-                
+                <SliderField
+                  label="Choose sets number"
+                  color="secondary"
+                  value={exercise.sets.length}
+                  onChange={(value) => {
+                    handleSetsOnChange("sets", value, i);
+                  }}
+                  classNames={{
+                    track: classes.slider_track
+                  }}
+                />
               </div>
             </AccordionItem>
           );

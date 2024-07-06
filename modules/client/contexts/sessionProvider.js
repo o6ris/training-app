@@ -13,7 +13,7 @@ export const SessionProvider = ({ children }) => {
         restTime: 60,
         trainingTime: 0,
         rm: 0,
-        series: [
+        sets: [
           {
             reps: 0,
             weight: 0,
@@ -39,6 +39,22 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem("session", JSON.stringify(tempSession));
   };
 
+  const handleSetsOnChange = (name, value, index) => {
+    const set = {
+      reps: 0,
+      weight: 0,
+    };
+    const tempSession = [...session];
+    const tempExercise = tempSession[index];
+    tempExercise[name] = Array.isArray(tempExercise[name])
+      ? Array.from({ length: value }, () => ({ ...set }))
+      : new Array(value).fill(set);
+
+    tempSession[index] = tempExercise;
+    setSession(tempSession);
+    localStorage.setItem("session", JSON.stringify(tempSession));
+  };
+
   return (
     <SessionContext.Provider
       value={{
@@ -46,6 +62,7 @@ export const SessionProvider = ({ children }) => {
         setSession,
         createSession,
         handleOnChangeSession,
+        handleSetsOnChange,
       }}
     >
       {children}
