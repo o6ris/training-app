@@ -39,7 +39,21 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem("session", JSON.stringify(tempSession));
   };
 
-  const handleSetsOnChange = (name, value, index) => {
+  const handleOnchangeSets = (name, value, exerciseIndex, setIndex) => {
+    const tempSession = [...session];
+    const tempExercise = tempSession[exerciseIndex];
+    const tempSets = [...tempExercise.sets];
+    tempSets[setIndex] = {
+      ...tempSets[setIndex],
+      [name]: value,
+    };
+    tempExercise.sets = tempSets;
+    tempSession[exerciseIndex] = tempExercise;
+    setSession(tempSession);
+    localStorage.setItem("session", JSON.stringify(tempSession));
+  };
+
+  const handleAddSets = (name, value, index) => {
     const set = {
       reps: 0,
       weight: 0,
@@ -62,7 +76,8 @@ export const SessionProvider = ({ children }) => {
         setSession,
         createSession,
         handleOnChangeSession,
-        handleSetsOnChange,
+        handleAddSets,
+        handleOnchangeSets,
       }}
     >
       {children}

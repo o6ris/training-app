@@ -5,6 +5,18 @@
   gap: 20px;
 }
 
+.sets_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.set_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  grid-gap: 10px;
+}
+
 .accordion_item {
   background-color: var(--secondary-color) !important;
 }

@@ -4,12 +4,19 @@ import { useState, useEffect, useContext, useMemo } from "react";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
+import BasicButton from "@core/ui/Button/BasicButton";
 
 function page() {
-  const { session, setSession, handleOnChangeSession, handleSetsOnChange } =
-    useContext(SessionContext);
+  const {
+    session,
+    setSession,
+    handleOnChangeSession,
+    handleAddSets,
+    handleOnchangeSets,
+  } = useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
 
@@ -17,7 +24,7 @@ function page() {
     () => Array.from(accordionKey).join(""),
     [accordionKey]
   );
-  console.log("session", session);
+  // console.log("session", session);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -124,12 +131,42 @@ function page() {
                   color="secondary"
                   value={exercise.sets.length}
                   onChange={(value) => {
-                    handleSetsOnChange("sets", value, i);
+                    handleAddSets("sets", value, i);
                   }}
                   classNames={{
-                    track: classes.slider_track
+                    track: classes.slider_track,
                   }}
                 />
+                {/* Choose reps and weight */}
+                <div className={classes.sets_container}>
+                  {exercise.sets.map((set, index) => {
+                    return (
+                      <div className={classes.set_container}>
+                        <Input
+                          aria-label="repetions"
+                          variant="bordered"
+                          value={set.reps}
+                          endContent="reps"
+                          type="number"
+                          onValueChange={(value) =>
+                            handleOnchangeSets("reps", value, i, index)
+                          }
+                        />
+                        <Input
+                          aria-label="repetions"
+                          variant="bordered"
+                          value={set.weight}
+                          endContent="kg"
+                          type="number"
+                          onValueChange={(value) =>
+                            handleOnchangeSets("weight", value, i, index)
+                          }
+                        />
+                        <BasicButton buttonContent={"Go !"} />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </AccordionItem>
           );
