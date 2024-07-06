@@ -1,3 +1,35 @@
 .accordion_item {
   background-color: var(--secondary-color) !important;
 }
+
+/* SELECT STYLE */
+.select_main_wrapper {
+  width: 100%;
+  min-height: 60px !important;
+  padding: 10px;
+  border: 2px solid var(--primary-light-color);
+}
+
+.select_value {
+  font-size: var(--font-xl);
+  color: var(--secondary-color);
+  font-weight: var(--font-bold);
+}
+
+.select_listbox_container {
+  background-color: var(--primary-light-color);
+}
+
+.select_listbox > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.select_listbox > ul li > span > div > p {
+  color: var(--primary-color); 
+}
+
+.select_listbox > ul li[data-focus="true"] {
+  background-color: transparent !important;
+}

@@ -25,23 +25,18 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem("session", JSON.stringify(exercisesList));
   };
 
-  const handleArrayOnChange = (name, value, i, array) => {
-    const updatedIndex = { ...array[i], [name]: value };
-    array[i] = updatedIndex;
-  };
+  // const handleArrayOnChange = (name, value, i, array) => {
+  //   const updatedIndex = { ...array[i], [name]: value };
+  //   array[i] = updatedIndex;
+  // };
 
-  const handleOnChangeSession = (name, value, index, section) => {
-    console.log("index", index);
-    const tempSession = { ...program };
-    if (section) {
-      const updatedArray = [...tempSession[section]];
-      handleArrayOnChange(name, value, index, updatedArray);
-      tempSession[section] = updatedArray;
-    } else {
-      tempSession[name] = value;
-    }
-    localStorage.setItem("program", JSON.stringify(tempSession));
-    setProgram(tempSession);
+  const handleOnChangeSession = (name, value, index) => {
+    const tempSession = [...session];
+    const tempExercise = tempSession[index];
+    tempExercise[name] = value;
+    tempSession[index] = tempExercise;
+    setSession(tempSession);
+    localStorage.setItem("session", JSON.stringify(tempSession));
   };
 
   return (
