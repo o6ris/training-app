@@ -33,6 +33,8 @@ function page() {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
+  console.log("session", session);
+
   const restTime = [
     { key: 30, value: "30 seconds" },
     { key: 45, value: "45 seconds" },
@@ -65,7 +67,7 @@ function page() {
       );
       if (response) {
         const user = await response.json();
-        setUserId(user._id)
+        setUserId(user._id);
       }
     } catch (error) {
       throw error;
@@ -88,6 +90,27 @@ function page() {
       }
     } catch (err) {
       throw err;
+    }
+  };
+
+  const saveExercise = async (i) => {
+    try {
+      const url = `${baseUrl}/api/stats`;
+      const response = await fetch(
+        url,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            ...session[i],
+            rest_time: session[i].restTime,
+            training_time: session[i].trainingTime,
+            user: userId,
+          }),
+        },
+        { next: { revalidate: 10 } }
+      );
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -241,6 +264,7 @@ function page() {
                     }}
                     triggerButtonContent="Finish"
                     onCancel={() => start(i)}
+                    onConfirm={() => saveExercise(i)}
                     buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
                     title="Are you sure you want to end this exercise?"
                     content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."

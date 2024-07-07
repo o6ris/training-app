@@ -25,7 +25,7 @@ const statsSchema = new Schema({
     type: Number,
     required: true,
   },
-  series: [
+  sets: [
     {
       reps: {
         type: Number,
@@ -37,7 +37,7 @@ const statsSchema = new Schema({
       },
     },
   ],
-  one_rm: {
+  rm: {
     type: Number,
     required: true,
   },
