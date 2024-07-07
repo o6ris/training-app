@@ -5,7 +5,7 @@ const useTimer = (session) => {
   const [timers, setTimers] = useState([]); // State to store timers
   const intervalRefs = useRef([]); // Reference to store interval IDs
 
-  console.log("timers", timers)
+  // console.log("timers", timers)
 
   useEffect(() => {
     // Initialize timers based on the session rest times
