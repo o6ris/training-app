@@ -13,8 +13,19 @@
 
 .set_container {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1fr 1fr 0.7fr;
   grid-gap: 10px;
+}
+
+.timer_button {
+  display: flex;
+  flex-direction: row;
+  background-color: transparent;
+  border: 2px solid var(--primary-accent-color);
+  color:  var(--primary-accent-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
 }
 
 .accordion_item {

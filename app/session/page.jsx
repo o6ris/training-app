@@ -6,6 +6,7 @@ import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
+import useTimer from "@modules/client/utils/useTimer";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
 import BasicButton from "@core/ui/Button/BasicButton";
@@ -23,13 +24,13 @@ function page() {
   const [exercises, setExercises] = useState([]);
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session.length);
-    console.log("time", time)
+  const { startTimer, getFormattedTime, timers } = useTimer(session);
 
   const selectedAccordion = useMemo(
     () => Array.from(accordionKey).join(""),
     [accordionKey]
   );
-  console.log("session", session);
+  // console.log("session", session);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -120,7 +121,11 @@ function page() {
                   labelPlacement="outside"
                   variant="bordered"
                   selectOnChange={(value) =>
-                    handleOnChangeSession("restTime", Array.from(value), i)
+                    handleOnChangeSession(
+                      "restTime",
+                      parseInt(Array.from(value).join("")),
+                      i
+                    )
                   }
                   value={exercise.restTime}
                   isMultiline={false}
@@ -147,6 +152,7 @@ function page() {
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
                   {exercise.sets.map((set, index) => {
+                    const timer = timers[i]?.[index];
                     return (
                       <div className={classes.set_container}>
                         <Input
@@ -169,7 +175,16 @@ function page() {
                             handleOnchangeSets("weight", value, i, index)
                           }
                         />
-                        <BasicButton buttonContent={"Go !"} />
+                        <BasicButton
+                          onAction={() => startTimer(i, index)}
+                          buttonContent={
+                            timer?.isRunning
+                              ? getFormattedTime(timer.seconds)
+                              : "DONE"
+                          }
+                          isDisabled={timer?.isRunning === false && timer?.seconds === 0}
+                          buttonStyle={classes.timer_button}
+                        />
                       </div>
                     );
                   })}
