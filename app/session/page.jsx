@@ -11,6 +11,7 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import InputField from "@core/ui/Fields/InputField/InputField";
+import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
 function page() {
@@ -199,7 +200,9 @@ function page() {
                               ? getFormattedTime(timer.seconds)
                               : "DONE"
                           }
-                          isDisabled={timer?.isRunning === false && timer?.seconds === 0}
+                          isDisabled={
+                            timer?.isRunning === false && timer?.seconds === 0
+                          }
                           buttonStyle={classes.timer_button}
                         />
                       </div>
@@ -213,13 +216,16 @@ function page() {
                     buttonContent={isRunning[i] ? "Pause" : "Start"}
                     buttonStyle={`${classes.stopwatch_button} ${classes.start_button}`}
                   />
-                  <BasicButton
-                    onAction={() => {
+                  <PopupButton
+                    triggerAction={() => {
                       pause(i);
                       handleOnChangeSession("trainingTime", time[i], i);
                     }}
-                    buttonContent="Finish"
+                    triggerButtonContent="Finish"
+                    onCancel={() => start(i)}
                     buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
+                    title="Are you sure you want to end this exercise?"
+                    content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
                   />
                   <BasicButton
                     onAction={() => reset(i)}
