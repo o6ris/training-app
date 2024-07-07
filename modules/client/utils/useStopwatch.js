@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 
-const useStopwatch = (autoStart = false, length) => {
+const useStopwatch = (autoStart = false, session) => {
 
   // State to track running status of each stopwatch
-  const [isRunning, setIsRunning] = useState(Array(length).fill(autoStart));
+  const [isRunning, setIsRunning] = useState(Array(session.length).fill(autoStart));
 
   // State to track time of each stopwatch
   const [time, setTime] = useState([]);
@@ -11,10 +11,11 @@ const useStopwatch = (autoStart = false, length) => {
   // Ref to store interval IDs for each stopwatch
   const intervalRef = useRef([]);
 
-  // Initialize the time state array when the length changes
+  // Initialize the time state array when the session.length changes
   useEffect(() => {
-    setTime(Array(length).fill(0));
-  }, [length]);
+    const initialTimes = session.map(exercise => exercise.trainingTime || 0);
+    setTime(initialTimes);
+  }, [session.length]);
 
   // Effect to handle starting and stopping of intervals based on running status
   useEffect(() => {

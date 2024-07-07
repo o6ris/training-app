@@ -27,7 +27,7 @@ function page() {
   const [exercises, setExercises] = useState([]);
   const [userId, setUserId] = useState("");
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
-    useStopwatch(false, session.length);
+    useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers } = useTimer(session);
   const { data: userSession, status } = useSession();
 
@@ -248,7 +248,9 @@ function page() {
                               : "DONE"
                           }
                           isDisabled={
-                            (timer?.isRunning === false && timer?.seconds === 0) || exercise.isFinished
+                            (timer?.isRunning === false &&
+                              timer?.seconds === 0) ||
+                            exercise.isFinished
                           }
                           buttonStyle={classes.timer_button}
                         />
@@ -259,7 +261,14 @@ function page() {
                 {/* stopwatch buttons */}
                 <div className={classes.stopwatch_buttons}>
                   <BasicButton
-                    onAction={() => (isRunning[i] ? pause(i) : start(i))}
+                    onAction={() => {
+                      if (isRunning[i]) {
+                        pause(i);
+                        handleOnChangeSession("trainingTime", time[i], i);
+                      } else {
+                        start(i);
+                      }
+                    }}
                     buttonContent={isRunning[i] ? "Pause" : "Start"}
                     buttonStyle={`${classes.stopwatch_button} ${classes.start_button}`}
                     isDisabled={exercise.isFinished}
@@ -273,7 +282,7 @@ function page() {
                     onCancel={() => start(i)}
                     onConfirm={() => {
                       saveExercise(i);
-                      handleOnChangeSession("isFinished", true, i)
+                      handleOnChangeSession("isFinished", true, i);
                     }}
                     buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
                     title="Are you sure you want to end this exercise?"
