@@ -62,17 +62,17 @@
   background-color: var(--danger-color);
 }
 
-/* SELECT STYLE */
-.select_main_wrapper {
+/* FIELD STYLE */
+.field_main_wrapper {
   width: 100%;
   min-height: 60px !important;
   padding: 10px;
   border: 2px solid var(--primary-light-color);
 }
 
-.select_value {
+.field_value {
   font-size: var(--font-xl);
-  color: var(--secondary-color);
+  /* color: var(--secondary-color); */
   font-weight: var(--font-bold);
 }
 

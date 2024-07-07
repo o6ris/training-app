@@ -10,6 +10,7 @@ import useTimer from "@modules/client/utils/useTimer";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import SliderField from "@core/ui/Fields/SliderField/SliderField";
 import BasicButton from "@core/ui/Button/BasicButton";
+import InputField from "@core/ui/Fields/InputField/InputField";
 import Icon from "@core/ui/Icons/Icon";
 
 function page() {
@@ -113,6 +114,22 @@ function page() {
               classNames={{ base: classes.accordion_item }}
             >
               <div className={classes.session_container}>
+                {/* Choose RM */}
+                <InputField
+                  label="1RM"
+                  ariaLabel="One RM"
+                  variant="bordered"
+                  placeholder="Exemple: 100"
+                  labelPlacement="outside"
+                  value={exercise.rm}
+                  onChange={(value) => handleOnChangeSession("rm", value, i)}
+                  classNames={{
+                    label: classes.label,
+                    inputWrapper: classes.field_main_wrapper,
+                    input: classes.field_value,
+                  }}
+                  endContent="Kg"
+                />
                 {/* Choose rest time */}
                 <SelectField
                   items={restTime}
@@ -131,8 +148,8 @@ function page() {
                   isMultiline={false}
                   classNames={{
                     // label: baseStyle.label,
-                    value: classes.select_value,
-                    trigger: classes.select_main_wrapper,
+                    value: classes.field_value,
+                    trigger: classes.field_main_wrapper,
                     popoverContent: classes.select_listbox_container,
                     listbox: classes.select_listbox,
                   }}

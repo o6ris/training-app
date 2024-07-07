@@ -10,6 +10,7 @@ function InputField({
   classNames,
   onChange,
   value,
+  endContent,
 }) {
   return (
     <div className={baseStyle.input_container}>
@@ -30,6 +31,7 @@ function InputField({
                 input: classes.value,
               }
         }
+        endContent={endContent}
       />
     </div>
   );
