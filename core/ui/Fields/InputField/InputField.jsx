@@ -11,6 +11,7 @@ function InputField({
   onChange,
   value,
   endContent,
+  isDisabled,
 }) {
   return (
     <div className={baseStyle.input_container}>
@@ -20,6 +21,7 @@ function InputField({
         variant={variant}
         placeholder={placeholder}
         labelPlacement={labelPlacement}
+        isDisabled={isDisabled}
         value={value}
         onValueChange={onChange}
         classNames={

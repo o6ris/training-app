@@ -96,6 +96,7 @@ function page() {
   const saveExercise = async (i) => {
     try {
       const url = `${baseUrl}/api/stats`;
+      delete session[i].isFinished;
       const response = await fetch(
         url,
         {
@@ -163,6 +164,7 @@ function page() {
                   variant="bordered"
                   placeholder="Exemple: 100"
                   labelPlacement="outside"
+                  isDisabled={exercise.isFinished}
                   value={exercise.rm}
                   onChange={(value) => handleOnChangeSession("rm", value, i)}
                   classNames={{
@@ -179,6 +181,7 @@ function page() {
                   placeholder="1 minutes"
                   labelPlacement="outside"
                   variant="bordered"
+                  isDisabled={exercise.isFinished}
                   selectOnChange={(value) =>
                     handleOnChangeSession(
                       "restTime",
@@ -207,6 +210,7 @@ function page() {
                   classNames={{
                     track: classes.slider_track,
                   }}
+                  isDisabled={exercise.isFinished}
                 />
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
@@ -223,6 +227,7 @@ function page() {
                           onValueChange={(value) =>
                             handleOnchangeSets("reps", value, i, index)
                           }
+                          isDisabled={exercise.isFinished}
                         />
                         <Input
                           aria-label="repetions"
@@ -233,6 +238,7 @@ function page() {
                           onValueChange={(value) =>
                             handleOnchangeSets("weight", value, i, index)
                           }
+                          isDisabled={exercise.isFinished}
                         />
                         <BasicButton
                           onAction={() => startTimer(i, index)}
@@ -242,7 +248,7 @@ function page() {
                               : "DONE"
                           }
                           isDisabled={
-                            timer?.isRunning === false && timer?.seconds === 0
+                            (timer?.isRunning === false && timer?.seconds === 0) || exercise.isFinished
                           }
                           buttonStyle={classes.timer_button}
                         />
@@ -256,6 +262,7 @@ function page() {
                     onAction={() => (isRunning[i] ? pause(i) : start(i))}
                     buttonContent={isRunning[i] ? "Pause" : "Start"}
                     buttonStyle={`${classes.stopwatch_button} ${classes.start_button}`}
+                    isDisabled={exercise.isFinished}
                   />
                   <PopupButton
                     triggerAction={() => {
@@ -264,10 +271,14 @@ function page() {
                     }}
                     triggerButtonContent="Finish"
                     onCancel={() => start(i)}
-                    onConfirm={() => saveExercise(i)}
+                    onConfirm={() => {
+                      saveExercise(i);
+                      handleOnChangeSession("isFinished", true, i)
+                    }}
                     buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
                     title="Are you sure you want to end this exercise?"
                     content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
+                    isDisabled={exercise.isFinished}
                   />
                   <BasicButton
                     onAction={() => reset(i)}
@@ -276,6 +287,7 @@ function page() {
                     }
                     buttonStyle={`${classes.stopwatch_button} ${classes.reset_button}`}
                     isIconOnly={true}
+                    isDisabled={exercise.isFinished}
                   />
                 </div>
               </div>

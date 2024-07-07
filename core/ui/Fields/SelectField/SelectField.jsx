@@ -15,6 +15,7 @@ export default function SelectField({
   classNames,
   selectOnChange,
   value,
+  isDisabled,
 }) {
   const handleRemoveItem = (item) => {
     const updatedValue = new Set(value);
@@ -43,6 +44,7 @@ export default function SelectField({
         selectionMode={selectionMode}
         isMultiline={isMultiline}
         selectedKeys={renderValue()}
+        isDisabled={isDisabled}
         classNames={
           classNames
             ? classNames

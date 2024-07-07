@@ -3,7 +3,14 @@ import baseStyle from "../field.module.css";
 import classes from "./slider.module.css";
 import { Slider, Button } from "@nextui-org/react";
 
-function SliderField({ label, color, value, onChange, classNames }) {
+function SliderField({
+  label,
+  color,
+  value,
+  onChange,
+  classNames,
+  isDisabled,
+}) {
   return (
     <div>
       <div className={baseStyle.label_wrapper}>
@@ -29,6 +36,7 @@ function SliderField({ label, color, value, onChange, classNames }) {
         minValue={0}
         value={value}
         onChange={onChange}
+        isDisabled={isDisabled}
       />
     </div>
   );

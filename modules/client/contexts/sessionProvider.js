@@ -19,6 +19,7 @@ export const SessionProvider = ({ children }) => {
             weight: 0,
           },
         ],
+        isFinished: false,
       });
     });
     setSession(exercisesList);
