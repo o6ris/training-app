@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem } from "@nextui-org/react";
@@ -15,7 +16,7 @@ import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
 
-function page() {
+function Session() {
   const {
     session,
     setSession,
@@ -33,6 +34,7 @@ function page() {
   const { data: userSession, status } = useSession();
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   console.log("session", session);
 
@@ -271,7 +273,7 @@ function page() {
                       }
                     }}
                     buttonContent={isRunning[i] ? "Pause" : "Start"}
-                    buttonStyle={`${classes.stopwatch_button} ${classes.start_button}`}
+                    buttonStyle={`${classes.button} ${classes.start_button}`}
                     isDisabled={exercise.isFinished}
                   />
                   <PopupButton
@@ -285,7 +287,7 @@ function page() {
                       saveExercise(i);
                       handleOnChangeSession("isFinished", true, i);
                     }}
-                    buttonStyle={`${classes.stopwatch_button} ${classes.finish_button}`}
+                    buttonStyle={`${classes.button} ${classes.finish_button}`}
                     title="Are you sure you want to end this exercise?"
                     content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
                     isDisabled={exercise.isFinished}
@@ -295,13 +297,15 @@ function page() {
                       pause(i);
                       handleOnChangeSession("trainingTime", time[i], i);
                     }}
-                    triggerButtonContent={<Icon name="RefreshCcw" size={16} color="white" />}
+                    triggerButtonContent={
+                      <Icon name="RefreshCcw" size={16} color="white" />
+                    }
                     onCancel={() => start(i)}
                     onConfirm={() => {
                       reset(i);
                       refreshExercise(i);
                     }}
-                    buttonStyle={`${classes.stopwatch_button} ${classes.reset_button}`}
+                    buttonStyle={`${classes.button} ${classes.reset_button}`}
                     isIconOnly={true}
                     title="Are you sure you want to reset this exercise?"
                     content="Confirming will erase all progress and restart this exercise from zero."
@@ -313,8 +317,20 @@ function page() {
           );
         })}
       </Accordion>
+      <PopupButton
+        triggerAction={undefined}
+        triggerButtonContent="End Session"
+        onCancel={undefined}
+        onConfirm={() => {
+          router.push("/stats");
+          localStorage.removeItem("session");
+        }}
+        buttonStyle={`${classes.button}`}
+        title="Are you sure you want to end this session?"
+        content="Make sure you've completed all exercises before ending your session to prevent any unsaved progress."
+      />
     </>
   );
 }
 
-export default page;
+export default Session;

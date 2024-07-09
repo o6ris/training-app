@@ -30,7 +30,7 @@ export default function PopupButton({
         className={buttonStyle}
         onPress={() => {
           onOpen();
-          triggerAction();
+          triggerAction && triggerAction();
         }}
         isDisabled={isDisabled}
         isIconOnly={isIconOnly}
@@ -58,7 +58,7 @@ export default function PopupButton({
                   className={classes.cancel_button}
                   onPress={() => {
                     onClose();
-                    onCancel();
+                    onCancel && onCancel();
                   }}
                 >
                   Cancel
