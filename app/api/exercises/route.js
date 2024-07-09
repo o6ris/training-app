@@ -29,13 +29,18 @@ export async function POST(request) {
 
 export async function GET(request, { params }) {
   try {
-    const muscle_id = request?.url.split("=")[1];
+    const muscles = request.nextUrl.searchParams.getAll("muscle");
     const findExercises = async () => {
-      if (muscle_id) {
-        if (!checkId(muscle_id)) {
-          throw { message: "Wrong id", status: 500 };
+      if (muscles.length > 0) {
+        let allExercises = [];
+        for (const muscle of muscles) {
+          if (!checkId(muscle)) {
+            throw { message: "Wrong id", status: 500 };
+          }
+          const exercises = await Exercise.find({ muscle });
+          allExercises = allExercises.concat(exercises);
         }
-        return Exercise.find({ muscle: muscle_id });
+        return allExercises;
       }
       return Exercise.find();
     };
@@ -53,14 +58,6 @@ export async function GET(request, { params }) {
         return populatedExercise;
       })
     );
-    // const populatedExercises = [];
-    // for (const exercise of exercises) {
-    //   const populatedExercise = await exercise.populate({
-    //     path: "muscle",
-    //     select: "name",
-    //   });
-    //   populatedExercises.push(populatedExercise);
-    // }
     return NextResponse.json(populatedExercises, { status: 200 });
   } catch (err) {
     const { message, status } = err;

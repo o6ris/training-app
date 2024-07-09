@@ -1,11 +1,13 @@
 "use client";
 
-import Login from "components/Login/Login";
+import CreateSession from "@components/CreateSession/CreateSession";
+import classes from "./main.module.css";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Login />
+    <main className={classes.main_container}>
+      <h1>Create Session</h1>
+      <CreateSession />
     </main>
   );
 }

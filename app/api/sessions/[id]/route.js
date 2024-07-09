@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
     }
     await connectDb();
     const session = await Session.findById(id).populate({
-      path: "training.exercise",
+      path: "exerices",
       model: Exercise,
       select: "name",
     });
