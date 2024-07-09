@@ -134,11 +134,12 @@ function Session() {
   }, []);
 
   return (
-    <>
+    <div className={classes.session_wrapper}>
       <Accordion
         selectedKeys={accordionKey}
         onSelectionChange={setAccordionKey}
         variant="splitted"
+        className={classes.accordion}
       >
         {session.map((exercise, i) => {
           const findExercise = exercises.find(
@@ -273,6 +274,23 @@ function Session() {
                       }
                     }}
                     buttonContent={isRunning[i] ? "Pause" : "Start"}
+                    startContent={
+                      isRunning[i] ? (
+                        <Icon
+                          name="Pause"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      ) : (
+                        <Icon
+                          name="Play"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      )
+                    }
                     buttonStyle={`${classes.button} ${classes.start_button}`}
                     isDisabled={exercise.isFinished}
                   />
@@ -281,7 +299,13 @@ function Session() {
                       pause(i);
                       handleOnChangeSession("trainingTime", time[i], i);
                     }}
-                    triggerButtonContent="Finish"
+                    triggerButtonContent="Save"
+                    startContent={<Icon
+                      name="Check"
+                      size={16}
+                      color="white"
+                      strokeWidth={3}
+                    />}
                     onCancel={() => start(i)}
                     onConfirm={() => {
                       saveExercise(i);
@@ -329,7 +353,7 @@ function Session() {
         title="Are you sure you want to end this session?"
         content="Make sure you've completed all exercises before ending your session to prevent any unsaved progress."
       />
-    </>
+    </div>
   );
 }
 

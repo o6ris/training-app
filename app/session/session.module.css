@@ -1,3 +1,13 @@
+.session_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.accordion {
+  padding: 0;
+}
+
 .session_container {
   width: 100%;
   display: flex;
@@ -22,7 +32,7 @@
   flex-direction: row;
   background-color: transparent;
   border: 2px solid var(--primary-accent-color);
-  color:  var(--primary-accent-color);
+  color: var(--primary-accent-color);
   font-size: var(--font-xl);
   font-weight: var(--font-black);
   font-style: italic;
@@ -87,7 +97,7 @@
 }
 
 .select_listbox > ul li > span > div > p {
-  color: var(--primary-color); 
+  color: var(--primary-color);
 }
 
 .select_listbox > ul li[data-focus="true"] {

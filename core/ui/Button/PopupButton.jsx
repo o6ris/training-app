@@ -21,6 +21,7 @@ export default function PopupButton({
   content,
   isDisabled,
   isIconOnly,
+  startContent,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -34,6 +35,7 @@ export default function PopupButton({
         }}
         isDisabled={isDisabled}
         isIconOnly={isIconOnly}
+        startContent={startContent}
       >
         {triggerButtonContent}
       </Button>
