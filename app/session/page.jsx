@@ -22,6 +22,7 @@ function page() {
     handleOnChangeSession,
     handleAddSets,
     handleOnchangeSets,
+    refreshExercise,
   } = useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
@@ -139,7 +140,7 @@ function page() {
       >
         {session.map((exercise, i) => {
           const findExercise = exercises.find(
-            (exo) => exo._id === exercise.exercise
+            (exo) => exo._id === exercise?.exercise
           );
           const key = (i + 1).toString();
           return (
@@ -289,13 +290,21 @@ function page() {
                     content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
                     isDisabled={exercise.isFinished}
                   />
-                  <BasicButton
-                    onAction={() => reset(i)}
-                    buttonContent={
-                      <Icon name="RefreshCcw" size={16} color="white" />
-                    }
+                  <PopupButton
+                    triggerAction={() => {
+                      pause(i);
+                      handleOnChangeSession("trainingTime", time[i], i);
+                    }}
+                    triggerButtonContent={<Icon name="RefreshCcw" size={16} color="white" />}
+                    onCancel={() => start(i)}
+                    onConfirm={() => {
+                      reset(i);
+                      refreshExercise(i);
+                    }}
                     buttonStyle={`${classes.stopwatch_button} ${classes.reset_button}`}
                     isIconOnly={true}
+                    title="Are you sure you want to reset this exercise?"
+                    content="Confirming will erase all progress and restart this exercise from zero."
                     isDisabled={exercise.isFinished}
                   />
                 </div>

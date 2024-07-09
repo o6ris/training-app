@@ -26,11 +26,6 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem("session", JSON.stringify(exercisesList));
   };
 
-  // const handleArrayOnChange = (name, value, i, array) => {
-  //   const updatedIndex = { ...array[i], [name]: value };
-  //   array[i] = updatedIndex;
-  // };
-
   const handleOnChangeSession = (name, value, index) => {
     const tempSession = [...session];
     const tempExercise = tempSession[index];
@@ -70,6 +65,25 @@ export const SessionProvider = ({ children }) => {
     localStorage.setItem("session", JSON.stringify(tempSession));
   };
 
+  const refreshExercise = (index) => {
+    const tempSession = [...session];
+    tempSession[index] = {
+      exercise: session[index].exercise,
+      restTime: 60,
+      trainingTime: 0,
+      rm: 0,
+      sets: [
+        {
+          reps: 0,
+          weight: 0,
+        },
+      ],
+      isFinished: false,
+    };
+    setSession(tempSession);
+    localStorage.setItem("session", JSON.stringify(tempSession));
+  };
+
   return (
     <SessionContext.Provider
       value={{
@@ -79,6 +93,7 @@ export const SessionProvider = ({ children }) => {
         handleOnChangeSession,
         handleAddSets,
         handleOnchangeSets,
+        refreshExercise,
       }}
     >
       {children}
