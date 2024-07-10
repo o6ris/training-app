@@ -15,6 +15,7 @@ import InputField from "@core/ui/Fields/InputField/InputField";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
+import useUser from "@modules/client/userRequests/useUser";
 
 function Session() {
   const {
@@ -27,16 +28,16 @@ function Session() {
   } = useContext(SessionContext);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [exercises, setExercises] = useState([]);
-  const [userId, setUserId] = useState("");
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers } = useTimer(session);
   const { data: userSession, status } = useSession();
+  const { userId } = useUser(userSession);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
-  console.log("session", session);
+  // console.log("session", session);
 
   const restTime = [
     { key: 30, value: "30 seconds" },
@@ -59,23 +60,6 @@ function Session() {
     { key: 285, value: "4 minutes 45 seconds" },
     { key: 300, value: "5 minutes" },
   ];
-
-  const getUser = async () => {
-    try {
-      const url = `${baseUrl}/api/users?email=${userSession?.user.email}`;
-      const response = await fetch(
-        url,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const user = await response.json();
-        setUserId(user._id);
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
 
   const getExercises = async () => {
     try {
@@ -124,10 +108,6 @@ function Session() {
       setSession(JSON.parse(session));
     }
   }, []);
-
-  useEffect(() => {
-    getUser();
-  }, [userSession]);
 
   useEffect(() => {
     getExercises();
