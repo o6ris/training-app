@@ -2,6 +2,22 @@
   padding: 0;
 }
 
+.accordion_title {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion_title div {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.accordion_title div span {
+  color: var(--primary-accent-color);
+  font-size: var(--font-xs);
+}
+
 .accordion_item {
   background-color: var(--secondary-color) !important;
 }
