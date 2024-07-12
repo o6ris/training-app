@@ -45,12 +45,7 @@ export default function useStats(userId) {
     );
   });
 
-  // Convert the grouped into an array
-  const result = Object.keys(statsByExercises).map((exerciseName) => ({
-    [exerciseName]: statsByExercises[exerciseName],
-  }));
-
   return {
-    stats: result,
+    stats: statsByExercises,
   };
 }
