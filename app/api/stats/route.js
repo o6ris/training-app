@@ -38,10 +38,12 @@ export async function POST(request) {
 }
 
 export async function GET(request) {
+  const user = request.nextUrl.searchParams.get("user");
+  // console.log("user", user)
   try {
     await connectDb();
     // TODO: get by profil connected (NextAuth ?)
-    const stats = await Stats.find().populate([
+    const stats = await Stats.find({ profile: user }).populate([
       {
         path: "exercise",
         model: Exercise,
