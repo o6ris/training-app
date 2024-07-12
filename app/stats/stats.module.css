@@ -1,0 +1,7 @@
+.accordion {
+  padding: 0;
+}
+
+.accordion_item {
+  background-color: var(--secondary-color) !important;
+}

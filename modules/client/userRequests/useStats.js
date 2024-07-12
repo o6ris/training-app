@@ -24,7 +24,33 @@ export default function useStats(userId) {
     getStats();
   }, [userId]);
 
+  // Group data by exercise name
+  const statsByExercises = stats.reduce((acc, entry) => {
+    // Get the exercise name for the current entry
+    const exerciseName = entry.exercise.name;
+    // If the exercise name doesn't exist in the accumulator object, add it with an empty array
+    if (!acc[exerciseName]) {
+      acc[exerciseName] = [];
+    }
+    // Push the current entry into the array for the corresponding exercise name
+    acc[exerciseName].push(entry);
+    // Return the accumulator object for the next iteration
+    return acc;
+  }, {}); // Initialize the accumulator object as an empty object
+
+  // Sort each group's data by date in descending order
+  Object.keys(statsByExercises).forEach((exerciseName) => {
+    statsByExercises[exerciseName].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+  });
+
+  // Convert the grouped into an array
+  const result = Object.keys(statsByExercises).map((exerciseName) => ({
+    [exerciseName]: statsByExercises[exerciseName],
+  }));
+
   return {
-    stats,
+    stats: result,
   };
 }
