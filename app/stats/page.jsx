@@ -7,6 +7,7 @@ import useUser from "@modules/client/userRequests/useUser";
 import useStats from "@modules/client/userRequests/useStats";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import formatDate from "@modules/client/utils/formatDate";
+import BarChart from "@core/ui/Chart/BarChart";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -41,7 +42,7 @@ function Stats() {
             }
             classNames={{ base: classes.accordion_item }}
           >
-            <div className={classes.session_container}>
+            <div className={classes.exercise_wrapper}>
               <div className={classes.data_wrapper}>
                 <div className={`${classes.data} ${classes.sets}`}>
                   <p className={classes.data_value}>
@@ -62,9 +63,10 @@ function Stats() {
                 <div className={`${classes.data} ${classes.rm}`}>
                   <p className={classes.data_value}>
                     {stats[exerciseName][0].sets.reduce(
-                      (sum, current) => sum + current.reps*current.weight,
+                      (sum, current) => sum + current.reps * current.weight,
                       0
-                    )} KG
+                    )}{" "}
+                    KG
                   </p>
                   <p className={classes.data_title}>Volume</p>
                 </div>
@@ -80,6 +82,9 @@ function Stats() {
                   )}:${getSeconds(stats[exerciseName][0].training_time)}`}</p>
                   <p className={classes.data_title}>Training time</p>
                 </div>
+              </div>
+              <div className={classes.chart_wrapper}>
+                <BarChart stats={stats[exerciseName]} />
               </div>
             </div>
           </AccordionItem>

@@ -2,6 +2,12 @@
   padding: 0;
 }
 
+.exercise_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .title_wrapper {
   display: flex;
   gap: 10px;
@@ -72,4 +78,12 @@
 
 .accordion_item {
   background-color: var(--secondary-color) !important;
+}
+
+/* CHART */
+
+.chart_wrapper {
+  background-color: var(--primary-color);
+  padding: 20px;
+  border-radius: 10px;
 }

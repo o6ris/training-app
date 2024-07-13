@@ -1,11 +1,11 @@
 {
   "stats": {
     "date": "2024-03-05T00:00:00.000Z",
-    "exercise": "6559e924d02b9f36fd7f574d",
-    "profile": "650ebd8267cb93cb766bfe52",
-    "rest_time": 180000,
-    "training_time": 960000,
-    "series": [
+    "exercise": "6559f1f2d02b9f36fd7f57ab",
+    "profile": "66239da55c9a5a85592b355d",
+    "rest_time": 180,
+    "training_time": 900,
+    "sets": [
       {
         "reps": 11,
         "weight": 100
@@ -23,7 +23,7 @@
         "weight": 120
       }
     ],
-    "one_rm": 180
+    "rm": 180
   },
   "one_session_ancient": {
     "muscles": [
