@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
+  const [range, setRange] = useState("month");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
     try {
-      const url = `${baseUrl}/api/stats?user=${userId}&range=trim`;
+      const url = `${baseUrl}/api/stats?user=${userId}&range=${range}`;
 
       const response = await fetch(
         url,
@@ -25,8 +26,7 @@ export default function useStats(userId) {
     if (userId) {
       getStats();
     }
-  }, [userId]);
-  
+  }, [userId, range]);
 
   // Group data by exercise name
   const statsByExercises = stats?.reduce((acc, entry) => {
@@ -51,5 +51,7 @@ export default function useStats(userId) {
 
   return {
     stats: statsByExercises,
+    range,
+    setRange,
   };
 }

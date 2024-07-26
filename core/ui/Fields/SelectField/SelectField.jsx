@@ -16,6 +16,8 @@ export default function SelectField({
   selectOnChange,
   value,
   isDisabled,
+  disallowEmptySelection,
+  ariaLabel,
 }) {
   const handleRemoveItem = (item) => {
     const updatedValue = new Set(value);
@@ -37,7 +39,7 @@ export default function SelectField({
       <p className={baseStyle.label}>{label}</p>
       <Select
         items={items}
-        aria-label={label}
+        aria-label={label || ariaLabel}
         variant={variant}
         placeholder={placeholder}
         labelPlacement={labelPlacement}
@@ -45,6 +47,7 @@ export default function SelectField({
         isMultiline={isMultiline}
         selectedKeys={renderValue()}
         isDisabled={isDisabled}
+        disallowEmptySelection={disallowEmptySelection}
         classNames={
           classNames
             ? classNames

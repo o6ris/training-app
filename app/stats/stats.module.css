@@ -87,3 +87,10 @@
   padding: 20px;
   border-radius: 10px;
 }
+
+.chart_header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  align-items: center;
+}
+

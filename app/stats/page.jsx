@@ -8,12 +8,13 @@ import useStats from "@modules/client/userRequests/useStats";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import formatDate from "@modules/client/utils/formatDate";
 import LineChart from "@core/ui/Chart/LineChart";
+import SelectField from "@core/ui/Fields/SelectField/SelectField";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  const { stats } = useStats(userId);
+  const { stats, range, setRange } = useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
   const getMinutes = (seconds) => Math.floor(seconds / 60);
@@ -71,17 +72,63 @@ function Stats() {
                 <div className={`${classes.data} ${classes.rest_time}`}>
                   <p className={classes.data_value}>{`${getMinutes(
                     stats[exerciseName][0].rest_time
-                  )}:${getSeconds(stats[exerciseName][0].rest_time)}`}</p>
+                  )
+                    .toString()
+                    .padStart(2, "0")}:${getSeconds(
+                    stats[exerciseName][0].rest_time
+                  )
+                    .toString()
+                    .padStart(2, "0")}`}</p>
                   <p className={classes.data_title}>Rest time</p>
                 </div>
                 <div className={`${classes.data} ${classes.training_time}`}>
                   <p className={classes.data_value}>{`${getMinutes(
                     stats[exerciseName][0].training_time
-                  )}:${getSeconds(stats[exerciseName][0].training_time)}`}</p>
+                  )
+                    .toString()
+                    .padStart(2, "0")}:${getSeconds(
+                    stats[exerciseName][0].training_time
+                  )
+                    .toString()
+                    .padStart(2, "0")}`}</p>
                   <p className={classes.data_title}>Training time</p>
                 </div>
               </div>
               <div className={classes.chart_wrapper}>
+                <div className={classes.chart_header}>
+                  <h3>Volume (T)</h3>
+                  <div>
+                    <SelectField
+                      items={[
+                        {
+                          key: "month",
+                          value: "Current month",
+                        },
+                        {
+                          key: "trim",
+                          value: "Last 3 months",
+                        },
+                        {
+                          key: "sem",
+                          value: "Last 6 months",
+                        },
+                        {
+                          key: "year",
+                          value: "Last 12 months",
+                        },
+                      ]}
+                      variant="bordered"
+                      ariaLabel="Range"
+                      labelPlacement="outside"
+                      selectOnChange={(value) => {
+                        console.log(value);
+                        return setRange(Array.from(value).join(""));
+                      }}
+                      value={range}
+                      disallowEmptySelection={true}
+                    />
+                  </div>
+                </div>
                 <LineChart stats={stats[exerciseName]} />
               </div>
             </div>
