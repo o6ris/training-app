@@ -5,7 +5,8 @@ export default function useStats(userId) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
     try {
-      const url = `${baseUrl}/api/stats?user=${userId}`;
+      const url = `${baseUrl}/api/stats?user=${userId}&range=trim`;
+
       const response = await fetch(
         url,
         { method: "GET" },
@@ -21,11 +22,14 @@ export default function useStats(userId) {
   };
 
   useEffect(() => {
-    getStats();
+    if (userId) {
+      getStats();
+    }
   }, [userId]);
+  
 
   // Group data by exercise name
-  const statsByExercises = stats.reduce((acc, entry) => {
+  const statsByExercises = stats?.reduce((acc, entry) => {
     // Get the exercise name for the current entry
     const exerciseName = entry.exercise.name;
     // If the exercise name doesn't exist in the accumulator object, add it with an empty array

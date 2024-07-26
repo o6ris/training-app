@@ -7,7 +7,7 @@ import useUser from "@modules/client/userRequests/useUser";
 import useStats from "@modules/client/userRequests/useStats";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import formatDate from "@modules/client/utils/formatDate";
-import BarChart from "@core/ui/Chart/BarChart";
+import LineChart from "@core/ui/Chart/LineChart";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -15,8 +15,6 @@ function Stats() {
   const { userId } = useUser(userSession);
   const { stats } = useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getMinutes = (seconds) => Math.floor(seconds / 60);
   const getSeconds = (seconds) => seconds % 60;
@@ -84,7 +82,7 @@ function Stats() {
                 </div>
               </div>
               <div className={classes.chart_wrapper}>
-                <BarChart stats={stats[exerciseName]} />
+                <LineChart stats={stats[exerciseName]} />
               </div>
             </div>
           </AccordionItem>

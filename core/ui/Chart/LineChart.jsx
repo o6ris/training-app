@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
-import useBarChart from '@modules/client/charts/useBarChart';
+import { Line } from 'react-chartjs-2';
+import useLineChart from '@modules/client/charts/useLineChart';
 
-function BarChart({ stats }) {
-	const { chartData } = useBarChart(stats);
+function LineChart({ stats }) {
+	const { chartData } = useLineChart(stats);
 
 	return (
 		<div>
-			<Bar
+			<Line
 				options={{
 					plugins: {
 						legend: {
@@ -19,14 +19,12 @@ function BarChart({ stats }) {
 					},
 					scales: {
 						x: {
-							beginAtZero: true,
 							grid: {
 								display: false,
 							},
-							stacked: true,
 						},
 						y: {
-							stacked: true,
+							beginAtZero: true,
 						},
 					},
 				}}
@@ -36,4 +34,4 @@ function BarChart({ stats }) {
 	);
 }
 
-export default BarChart;
+export default LineChart;

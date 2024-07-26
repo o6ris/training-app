@@ -39,11 +39,60 @@ export async function POST(request) {
 
 export async function GET(request) {
   const user = request.nextUrl.searchParams.get("user");
-  // console.log("user", user)
+  const range = request.nextUrl.searchParams.get("range");
+
+  function calculateStartDate(monthsAgo) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+  
+    // Adjust for the monthsAgo to get the correct year and month
+    const calculatedMonth = month - monthsAgo;
+    const startYear = year + Math.floor(calculatedMonth / 12);
+    const startMonth = (calculatedMonth % 12 + 12) % 12;
+  
+    return new Date(Date.UTC(startYear, startMonth, 1));
+  }
+
+  console.log("user", user);
+
   try {
     await connectDb();
-    // TODO: get by profil connected (NextAuth ?)
-    const stats = await Stats.find({ profile: user }).populate([
+
+    let dateFilter = {};
+
+    // Calculate the start date based on the range
+    const now = new Date();
+    let startDate;
+
+    switch (range) {
+      case "month":
+        startDate = calculateStartDate(0); // Current month
+        break;
+      case "trim":
+        startDate = calculateStartDate(2); // Last 3 months
+        break;
+      case "sem":
+        startDate = calculateStartDate(5); // Last 6 months
+        break;
+      case "year":
+        startDate = calculateStartDate(11); // Last 12 months
+        break;
+      default:
+        startDate = new Date(0); // No range specified, fetch all stats
+    }
+
+    // Apply the date filter if a range was specified
+    if (startDate) {
+      dateFilter = { $gte: startDate  };
+    }
+
+    console.log("dateFilter", dateFilter);
+
+    const stats = await Stats.find({
+      user: user,
+      date: { ...dateFilter },
+    }).populate([
       {
         path: "exercise",
         model: Exercise,
@@ -55,6 +104,7 @@ export async function GET(request) {
         select: "name",
       },
     ]);
+    console.log("stats", stats);
     return NextResponse.json(stats, { status: 200 });
   } catch (err) {
     const { message, status } = err;
