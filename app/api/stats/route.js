@@ -104,7 +104,6 @@ export async function GET(request) {
         select: "name",
       },
     ]);
-    console.log("stats", stats);
     return NextResponse.json(stats, { status: 200 });
   } catch (err) {
     const { message, status } = err;

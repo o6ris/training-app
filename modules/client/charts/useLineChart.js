@@ -6,22 +6,19 @@ import formatDate from "@modules/client/utils/formatDate";
 export default function useLineChart(stats) {
   Chart.register(CategoryScale);
 
-  console.log("useStats", stats);
-
   const chartData = useMemo(() => {
     
     const labels = stats
       ?.map((stat) => formatDate(stat?.date, false).slice(0, 5))
-      .reverse();
+      // .reverse();
 
-    const data = stats
-      ?.map((stat) =>
-        stat?.sets.reduce(
-          (sum, current) => sum + current.reps * (current.weight / 1000),
-          0
-        )
-      )
-      .reverse();
+      const data = stats?.map((stat) => (
+        {
+        x: formatDate(stat?.date, false).slice(0, 5),
+        y: stat?.sets.reduce((sum, current) => sum + current.reps * (current.weight / 1000), 0),
+        _id: stat?._id,
+        exerciseName: stat?.exercise.name
+      }));
 
     const segmentColor = (ctx) => {
       const { p0, p1 } = ctx;

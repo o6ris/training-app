@@ -14,7 +14,8 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 function Stats() {
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  const { stats, range, setRange } = useStats(userId);
+  const { stats, latestStats, getStatById, range, setRange } =
+    useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
   const getMinutes = (seconds) => Math.floor(seconds / 60);
@@ -28,15 +29,15 @@ function Stats() {
       className={classes.accordion}
     >
       {Object.keys(stats).map((exerciseName, i) => {
-        // console.log("exercise", stats[exerciseName][0]);
         const key = (i + 1).toString();
+        const latestStat = latestStats[exerciseName];
         return (
           <AccordionItem
             key={key}
             title={
               <div className={classes.title_wrapper}>
                 <h3>{exerciseName.toUpperCase()}</h3>
-                <span>{formatDate(stats[exerciseName][0].date, false)}</span>
+                <span>{formatDate(latestStat?.date, false)}</span>
               </div>
             }
             classNames={{ base: classes.accordion_item }}
@@ -45,14 +46,14 @@ function Stats() {
               <div className={classes.data_wrapper}>
                 <div className={`${classes.data} ${classes.sets}`}>
                   <p className={classes.data_value}>
-                    {stats[exerciseName][0].sets.length}
+                    {latestStat?.sets.length}
                   </p>
                   <p className={classes.data_title}>Sets</p>
                 </div>
                 <div className={`${classes.data} ${classes.reps}`}>
                   <p className={classes.data_value}>
                     {" "}
-                    {stats[exerciseName][0].sets.reduce(
+                    {latestStat?.sets.reduce(
                       (sum, current) => sum + current.reps,
                       0
                     )}
@@ -61,7 +62,7 @@ function Stats() {
                 </div>
                 <div className={`${classes.data} ${classes.rm}`}>
                   <p className={classes.data_value}>
-                    {stats[exerciseName][0].sets.reduce(
+                    {latestStat?.sets.reduce(
                       (sum, current) => sum + current.reps * current.weight,
                       0
                     )}{" "}
@@ -71,24 +72,20 @@ function Stats() {
                 </div>
                 <div className={`${classes.data} ${classes.rest_time}`}>
                   <p className={classes.data_value}>{`${getMinutes(
-                    stats[exerciseName][0].rest_time
+                    latestStat?.rest_time
                   )
                     .toString()
-                    .padStart(2, "0")}:${getSeconds(
-                    stats[exerciseName][0].rest_time
-                  )
+                    .padStart(2, "0")}:${getSeconds(latestStat?.rest_time)
                     .toString()
                     .padStart(2, "0")}`}</p>
                   <p className={classes.data_title}>Rest time</p>
                 </div>
                 <div className={`${classes.data} ${classes.training_time}`}>
                   <p className={classes.data_value}>{`${getMinutes(
-                    stats[exerciseName][0].training_time
+                    latestStat?.training_time
                   )
                     .toString()
-                    .padStart(2, "0")}:${getSeconds(
-                    stats[exerciseName][0].training_time
-                  )
+                    .padStart(2, "0")}:${getSeconds(latestStat?.training_time)
                     .toString()
                     .padStart(2, "0")}`}</p>
                   <p className={classes.data_title}>Training time</p>
@@ -129,7 +126,10 @@ function Stats() {
                     />
                   </div>
                 </div>
-                <LineChart stats={stats[exerciseName]} />
+                <LineChart
+                  stats={stats[exerciseName]}
+                  getStatById={getStatById}
+                />
               </div>
             </div>
           </AccordionItem>

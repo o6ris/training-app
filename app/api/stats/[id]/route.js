@@ -7,12 +7,9 @@ import { NextResponse } from "next/server";
 export async function GET(request, { params }) {
   try {
     const { id } = params;
-    console.log(id);
     await connectDb();
     // TODO: get by profil connected (NextAuth ?)
-    const stats = await Stats.find({
-      exercise: id,
-    }).populate([
+    const stats = await Stats.findById(id).populate([
       {
         path: "exercise",
         model: Exercise,

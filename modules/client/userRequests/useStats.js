@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
+  const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
@@ -16,11 +17,36 @@ export default function useStats(userId) {
       if (response) {
         const stats = await response.json();
         setStats(stats);
+        const latest = stats.reduce((acc, entry) => {
+          const exerciseName = entry.exercise.name;
+          if (!acc[exerciseName] || new Date(entry.date) > new Date(acc[exerciseName].date)) {
+            acc[exerciseName] = entry;
+          }
+          return acc;
+        }, {});
+        setLatestStats(latest);
       }
     } catch (error) {
       throw error;
     }
   };
+  
+  const getStatById = async (id, exerciseName) => {
+    try {
+      const url = `${baseUrl}/api/stats/${id}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if(response) {
+        const stat = await response.json();
+        setLatestStats({...latestStats, [exerciseName]: stat})
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 
   useEffect(() => {
     if (userId) {
@@ -45,12 +71,15 @@ export default function useStats(userId) {
   // Sort each group's data by date in descending order
   Object.keys(statsByExercises).forEach((exerciseName) => {
     statsByExercises[exerciseName].sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
+      (a, b) => new Date(a.date) - new Date(b.date)
     );
   });
 
+
   return {
     stats: statsByExercises,
+    latestStats,
+    getStatById,
     range,
     setRange,
   };
