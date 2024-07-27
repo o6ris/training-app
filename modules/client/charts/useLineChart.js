@@ -1,24 +1,81 @@
 import { useMemo } from "react";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
+import zoomPlugin from 'chartjs-plugin-zoom';
 import formatDate from "@modules/client/utils/formatDate";
 
-export default function useLineChart(stats) {
-  Chart.register(CategoryScale);
+const generateDateRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
+};
+
+const filterStatsByRange = (stats, range) => {
+  const now = new Date();
+  let startDate;
+
+  switch (range) {
+    case "month":
+      startDate = new Date(now.setDate(now.getDate() - 30));
+      break;
+    case "trim":
+      startDate = new Date(now.setMonth(now.getMonth() - 3));
+      break;
+    case "sem":
+      startDate = new Date(now.setMonth(now.getMonth() - 6));
+      break;
+    case "year":
+      startDate = new Date(now.setMonth(now.getMonth() - 12));
+      break;
+    default:
+      startDate = new Date(0); 
+  }
+
+  const endDate = new Date();
+
+  return {
+    filteredStats: stats.filter((stat) => new Date(stat.date) >= startDate),
+    startDate,
+    endDate,
+  };
+};
+
+export default function useLineChart(stats, range) {
+  Chart.register(CategoryScale, zoomPlugin);
 
   const chartData = useMemo(() => {
-    
-    const labels = stats
-      ?.map((stat) => formatDate(stat?.date, false).slice(0, 5))
-      // .reverse();
+    const { filteredStats, startDate, endDate } = filterStatsByRange(
+      stats,
+      range
+    );
+    const dateRange = generateDateRange(startDate, endDate);
 
-      const data = stats?.map((stat) => (
-        {
-        x: formatDate(stat?.date, false).slice(0, 5),
-        y: stat?.sets.reduce((sum, current) => sum + current.reps * (current.weight / 1000), 0),
-        _id: stat?._id,
-        exerciseName: stat?.exercise.name
-      }));
+    const labels = dateRange.map((date) => formatDate(date, false).slice(0, 5));
+
+    const data = dateRange
+      .map((date) => {
+        const stat = filteredStats.find(
+          (stat) =>
+            formatDate(new Date(stat.date), false).slice(0, 5) ===
+            formatDate(date, false).slice(0, 5)
+        );
+        return stat
+          ? {
+              x: formatDate(date, false).slice(0, 5),
+              y: stat.sets.reduce(
+                (sum, current) => sum + current.reps * (current.weight / 1000),
+                0
+              ),
+              _id: stat._id,
+              exerciseName: stat.exercise.name,
+            }
+          : null;
+      })
+      .filter((point) => point !== null); // Filter out null values
 
     const segmentColor = (ctx) => {
       const { p0, p1 } = ctx;
@@ -35,7 +92,7 @@ export default function useLineChart(stats) {
       labels: labels,
       datasets: [
         {
-          label: "Volume",
+          label: "Volume (T)",
           data: data,
           segment: {
             borderColor: segmentColor,
@@ -46,7 +103,7 @@ export default function useLineChart(stats) {
         },
       ],
     };
-  }, [stats]);
+  }, [stats, range]);
 
   return {
     chartData,

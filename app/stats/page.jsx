@@ -129,6 +129,7 @@ function Stats() {
                 <LineChart
                   stats={stats[exerciseName]}
                   getStatById={getStatById}
+                  range={range}
                 />
               </div>
             </div>
