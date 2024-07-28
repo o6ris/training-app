@@ -9,6 +9,8 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import formatDate from "@modules/client/utils/formatDate";
 import LineChart from "@core/ui/Chart/LineChart";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import PopupButton from "@core/ui/Button/PopupButton";
+import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -60,16 +62,25 @@ function Stats() {
                   </p>
                   <p className={classes.data_title}>Reps</p>
                 </div>
-                <div className={`${classes.data} ${classes.rm}`}>
-                  <p className={classes.data_value}>
-                    {latestStat?.sets.reduce(
-                      (sum, current) => sum + current.reps * current.weight,
-                      0
-                    )}{" "}
-                    KG
-                  </p>
-                  <p className={classes.data_title}>Volume</p>
-                </div>
+                <PopupButton
+                  buttonStyle={`${classes.data} ${classes.volume}`}
+                  closebutton="Close"
+                  triggerButtonContent={
+                    <>
+                      <p className={classes.data_value}>
+                        {latestStat?.sets.reduce(
+                          (sum, current) =>
+                            sum + (current.reps * current.weight) / 1000,
+                          0
+                        )}{" "}
+                        T
+                      </p>
+                      <p className={classes.data_title}>Volume</p>
+                    </>
+                  }
+                  content={<VolumeDetails stat={latestStat} />}
+                  title="Volume details"
+                />
                 <div className={`${classes.data} ${classes.rest_time}`}>
                   <p className={classes.data_value}>{`${getMinutes(
                     latestStat?.rest_time
