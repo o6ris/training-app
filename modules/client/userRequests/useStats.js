@@ -4,6 +4,7 @@ export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
+  const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
     try {
@@ -19,7 +20,10 @@ export default function useStats(userId) {
         setStats(stats);
         const latest = stats.reduce((acc, entry) => {
           const exerciseName = entry.exercise.name;
-          if (!acc[exerciseName] || new Date(entry.date) > new Date(acc[exerciseName].date)) {
+          if (
+            !acc[exerciseName] ||
+            new Date(entry.date) > new Date(acc[exerciseName].date)
+          ) {
             acc[exerciseName] = entry;
           }
           return acc;
@@ -30,7 +34,7 @@ export default function useStats(userId) {
       throw error;
     }
   };
-  
+
   const getStatById = async (id, exerciseName) => {
     try {
       const url = `${baseUrl}/api/stats/${id}`;
@@ -39,14 +43,38 @@ export default function useStats(userId) {
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if(response) {
+      if (response) {
         const stat = await response.json();
-        setLatestStats({...latestStats, [exerciseName]: stat})
+        setLatestStats({ ...latestStats, [exerciseName]: stat });
       }
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
+
+  const renderStartDate = () => {
+    const now = new Date();
+    switch (range) {
+      case "month":
+        setStartDate(new Date(now.setDate(now.getDate() - 30)));
+        break;
+      case "trim":
+        setStartDate(new Date(now.setMonth(now.getMonth() - 3)));
+        break;
+      case "sem":
+        setStartDate(new Date(now.setMonth(now.getMonth() - 6)));
+        break;
+      case "year":
+        setStartDate(new Date(now.setMonth(now.getMonth() - 12)));
+        break;
+      default:
+        setStartDate(new Date(0));
+    }
+  };
+
+  useEffect(() => {
+    renderStartDate()
+  }, [range])
 
   useEffect(() => {
     if (userId) {
@@ -75,12 +103,12 @@ export default function useStats(userId) {
     );
   });
 
-
   return {
     stats: statsByExercises,
     latestStats,
     getStatById,
     range,
     setRange,
+    startDate,
   };
 }

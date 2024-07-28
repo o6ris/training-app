@@ -41,21 +41,6 @@ export async function GET(request) {
   const user = request.nextUrl.searchParams.get("user");
   const range = request.nextUrl.searchParams.get("range");
 
-  function calculateStartDate(monthsAgo) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-  
-    // Adjust for the monthsAgo to get the correct year and month
-    const calculatedMonth = month - monthsAgo;
-    const startYear = year + Math.floor(calculatedMonth / 12);
-    const startMonth = (calculatedMonth % 12 + 12) % 12;
-  
-    return new Date(Date.UTC(startYear, startMonth, 1));
-  }
-
-  console.log("user", user);
-
   try {
     await connectDb();
 
@@ -67,24 +52,24 @@ export async function GET(request) {
 
     switch (range) {
       case "month":
-        startDate = calculateStartDate(0); // Current month
+        startDate = new Date(now.setDate(now.getDate() - 30));
         break;
       case "trim":
-        startDate = calculateStartDate(2); // Last 3 months
+        startDate = new Date(now.setMonth(now.getMonth() - 3));
         break;
       case "sem":
-        startDate = calculateStartDate(5); // Last 6 months
+        startDate = new Date(now.setMonth(now.getMonth() - 6));
         break;
       case "year":
-        startDate = calculateStartDate(11); // Last 12 months
+        startDate = new Date(now.setMonth(now.getMonth() - 12));
         break;
       default:
-        startDate = new Date(0); // No range specified, fetch all stats
+        startDate = new Date(0);
     }
 
     // Apply the date filter if a range was specified
     if (startDate) {
-      dateFilter = { $gte: startDate  };
+      dateFilter = { $gte: startDate };
     }
 
     console.log("dateFilter", dateFilter);

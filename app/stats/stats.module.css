@@ -16,7 +16,7 @@
 
 .title_wrapper span {
   color: var(--primary-accent-color);
-  font-size: var(--font-xs);
+  font-size: var(--font-r);
 }
 
 .training_time {
@@ -90,7 +90,12 @@
 
 .chart_header {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1.2fr;
   align-items: center;
+}
+
+.chart_subtitle {
+  font-size: var(--font-xs);
+  color: var(--primary-accent-color);
 }
 

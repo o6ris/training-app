@@ -14,7 +14,7 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 function Stats() {
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  const { stats, latestStats, getStatById, range, setRange } =
+  const { stats, latestStats, getStatById, range, setRange, startDate } =
     useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
@@ -93,13 +93,19 @@ function Stats() {
               </div>
               <div className={classes.chart_wrapper}>
                 <div className={classes.chart_header}>
-                  <h3>Volume (T)</h3>
+                  <div>
+                    <h3>Volume (T)</h3>
+                    <p className={classes.chart_subti}>
+                      {formatDate(startDate, false)} -{" "}
+                      {formatDate(new Date(), false)}
+                    </p>
+                  </div>
                   <div>
                     <SelectField
                       items={[
                         {
                           key: "month",
-                          value: "Current month",
+                          value: "Last month",
                         },
                         {
                           key: "trim",
