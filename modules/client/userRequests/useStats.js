@@ -73,8 +73,8 @@ export default function useStats(userId) {
   };
 
   useEffect(() => {
-    renderStartDate()
-  }, [range])
+    renderStartDate();
+  }, [range]);
 
   useEffect(() => {
     if (userId) {
@@ -96,15 +96,28 @@ export default function useStats(userId) {
     return acc;
   }, {}); // Initialize the accumulator object as an empty object
 
-  // Sort each group's data by date in descending order
-  Object.keys(statsByExercises).forEach((exerciseName) => {
-    statsByExercises[exerciseName].sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
-    );
+  const sortedExerciseGroups = Object.entries(statsByExercises)
+    .map(([exercise, entries]) => {
+      // Find the most recent date in the entries
+      const mostRecentDate = entries.reduce((latest, entry) => {
+        const entryDate = new Date(entry.date);
+        return entryDate > latest ? entryDate : latest;
+      }, new Date(0)); // Initial date is set to the epoch
+
+      return { exercise, mostRecentDate };
+    })
+    .sort((a, b) => b.mostRecentDate - a.mostRecentDate) // Sort by date in descending order
+    .map(({ exercise }) => exercise); // Extract the exercise names in sorted order
+
+  const orderedStatsByExercises = {};
+  sortedExerciseGroups.forEach((exercise) => {
+    orderedStatsByExercises[exercise] = statsByExercises[exercise];
   });
 
+  console.log("orderedStatsByExercises", orderedStatsByExercises);
+
   return {
-    stats: statsByExercises,
+    stats: orderedStatsByExercises,
     latestStats,
     getStatById,
     range,
