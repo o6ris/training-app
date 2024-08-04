@@ -82,6 +82,14 @@ export default function useStats(userId) {
     }
   }, [userId, range]);
 
+  const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
+    const workoutDate = entry.date; 
+    acc.add(workoutDate);
+    return acc;
+  }, new Set());
+  
+  const workoutDateslist = Array.from(uniqueWorkoutDates);
+
   // Group data by exercise name
   const statsByExercises = stats?.reduce((acc, entry) => {
     // Get the exercise name for the current entry
@@ -114,10 +122,9 @@ export default function useStats(userId) {
     orderedStatsByExercises[exercise] = statsByExercises[exercise];
   });
 
-  console.log("orderedStatsByExercises", orderedStatsByExercises);
-
   return {
     stats: orderedStatsByExercises,
+    workoutDateslist,
     latestStats,
     getStatById,
     range,
