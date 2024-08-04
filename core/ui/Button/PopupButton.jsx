@@ -22,6 +22,7 @@ export default function PopupButton({
   isDisabled,
   isIconOnly,
   startContent,
+  closebutton = "Cancel"
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -46,12 +47,15 @@ export default function PopupButton({
         placement={placement}
         classNames={{
           base: classes.wrapper,
+          header: classes.header,
         }}
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className={`${classes.text} ${classes.title}`}>{title}</ModalHeader>
+              <ModalHeader className={`${classes.text} ${classes.title}`}>
+                {title}
+              </ModalHeader>
               <ModalBody>
                 <p className={classes.text}>{content}</p>
               </ModalBody>
@@ -63,17 +67,19 @@ export default function PopupButton({
                     onCancel && onCancel();
                   }}
                 >
-                  Cancel
+                  {closebutton}
                 </Button>
-                <Button
-                  className={classes.confirm_button}
-                  onPress={() => {
-                    onClose();
-                    onConfirm();
-                  }}
-                >
-                  Confirm
-                </Button>
+                {onConfirm && (
+                  <Button
+                    className={classes.confirm_button}
+                    onPress={() => {
+                      onClose();
+                      onConfirm();
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                )}
               </ModalFooter>
             </>
           )}

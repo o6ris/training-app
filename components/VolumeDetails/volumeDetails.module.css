@@ -1,0 +1,33 @@
+.tableContainer {
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+.cell {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  background-color: var(--secondary-color);
+  font-size: var(--font-r);
+  border-right: 1px solid #ccc;
+}

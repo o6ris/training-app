@@ -38,10 +38,46 @@ export async function POST(request) {
 }
 
 export async function GET(request) {
+  const user = request.nextUrl.searchParams.get("user");
+  const range = request.nextUrl.searchParams.get("range");
+
   try {
     await connectDb();
-    // TODO: get by profil connected (NextAuth ?)
-    const stats = await Stats.find().populate([
+
+    let dateFilter = {};
+
+    // Calculate the start date based on the range
+    const now = new Date();
+    let startDate;
+
+    switch (range) {
+      case "month":
+        startDate = new Date(now.setDate(now.getDate() - 30));
+        break;
+      case "trim":
+        startDate = new Date(now.setMonth(now.getMonth() - 3));
+        break;
+      case "sem":
+        startDate = new Date(now.setMonth(now.getMonth() - 6));
+        break;
+      case "year":
+        startDate = new Date(now.setMonth(now.getMonth() - 12));
+        break;
+      default:
+        startDate = new Date(0);
+    }
+
+    // Apply the date filter if a range was specified
+    if (startDate) {
+      dateFilter = { $gte: startDate };
+    }
+
+    console.log("dateFilter", dateFilter);
+
+    const stats = await Stats.find({
+      user: user,
+      date: { ...dateFilter },
+    }).populate([
       {
         path: "exercise",
         model: Exercise,
