@@ -124,6 +124,7 @@ export default function useStats(userId) {
 
   return {
     stats: orderedStatsByExercises,
+    allExerciseList: sortedExerciseGroups,
     workoutDateslist,
     latestStats,
     getStatById,

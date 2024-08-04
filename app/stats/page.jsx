@@ -16,7 +16,7 @@ import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 function Stats() {
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  const { stats, workoutDateslist, latestStats, getStatById, range, setRange, startDate } =
+  const { stats, workoutDateslist, allExerciseList, latestStats, getStatById, range, setRange, startDate } =
     useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
@@ -24,20 +24,20 @@ function Stats() {
   const getSeconds = (seconds) => seconds % 60;
   // console.log("stats", stats)
   return (
-    <>
+    <div className={classes.data_container}>
       <div className={classes.section_wrapper}>
-        <div className={classes.data_wrapper}>
-          <div className={`${classes.data} ${classes.sets}`}>
+        <div className={classes.global_data_wrapper}>
+          <div className={`${classes.data} ${classes.global_data}`}>
             <p className={classes.data_value}>{workoutDateslist.length}</p>
             <p className={classes.data_title}>Total Workouts</p>
           </div>
-          {/* <div className={`${classes.data} ${classes.reps}`}>
+          <div className={`${classes.data} ${classes.global_data}`}>
             <p className={classes.data_value}>
               {" "}
-              {latestStat?.sets.reduce((sum, current) => sum + current.reps, 0)}
+              {allExerciseList.length}
             </p>
-            <p className={classes.data_title}>Reps</p>
-          </div> */}
+            <p className={classes.data_title}>Total Exercises</p>
+          </div>
         </div> 
       </div>
       <Accordion
@@ -170,7 +170,7 @@ function Stats() {
           );
         })}
       </Accordion>
-    </>
+    </div>
   );
 }
 

@@ -1,3 +1,9 @@
+.data_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .accordion {
   padding: 0;
 }
@@ -29,6 +35,12 @@
   height: 14px;
 }
 
+.global_data_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
 .data_wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -47,15 +59,19 @@
   height: 100%;
 }
 
+.global_data {
+  background-color: var(--secondary-color);
+}
+
 @keyframes pulse {
   20% {
-    transform: scale(0.96);
+    transform: scale(0.98);
   }
-  25% {
+  24% {
     transform: scale(1);
   }
   28% {
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
   30% {
     transform: scale(1);
