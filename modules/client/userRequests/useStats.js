@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [latestStats, setLatestStats] = useState({});
+  const [latestExercises, setLatestExercises] = useState([]);
   const [range, setRange] = useState("year");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -29,6 +30,38 @@ export default function useStats(userId) {
           return acc;
         }, {});
         setLatestStats(latest);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getLatestStatByExercise = async (exerciseIds) => {
+    try {
+      const queryString = exerciseIds
+        .map((exerciseId) => `exercise=${exerciseId}`)
+        .join("&");
+      const url = `${baseUrl}/api/stats/lastStatByExercise?user=${userId}&${queryString}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const stats = await response.json();
+        stats.forEach((element) => {
+          element.trainingTime = 0;
+          element.restTime = element.rest_time;
+          element.isFinished = false;
+          element.exercise = element.exercise._id;
+          delete element.date;
+          delete element.user;
+          delete element._id;
+          delete element.training_time;
+          delete element.rest_time;
+        });
+        // console.log("stats", stats);
+        setLatestExercises(stats);
       }
     } catch (error) {
       throw error;
@@ -131,5 +164,7 @@ export default function useStats(userId) {
     range,
     setRange,
     startDate,
+    getLatestStatByExercise,
+    latestExercises,
   };
 }

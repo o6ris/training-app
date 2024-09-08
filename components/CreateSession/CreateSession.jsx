@@ -5,8 +5,14 @@ import classes from "./createSession.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
+import useStats from "@modules/client/userRequests/useStats";
+import { useSession } from "next-auth/react";
+import useUser from "@modules/client/userRequests/useUser";
 
 function CreateSession() {
+  const { data: userSession, status } = useSession();
+  const { userId } = useUser(userSession);
+  const { getLatestStatByExercise, latestExercises } = useStats(userId);
   const [muscles, setMuscles] = useState([]);
   const [muscleIds, setMusculeIds] = useState([]);
   const [exercises, setExercises] = useState([]);
@@ -65,6 +71,10 @@ function CreateSession() {
     }
   }, [muscleIds]);
 
+  useEffect(() => {
+    getLatestStatByExercise(exerciseIds);
+  }, [exerciseIds])
+
   return (
     <>
       <div className={classes.session_container}>
@@ -112,7 +122,8 @@ function CreateSession() {
       {exerciseIds.length > 0 && (
         <ButtonLink
           url={"/session"}
-          onAction={() => createSession(exerciseIds)}
+          // pass as an argument list of latests exercises
+          onAction={() => createSession(exerciseIds, latestExercises)}
           buttonContent={"Create session"}
           buttonStyle={classes.add_session_button}
         />
