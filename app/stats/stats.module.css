@@ -122,12 +122,6 @@
   border-radius: 10px;
 }
 
-.chart_header {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  align-items: center;
-}
-
 .chart_subtitle {
   font-size: var(--font-xs);
   color: var(--primary-accent-color);

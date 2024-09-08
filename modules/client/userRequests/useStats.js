@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [latestStats, setLatestStats] = useState({});
-  const [range, setRange] = useState("month");
+  const [range, setRange] = useState("year");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
@@ -83,11 +83,11 @@ export default function useStats(userId) {
   }, [userId, range]);
 
   const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
-    const workoutDate = entry.date; 
+    const workoutDate = entry.date;
     acc.add(workoutDate);
     return acc;
   }, new Set());
-  
+
   const workoutDateslist = Array.from(uniqueWorkoutDates);
 
   // Group data by exercise name
