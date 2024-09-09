@@ -5,23 +5,31 @@ export const SessionContext = createContext();
 export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState([]);
 
-  const createSession = (exercises) => {
+  const createSession = (exercises, latestExercises) => {
     const exercisesList = [];
     exercises.forEach((exercise) => {
-      exercisesList.push({
-        exercise: exercise,
-        restTime: 60,
-        trainingTime: 0,
-        rm: 0,
-        sets: [
-          {
-            reps: 0,
-            weight: 0,
-          },
-        ],
-        isFinished: false,
-      });
+      const similarExercise = latestExercises.find(
+        (el) => (el.exercise === exercise)
+      );
+      if (similarExercise) {
+        exercisesList.push(similarExercise);
+      } else {
+        exercisesList.push({
+          exercise: exercise,
+          restTime: 60,
+          trainingTime: 0,
+          rm: 0,
+          sets: [
+            {
+              reps: 0,
+              weight: 0,
+            },
+          ],
+          isFinished: false,
+        });
+      }
     });
+    // console.log("exercisesList", exercisesList)
     setSession(exercisesList);
     localStorage.setItem("session", JSON.stringify(exercisesList));
   };

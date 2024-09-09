@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [latestStats, setLatestStats] = useState({});
-  const [range, setRange] = useState("month");
+  const [latestExercises, setLatestExercises] = useState([]);
+  const [range, setRange] = useState("year");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
@@ -29,6 +30,38 @@ export default function useStats(userId) {
           return acc;
         }, {});
         setLatestStats(latest);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getLatestStatByExercise = async (exerciseIds) => {
+    try {
+      const queryString = exerciseIds
+        .map((exerciseId) => `exercise=${exerciseId}`)
+        .join("&");
+      const url = `${baseUrl}/api/stats/lastStatByExercise?user=${userId}&${queryString}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const stats = await response.json();
+        stats.forEach((element) => {
+          element.trainingTime = 0;
+          element.restTime = element.rest_time;
+          element.isFinished = false;
+          element.exercise = element.exercise._id;
+          delete element.date;
+          delete element.user;
+          delete element._id;
+          delete element.training_time;
+          delete element.rest_time;
+        });
+        // console.log("stats", stats);
+        setLatestExercises(stats);
       }
     } catch (error) {
       throw error;
@@ -83,11 +116,11 @@ export default function useStats(userId) {
   }, [userId, range]);
 
   const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
-    const workoutDate = entry.date; 
+    const workoutDate = entry.date;
     acc.add(workoutDate);
     return acc;
   }, new Set());
-  
+
   const workoutDateslist = Array.from(uniqueWorkoutDates);
 
   // Group data by exercise name
@@ -131,5 +164,7 @@ export default function useStats(userId) {
     range,
     setRange,
     startDate,
+    getLatestStatByExercise,
+    latestExercises,
   };
 }

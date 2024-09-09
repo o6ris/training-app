@@ -16,15 +16,52 @@ import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 function Stats() {
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  const { stats, workoutDateslist, allExerciseList, latestStats, getStatById, range, setRange, startDate } =
-    useStats(userId);
+  const {
+    stats,
+    workoutDateslist,
+    allExerciseList,
+    latestStats,
+    getStatById,
+    range,
+    setRange,
+    startDate,
+  } = useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
   const getMinutes = (seconds) => Math.floor(seconds / 60);
   const getSeconds = (seconds) => seconds % 60;
-  // console.log("stats", stats)
+  console.log("stats", stats);
   return (
     <div className={classes.data_container}>
+      <SelectField
+        items={[
+          {
+            key: "month",
+            value: "Last month",
+          },
+          {
+            key: "trim",
+            value: "Last 3 months",
+          },
+          {
+            key: "sem",
+            value: "Last 6 months",
+          },
+          {
+            key: "year",
+            value: "Last 12 months",
+          },
+        ]}
+        variant="bordered"
+        ariaLabel="Range"
+        labelPlacement="outside"
+        selectOnChange={(value) => {
+          console.log(value);
+          return setRange(Array.from(value).join(""));
+        }}
+        value={range}
+        disallowEmptySelection={true}
+      />
       <div className={classes.section_wrapper}>
         <div className={classes.global_data_wrapper}>
           <div className={`${classes.data} ${classes.global_data}`}>
@@ -32,13 +69,10 @@ function Stats() {
             <p className={classes.data_title}>Total Workouts</p>
           </div>
           <div className={`${classes.data} ${classes.global_data}`}>
-            <p className={classes.data_value}>
-              {" "}
-              {allExerciseList.length}
-            </p>
+            <p className={classes.data_value}> {allExerciseList.length}</p>
             <p className={classes.data_title}>Total Exercises</p>
           </div>
-        </div> 
+        </div>
       </div>
       <Accordion
         selectedKeys={accordionKey}
@@ -119,45 +153,12 @@ function Stats() {
                   </div>
                 </div>
                 <div className={classes.chart_wrapper}>
-                  <div className={classes.chart_header}>
-                    <div>
-                      <h3>Volume (T)</h3>
-                      <p className={classes.chart_subti}>
-                        {formatDate(startDate, false)} -{" "}
-                        {formatDate(new Date(), false)}
-                      </p>
-                    </div>
-                    <div>
-                      <SelectField
-                        items={[
-                          {
-                            key: "month",
-                            value: "Last month",
-                          },
-                          {
-                            key: "trim",
-                            value: "Last 3 months",
-                          },
-                          {
-                            key: "sem",
-                            value: "Last 6 months",
-                          },
-                          {
-                            key: "year",
-                            value: "Last 12 months",
-                          },
-                        ]}
-                        variant="bordered"
-                        ariaLabel="Range"
-                        labelPlacement="outside"
-                        selectOnChange={(value) => {
-                          console.log(value);
-                          return setRange(Array.from(value).join(""));
-                        }}
-                        value={range}
-                        disallowEmptySelection={true}
-                      />
-                    </div>
+                  <div>
+                    <h3>Volume (T)</h3>
+                    <p className={classes.chart_subti}>
+                      {formatDate(startDate, false)} -{" "}
+                      {formatDate(new Date(), false)}
+                    </p>
                   </div>
                   <LineChart
                     stats={stats[exerciseName]}
