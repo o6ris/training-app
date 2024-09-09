@@ -1,7 +1,8 @@
 import "./globals.css";
-import "./variables.css"
-import {Providers} from "./providers";
+import "./variables.css";
+import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
+import Navigation from "@components/Navigation/Navigation";
 
 export const metadata = {
   title: "Create Next App",
@@ -13,7 +14,10 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          {children}
+          <Navigation />
+        </Providers>
       </body>
     </html>
   );
