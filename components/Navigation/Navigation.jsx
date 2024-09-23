@@ -13,7 +13,7 @@ function Navigation() {
         <Icon name="TrendingUp" size={16} color="#02091C" strokeWidth={2} />
         <span>Stats</span>
       </Link>
-      <Link className={classes.link} href="/profil">
+      <Link className={classes.link} href="/profile">
         <Icon name="User" size={16} color="#02091C" strokeWidth={2} />
         <span>Profil</span>
       </Link>
