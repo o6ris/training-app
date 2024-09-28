@@ -3,6 +3,7 @@ import classes from "./signup.module.css";
 import useUser from "@modules/client/userRequests/useUser";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
+import Icon from "@core/ui/Icons/Icon";
 
 function Signup() {
   const { addUser } = useUser();
@@ -11,6 +12,8 @@ function Signup() {
     confirmedPassword: "",
   });
   const [disabledButton, setDisabledButton] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisible = () => setIsVisible(!isVisible);
   const validateEmail = /^[a-z0-9\.-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
   const isEmailValid = validateEmail.test(credentials.email);
   const isPasswordSame =
@@ -45,13 +48,48 @@ function Signup() {
         placeholder=""
         labelPlacement="outside"
         onChange={(value) => handleOnChange("password", value)}
+        type={isVisible ? "text" : "password"}
+        endContent={
+          <BasicButton
+            buttonStyle={classes.visible_button}
+            buttonContent={
+              isVisible ? (
+                <Icon name="Eye" size={16} color="white" strokeWidth={3} />
+              ) : (
+                <Icon name="EyeOff" size={16} color="white" strokeWidth={3} />
+              )
+            }
+            isIconOnly={true}
+            onAction={toggleVisible}
+          />
+        }
       />
       <InputField
-        label={<>Confirm password {!isPasswordSame && <span>(add same password)</span>}</>}
+        label={
+          <>
+            Confirm password{" "}
+            {!isPasswordSame && <span>(add same password)</span>}
+          </>
+        }
         variant="bordered"
         placeholder=""
         labelPlacement="outside"
         onChange={(value) => handleOnChange("confirmedPassword", value)}
+        type={isVisible ? "text" : "password"}
+        endContent={
+          <BasicButton
+            buttonStyle={classes.visible_button}
+            buttonContent={
+              isVisible ? (
+                <Icon name="Eye" size={16} color="white" strokeWidth={3} />
+              ) : (
+                <Icon name="EyeOff" size={16} color="white" strokeWidth={3} />
+              )
+            }
+            isIconOnly={true}
+            onAction={toggleVisible}
+          />
+        }
       />
       <BasicButton
         onAction={() => addUser(credentials)}

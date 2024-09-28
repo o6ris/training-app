@@ -12,6 +12,7 @@ function InputField({
   value,
   endContent,
   isDisabled,
+  type,
 }) {
   return (
     <div className={baseStyle.input_container}>
@@ -33,6 +34,7 @@ function InputField({
                 input: classes.value,
               }
         }
+        type={type}
         endContent={endContent}
       />
     </div>

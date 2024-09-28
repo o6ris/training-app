@@ -16,3 +16,7 @@
   font-style: italic;
   text-transform: uppercase;
 }
+
+.visible_button {
+  background-color: transparent;
+}
