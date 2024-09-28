@@ -33,14 +33,14 @@ function Login() {
         variant="bordered"
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
-        onChange={(e) => handleOnChange("email", e.target.value)}
+        onChange={(value) => handleOnChange("email", value)}
       />
       <InputField
         label="Password"
         variant="bordered"
         placeholder=""
         labelPlacement="outside"
-        onChange={(e) => handleOnChange("password", e.target.value)}
+        onChange={(value) => handleOnChange("password", value)}
       />
       <BasicButton
         onAction={() => handleLogin()}

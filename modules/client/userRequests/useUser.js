@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function useUser(userSession) {
   const [userId, setUserId] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   const getUser = async () => {
     try {
@@ -36,6 +38,9 @@ export default function useUser(userSession) {
       );
       if (response) {
         const user = await response.json();
+        if (response.ok) {
+          router.push("/login")
+        }
         console.log("user", user);
       }
     } catch (error) {
