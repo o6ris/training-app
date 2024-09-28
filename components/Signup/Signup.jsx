@@ -11,7 +11,11 @@ function Signup() {
     confirmedPassword: "",
   });
   const [disabledButton, setDisabledButton] = useState(true);
-  const validateEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const validateEmail = /^[a-z0-9\.-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+  const isEmailValid = validateEmail.test(credentials.email);
+  const isPasswordSame =
+    credentials?.password === credentials?.confirmedPassword &&
+    (credentials?.password !== "" || credentials?.confirmedPassword !== "");
   const handleOnChange = (name, value) => {
     const t = { ...credentials };
     t[name] = value;
@@ -19,21 +23,17 @@ function Signup() {
   };
 
   useEffect(() => {
-    if (
-      credentials?.password === credentials?.confirmedPassword &&
-      (credentials?.password !== "" || credentials?.confirmedPassword !== "") && 
-      validateEmail.test(credentials.email)
-    ) {
+    if (isPasswordSame && isEmailValid) {
       setDisabledButton(false);
     } else {
       setDisabledButton(true);
     }
-  }, [credentials, validateEmail]);
+  }, [isPasswordSame, validateEmail]);
 
   return (
     <div className={classes.container}>
       <InputField
-        label="Email"
+        label={<>Email {!isEmailValid && <span>(add valid format)</span>}</>}
         variant="bordered"
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
@@ -47,7 +47,7 @@ function Signup() {
         onChange={(value) => handleOnChange("password", value)}
       />
       <InputField
-        label="Confirm Password"
+        label={<>Confirm password {!isPasswordSame && <span>(add same password)</span>}</>}
         variant="bordered"
         placeholder=""
         labelPlacement="outside"
