@@ -1,9 +1,10 @@
 import { useState } from "react";
 import classes from "./login.module.css";
-import { getSession, useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Image from "node_modules/next/image";
+import Link from "next/link";
 
 function Login() {
   const [credentials, setCredentials] = useState();
@@ -27,26 +28,29 @@ function Login() {
   };
   return (
     <div className={classes.container}>
-      <p>{session?.data?.user?.email}</p>
       <InputField
         label="Email"
         variant="bordered"
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
-        onChange={(e) => handleOnChange("email", e.target.value)}
+        onChange={(value) => handleOnChange("email", value)}
       />
       <InputField
         label="Password"
         variant="bordered"
         placeholder=""
         labelPlacement="outside"
-        onChange={(e) => handleOnChange("password", e.target.value)}
+        onChange={(value) => handleOnChange("password", value)}
       />
       <BasicButton
         onAction={() => handleLogin()}
         buttonContent={"Login"}
         buttonStyle={classes.login_creds}
       />
+      <div className={classes.signup_section}>
+        <p>Don't have an account ?</p>
+        <Link className={classes.signup_button} href="/signup">Sign up</Link>
+      </div>
       OR
       <BasicButton
         onAction={() => signIn("google")}
