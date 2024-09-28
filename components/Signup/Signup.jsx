@@ -11,6 +11,7 @@ function Signup() {
     confirmedPassword: "",
   });
   const [disabledButton, setDisabledButton] = useState(true);
+  const validateEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const handleOnChange = (name, value) => {
     const t = { ...credentials };
     t[name] = value;
@@ -20,13 +21,14 @@ function Signup() {
   useEffect(() => {
     if (
       credentials?.password === credentials?.confirmedPassword &&
-      (credentials?.password !== "" || credentials?.confirmedPassword !== "")
+      (credentials?.password !== "" || credentials?.confirmedPassword !== "") && 
+      validateEmail.test(credentials.email)
     ) {
       setDisabledButton(false);
     } else {
       setDisabledButton(true);
     }
-  }, [credentials]);
+  }, [credentials, validateEmail]);
 
   return (
     <div className={classes.container}>
