@@ -21,3 +21,12 @@
   background-color: transparent;
   border: 2px solid var(--secondary-color);
 }
+
+.signup_section {
+  display: flex;
+  gap: 10px;
+}
+
+.signup_button {
+  color: var(--primary-accent-color);
+}

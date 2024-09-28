@@ -1,9 +1,10 @@
 import { useState } from "react";
 import classes from "./login.module.css";
-import { getSession, useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Image from "node_modules/next/image";
+import Link from "next/link";
 
 function Login() {
   const [credentials, setCredentials] = useState();
@@ -27,7 +28,6 @@ function Login() {
   };
   return (
     <div className={classes.container}>
-      <p>{session?.data?.user?.email}</p>
       <InputField
         label="Email"
         variant="bordered"
@@ -47,6 +47,10 @@ function Login() {
         buttonContent={"Login"}
         buttonStyle={classes.login_creds}
       />
+      <div className={classes.signup_section}>
+        <p>Don't have an account ?</p>
+        <Link className={classes.signup_button} href="/signup">Sign up</Link>
+      </div>
       OR
       <BasicButton
         onAction={() => signIn("google")}
