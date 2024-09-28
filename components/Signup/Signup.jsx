@@ -14,7 +14,7 @@ function Signup() {
   const [disabledButton, setDisabledButton] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
-  const validateEmail = /^[a-z0-9\.-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+  const validateEmail = /^[a-z0-9._-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
   const isEmailValid = validateEmail.test(credentials.email);
   const isPasswordSame =
     credentials?.password === credentials?.confirmedPassword &&

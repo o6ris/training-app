@@ -24,7 +24,7 @@ const userSchema = new Schema({
     type: Number,
     min: [10, "Too young! "],
   },
-  size: {
+  height: {
     type: Number,
     min: [50, "Too short! "],
   },
