@@ -7,6 +7,7 @@ function BasicButton({
   buttonContent,
   buttonStyle,
   startContent,
+  endContent,
   onAction,
   isIconOnly,
   isDisabled,
@@ -18,6 +19,7 @@ function BasicButton({
       startContent={startContent}
       isIconOnly={isIconOnly}
       isDisabled={isDisabled}
+      endContent={endContent}
     >
       {buttonContent}
     </Button>

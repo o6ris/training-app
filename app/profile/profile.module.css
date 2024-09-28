@@ -1,0 +1,11 @@
+.logout_button {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--danger-color);
+  color: var(--primary-light-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+  text-transform: uppercase;
+}

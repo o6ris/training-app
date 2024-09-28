@@ -1,5 +1,9 @@
 import { useState } from "react";
+import classes from "./login.module.css";
 import { getSession, useSession, signIn, signOut } from "next-auth/react";
+import InputField from "@core/ui/Fields/InputField/InputField";
+import BasicButton from "@core/ui/Button/BasicButton";
+import Image from "node_modules/next/image";
 
 function Login() {
   const [credentials, setCredentials] = useState();
@@ -22,34 +26,41 @@ function Login() {
     }
   };
   return (
-    <div>
+    <div className={classes.container}>
       <p>{session?.data?.user?.email}</p>
-      <input
+      <InputField
+        label="Email"
+        variant="bordered"
+        placeholder="john.doe@mail.com"
+        labelPlacement="outside"
         onChange={(e) => handleOnChange("email", e.target.value)}
-        style={{ color: "black" }}
-        type="email"
       />
-      <input
+      <InputField
+        label="Password"
+        variant="bordered"
+        placeholder=""
+        labelPlacement="outside"
         onChange={(e) => handleOnChange("password", e.target.value)}
-        style={{ color: "black" }}
-        type="password"
       />
-      <button type="button" onClick={() => handleLogin()}>
-        Login
-      </button>
-      <button onClick={() => signIn("google")}> Sign In with Google</button>
-      <div>
-        {session?.status === "authenticated" ? (
-          <>
-            <p>Connected</p>
-            <button type="button" onClick={() => signOut({ redirect: false })}>
-              Logout
-            </button>
-          </>
-        ) : (
-          "Not connected"
-        )}
-      </div>
+      <BasicButton
+        onAction={() => handleLogin()}
+        buttonContent={"Login"}
+        buttonStyle={classes.login_creds}
+      />
+      OR
+      <BasicButton
+        onAction={() => signIn("google")}
+        buttonContent={"Sign In with "}
+        buttonStyle={classes.login_google}
+        endContent={
+          <Image
+            src="/google-icon.png"
+            width={18}
+            height={18}
+            alt="Picture of the author"
+          />
+        }
+      />
     </div>
   );
 }
