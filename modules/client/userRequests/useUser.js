@@ -51,6 +51,10 @@ export default function useUser(userSession) {
 
   const editUser = async (id, body) => {
     try {
+      if (body.confirmedPassword) {
+        delete body.confirmedPassword;
+      }
+
       const url = `${baseUrl}/api/users/${id}`;
       const response = await fetch(
         url,

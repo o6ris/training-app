@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-
+  height: 100%;
 }
 
-.button_wrapper{
+.buttons_wrapper{
   display: flex;
   width: 100%;
   gap: 10px;
@@ -15,16 +15,34 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-}
-
-.logout_button {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background-color: var(--danger-color);
   color: var(--primary-light-color);
   font-size: var(--font-xl);
   font-weight: var(--font-black);
-  font-style: italic;
-  text-transform: uppercase;
+}
+
+.edit_button {
+  background-color: transparent;
+  border: 2px solid var(--primary-light-color);
+}
+
+.validate_button {
+  background-color: var(--primary-accent-color);
+}
+
+.logout_button {
+  color: var(--danger-color);
+  background-color: transparent;
+  border: 2px solid var(--danger-color);
+  margin-top: auto;
+}
+
+.display_creds {
+  background-color: transparent;
+  margin-right: auto;
+  color: var(--primary-light-color);
+  padding: 0;
+}
+
+.visible_button {
+  background-color: transparent;
 }
