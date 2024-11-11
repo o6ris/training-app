@@ -23,7 +23,7 @@ function page() {
   const isEmailValid = validateEmail.test(credentials?.email);
   const isPasswordSame =
     credentials?.password === credentials?.confirmedPassword &&
-    (credentials?.password !== "" || credentials?.confirmedPassword !== "" || credentials?.password !== null || credentials?.confirmedPassword !== null);
+    (credentials?.password !== "" || credentials?.confirmedPassword !== "" || credentials?.password !== undefined || credentials?.confirmedPassword !== undefined);
 
   useEffect(() => {
     setCredentials(user);
@@ -104,7 +104,7 @@ function page() {
           }
         />
         <BasicButton
-          onAction={() => editUser(user._id, credentials)}
+          onAction={() => editUser(user._id, credentials, setIsEditable)}
           buttonContent={"Validate"}
           buttonStyle={`${classes.validate_button} ${classes.button}`}
           isDisabled={!isEditable}
@@ -113,11 +113,11 @@ function page() {
           }
         />
       </div>
-      <BasicButton
+      {!editCreds && <BasicButton
         onAction={() => setEditCreds(true)}
         buttonContent={"Change password ?"}
         buttonStyle={`${classes.display_creds}`}
-      />
+      />}
       {editCreds && (
         <>
           <InputField
@@ -189,7 +189,7 @@ function page() {
               }
             />
             <BasicButton
-              onAction={() => editUser(user._id, credentials)}
+              onAction={() => editUser(user._id, credentials, setEditCreds)}
               buttonContent={"Validate"}
               buttonStyle={`${classes.validate_button} ${classes.button}`}
               isDisabled={!isPasswordSame}

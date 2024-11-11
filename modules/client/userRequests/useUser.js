@@ -49,7 +49,7 @@ export default function useUser(userSession) {
     }
   };
 
-  const editUser = async (id, body) => {
+  const editUser = async (id, body, setIsEditable) => {
     try {
       if (body.confirmedPassword) {
         delete body.confirmedPassword;
@@ -65,6 +65,9 @@ export default function useUser(userSession) {
         { next: { revalidate: 10 } }
       );
       if (response) {
+        if (response.ok) {
+          setIsEditable(false);
+        }
         const user = await response.json();
       }
     } catch (error) {
