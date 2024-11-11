@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 export default function useUser(userSession) {
   const [userId, setUserId] = useState("");
+  const [user, setUser] = useState();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
@@ -16,6 +17,8 @@ export default function useUser(userSession) {
       );
       if (response) {
         const user = await response.json();
+        delete user.password;
+        setUser(user);
         setUserId(user._id);
       }
     } catch (error) {
@@ -27,7 +30,6 @@ export default function useUser(userSession) {
     try {
       const url = `${baseUrl}/api/users`;
       delete body.confirmedPassword;
-      console.log("body", body);
       const response = await fetch(
         url,
         {
@@ -39,9 +41,34 @@ export default function useUser(userSession) {
       if (response) {
         const user = await response.json();
         if (response.ok) {
-          router.push("/login")
+          router.push("/login");
         }
-        console.log("user", user);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const editUser = async (id, body, setIsEditable) => {
+    try {
+      if (body.confirmedPassword) {
+        delete body.confirmedPassword;
+      }
+
+      const url = `${baseUrl}/api/users/${id}`;
+      const response = await fetch(
+        url,
+        {
+          method: "PATCH",
+          body: JSON.stringify(body),
+        },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        if (response.ok) {
+          setIsEditable(false);
+        }
+        const user = await response.json();
       }
     } catch (error) {
       throw error;
@@ -54,6 +81,8 @@ export default function useUser(userSession) {
 
   return {
     userId,
+    user,
     addUser,
+    editUser,
   };
 }

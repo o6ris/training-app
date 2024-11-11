@@ -2,10 +2,12 @@ import User from "@modules/server/models/user";
 import connectDb from "lib/mongodb";
 import { NextResponse } from "next/server";
 import checkId from "modules/server/utils/checkId";
+import bcrypt from "bcrypt";
 
 export async function PATCH(request, { params }) {
   try {
     const { id } = params;
+    await connectDb();
     if (!checkId(id)) {
       throw { message: "Wrong id", status: 500 };
     }
@@ -13,7 +15,9 @@ export async function PATCH(request, { params }) {
     if (!user) {
       throw { message: "Not found", status: 400 };
     }
-    await connectDb();
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 5);
+    }
     const updatedProfile = await User.findByIdAndUpdate(id, user, {
       runValidators: true,
     });
