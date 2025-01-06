@@ -25,28 +25,6 @@
     ],
     "rm": 180
   },
-  "one_session_ancient": {
-    "muscles": [
-      {
-        "muscle": "65101d9667cb93cb766bfe7e"
-      },
-      {
-        "muscle": "65101d9667cb93cb766bfe79"
-      }
-    ],
-    "exercises": [
-      {
-        "exercise": "6559e924d02b9f36fd7f574d"
-      },
-      {
-        "exercise": "6559fcd5d02b9f36fd7f5859"
-      },
-      {
-        "exercise": "6559f1f2d02b9f36fd7f57ab"
-      }
-    ],
-    "name": "Push"
-  },
   "one_session": {
     "muscles": ["65101d9667cb93cb766bfe7e", "65101d9667cb93cb766bfe79"],
     "exercises": [
@@ -55,70 +33,5 @@
       "6559f1f2d02b9f36fd7f57ab"
     ],
     "name": "Push"
-  },
-  "program": {
-    "sessions": ["660ff3f4cb19fac7160f532e", "660ffb98cb19fac7160f5366"],
-    "name": "Push - pull - legs",
-    "frequency": 4,
-    "start_date": "2024-03-04T00:00:00.000Z",
-    "period": 90,
-    "training_days": [
-      {
-        "day": 1,
-        "session": "660ff3f4cb19fac7160f532e"
-      },
-      {
-        "day": 2,
-        "session": null
-      },
-      {
-        "day": 3,
-        "session": "660ffb98cb19fac7160f5366"
-      },
-      {
-        "day": 4,
-        "session": null
-      },
-      {
-        "day": 5,
-        "session": "660ff3f4cb19fac7160f532e"
-      },
-      {
-        "day": 6,
-        "session": null
-      },
-      {
-        "day": 7,
-        "session": null
-      }
-    ]
-  },
-  "multiple_sessions": [
-    {
-      "training": [
-        {
-          "exercise": "6559e924d02b9f36fd7f574d"
-        },
-        {
-          "exercise": "6559f1f2d02b9f36fd7f57ab"
-        },
-        {
-          "exercise": "6559fcd5d02b9f36fd7f5859"
-        }
-      ]
-    },
-    {
-      "training": [
-        {
-          "exercise": "6559e924d02b9f36fd7f574d"
-        },
-        {
-          "exercise": "6559f1f2d02b9f36fd7f57ab"
-        },
-        {
-          "exercise": "6559fcd5d02b9f36fd7f5859"
-        }
-      ]
-    }
-  ]
+  }
 }

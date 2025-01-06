@@ -10,15 +10,26 @@ export async function POST(request) {
     // TODO: validate body data before POST
     const body = await request.json();
     await connectDb();
-    const muscle = await Muscle.findById(body.muscle);
-    const exercise = new models.Exercise({
-      muscle: muscle,
-      name: body.name,
-    });
-    const newExercise = await Exercise.create(exercise);
+    const exercises = Array.isArray(body) ? body : [body];
+    const createdExercises = [];
+    for (const item of exercises) {
+      // Validate the muscle ID
+      const muscle = await Muscle.findById(item.muscle);
+      if (!muscle) {
+        throw { message: `Muscle ID ${item.muscle} not found`, status: 400 };
+      }
+
+      // Create a new exercise for each item
+      const exercise = new models.Exercise({
+        muscle: muscle,
+        name: item.name,
+      });
+
+      const newExercise = await Exercise.create(exercise);
+      createdExercises.push(newExercise);
+    }
     return NextResponse.json(
-      newExercise,
-      { message: "Exercise Created" },
+      { message: "Exercises Created", exercises: createdExercises },
       { status: 201 }
     );
   } catch (err) {
@@ -29,6 +40,7 @@ export async function POST(request) {
 
 export async function GET(request, { params }) {
   try {
+    await connectDb();
     const muscles = request.nextUrl.searchParams.getAll("muscle");
     const findExercises = async () => {
       if (muscles.length > 0) {
@@ -37,7 +49,7 @@ export async function GET(request, { params }) {
           if (!checkId(muscle)) {
             throw { message: "Wrong id", status: 500 };
           }
-          const exercises = await Exercise.find({ muscle });
+          const exercises = await Exercise.find({ muscle: { $in: [muscle] } });
           allExercises = allExercises.concat(exercises);
         }
         return allExercises;
@@ -48,7 +60,6 @@ export async function GET(request, { params }) {
     if (!exercises) {
       throw { message: "Not found", status: 400 };
     }
-    await connectDb();
     const populatedExercises = await Promise.all(
       exercises.map(async (exercise) => {
         const populatedExercise = await Exercise.populate(exercise, {
