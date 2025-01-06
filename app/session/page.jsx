@@ -131,9 +131,7 @@ function Session() {
               key={key}
               title={
                 <div>
-                  <h3>{`${findExercise?.name
-                    .charAt(0)
-                    .toUpperCase()}${findExercise?.name.slice(1)}`}</h3>
+                  <h3>{`${findExercise?.name}`}</h3>
                   <span>{getMinutes(i).toString().padStart(2, "0")}</span>:
                   <span>{getSeconds(i).toString().padStart(2, "0")}</span>
                 </div>
@@ -248,7 +246,6 @@ function Session() {
                     onAction={() => {
                       if (isRunning[i]) {
                         pause(i);
-                        handleOnChangeSession("trainingTime", time[i], i);
                       } else {
                         start(i);
                       }
@@ -277,17 +274,19 @@ function Session() {
                   <PopupButton
                     triggerAction={() => {
                       pause(i);
-                      handleOnChangeSession("trainingTime", time[i], i);
                     }}
                     triggerButtonContent="Save"
-                    startContent={<Icon
-                      name="Check"
-                      size={16}
-                      color="white"
-                      strokeWidth={3}
-                    />}
+                    startContent={
+                      <Icon
+                        name="Check"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    }
                     onCancel={() => start(i)}
                     onConfirm={() => {
+                      handleOnChangeSession("trainingTime", time[i], i);
                       saveExercise(i);
                       handleOnChangeSession("isFinished", true, i);
                     }}
