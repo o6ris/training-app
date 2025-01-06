@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin from "chartjs-plugin-zoom";
 import formatDate from "@modules/client/utils/formatDate";
 
 const generateDateRange = (startDate, endDate) => {
@@ -30,9 +30,10 @@ const filterStatsByRange = (stats, range) => {
       break;
     case "year":
       startDate = new Date(now.setMonth(now.getMonth() - 12));
+      startDate.setDate(startDate.getDate() + 1); // Subtract one day
       break;
     default:
-      startDate = new Date(0); 
+      startDate = new Date(0);
   }
 
   const endDate = new Date();
@@ -60,23 +61,24 @@ export default function useLineChart(stats, range) {
     });
 
     const data = dateRange
-    .map((date) => {
-      const stat = filteredStats.find(
-        (stat) => formatDate(new Date(stat.date), false) === formatDate(date, false)
-      );
-      return stat
-        ? {
-            x: formatDate(date, false), // Full date for internal matching
-            y: stat.sets.reduce(
-              (sum, current) => sum + current.reps * (current.weight / 1000),
-              0
-            ),
-            _id: stat._id,
-            exerciseName: stat.exercise.name,
-          }
-        : null;
-    })
-    .filter((point) => point !== null);
+      .map((date) => {
+        const stat = filteredStats.find(
+          (stat) =>
+            formatDate(new Date(stat.date), false) === formatDate(date, false)
+        );
+        return stat
+          ? {
+              x: formatDate(date, false).slice(0, 5),
+              y: stat.sets.reduce(
+                (sum, current) => sum + current.reps * (current.weight / 1000),
+                0
+              ),
+              _id: stat._id,
+              exerciseName: stat.exercise.name,
+            }
+          : null;
+      })
+      .filter((point) => point !== null); // Filter out null values
 
     const segmentColor = (ctx) => {
       const { p0, p1 } = ctx;
