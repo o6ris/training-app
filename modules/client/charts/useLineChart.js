@@ -54,28 +54,29 @@ export default function useLineChart(stats, range) {
     );
     const dateRange = generateDateRange(startDate, endDate);
 
-    const labels = dateRange.map((date) => formatDate(date, false).slice(0, 5));
+    const labels = dateRange.map((date) => {
+      const fullDate = formatDate(date, false); // Full date for alignment
+      return fullDate.slice(0, 5); // Shortened format for display (DD/MM)
+    });
 
     const data = dateRange
-      .map((date) => {
-        const stat = filteredStats.find(
-          (stat) =>
-            formatDate(new Date(stat.date), false).slice(0, 5) ===
-            formatDate(date, false).slice(0, 5)
-        );
-        return stat
-          ? {
-              x: formatDate(date, false).slice(0, 5),
-              y: stat.sets.reduce(
-                (sum, current) => sum + current.reps * (current.weight / 1000),
-                0
-              ),
-              _id: stat._id,
-              exerciseName: stat.exercise.name,
-            }
-          : null;
-      })
-      .filter((point) => point !== null); // Filter out null values
+    .map((date) => {
+      const stat = filteredStats.find(
+        (stat) => formatDate(new Date(stat.date), false) === formatDate(date, false)
+      );
+      return stat
+        ? {
+            x: formatDate(date, false), // Full date for internal matching
+            y: stat.sets.reduce(
+              (sum, current) => sum + current.reps * (current.weight / 1000),
+              0
+            ),
+            _id: stat._id,
+            exerciseName: stat.exercise.name,
+          }
+        : null;
+    })
+    .filter((point) => point !== null);
 
     const segmentColor = (ctx) => {
       const { p0, p1 } = ctx;

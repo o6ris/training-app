@@ -23,7 +23,7 @@ function LineChart({ stats, getStatById, range }) {
   };
 
   return (
-    <div style={{ overflowX: 'auto' }}>
+    <div style={{ overflowX: "auto" }}>
       <Line
         ref={chartRef}
         options={{
@@ -39,7 +39,7 @@ function LineChart({ stats, getStatById, range }) {
             zoom: {
               pan: {
                 enabled: true,
-                mode: 'x',
+                mode: "x",
               },
               zoom: {
                 wheel: {
@@ -48,7 +48,7 @@ function LineChart({ stats, getStatById, range }) {
                 pinch: {
                   enabled: true,
                 },
-                mode: 'x',
+                mode: "x",
               },
             },
           },
@@ -57,13 +57,14 @@ function LineChart({ stats, getStatById, range }) {
               grid: {
                 display: false,
               },
-              // ticks: {
-              //   autoSkip: false,
-              //   maxRotation: 0,
-              // },
             },
             y: {
               beginAtZero: true,
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 6,
+              },
+              suggestedMin: 0,
             },
           },
           onClick: handleClick,
