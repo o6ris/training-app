@@ -7,11 +7,11 @@ const exerciseSchema = new Schema(
       required: [true, "Name is required"],
       trim: true,
     },
-    muscle: {
+    muscle: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Muscle',
       required: true,
-    },
+    }],
   }
 );
 
