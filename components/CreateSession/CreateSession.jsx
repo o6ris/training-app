@@ -116,6 +116,7 @@ function CreateSession() {
             value={exerciseIds}
             isMultiline={true}
             selectionMode="multiple"
+            hasInfos={true}
           />
         )}
       </div>

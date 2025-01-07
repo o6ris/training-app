@@ -3,6 +3,7 @@
 import baseStyle from "../field.module.css";
 import classes from "./selectField.module.css";
 import { Select, SelectItem, Chip } from "@nextui-org/react";
+import Icon from "@core/ui/Icons/Icon";
 
 export default function SelectField({
   items,
@@ -18,6 +19,7 @@ export default function SelectField({
   isDisabled,
   disallowEmptySelection,
   ariaLabel,
+  hasInfos,
 }) {
   const handleRemoveItem = (item) => {
     const updatedValue = new Set(value);
@@ -83,9 +85,21 @@ export default function SelectField({
       >
         {(item) => (
           <SelectItem key={item.key} textValue={item.value}>
-            <div className={classes.select_item}>
-              <p>{item.value}</p>
-              <span>{item.desc}</span>
+            <div className={classes.select_item_wrapper}>
+              <div className={classes.select_item}>
+                <p>{item.value}</p>
+                <span>{item.desc}</span>
+              </div>
+              {hasInfos && (
+                <button onClick={() => console.log("test")}>
+                  <Icon
+                    name="Info"
+                    size={16}
+                    color="#EDF1FF"
+                    strokeWidth={2}
+                  />
+                </button>
+              )}
             </div>
           </SelectItem>
         )}
