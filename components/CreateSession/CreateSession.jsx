@@ -73,7 +73,11 @@ function CreateSession() {
 
   useEffect(() => {
     getLatestStatByExercise(exerciseIds);
-  }, [exerciseIds])
+  }, [exerciseIds]);
+
+  const selectedExercises = exercises.filter((exercise) => {
+    return exerciseIds.includes(exercise._id);
+  });
 
   return (
     <>
@@ -118,6 +122,16 @@ function CreateSession() {
             selectionMode="multiple"
           />
         )}
+      </div>
+      <div>
+        {selectedExercises.length > 0 &&
+          selectedExercises.map((exercise) => {
+            return (
+              <div>
+                <p>{exercise.name}</p>
+              </div>
+            );
+          })}
       </div>
       {exerciseIds.length > 0 && (
         <ButtonLink
