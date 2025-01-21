@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { colors } from "@modules/client/utils/colors";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import classes from "../field.module.css";
 
 function ColorsField({ value, onChange, index, section, label }) {

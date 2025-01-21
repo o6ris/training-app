@@ -7,7 +7,7 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import ColorsField from "@core/ui/Fields/ColorsField/ColorsField";
 import BasicButton from "@core/ui/Button/BasicButton";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@heroui/react";
 import Icon from "@core/ui/Icons/Icon";
 
 // NOT USED YET MAYBE IN THE FUTURE

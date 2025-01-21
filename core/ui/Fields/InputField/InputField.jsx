@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import baseStyle from "../field.module.css";
 import classes from "./inputField.module.css"
 

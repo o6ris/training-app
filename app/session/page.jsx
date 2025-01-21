@@ -4,8 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import { Input } from "@nextui-org/react";
+import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import { Input } from "@heroui/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
@@ -131,9 +131,49 @@ function Session() {
               key={key}
               title={
                 <div>
-                  <h3>{`${findExercise?.name
-                    .charAt(0)
-                    .toUpperCase()}${findExercise?.name.slice(1)}`}</h3>
+                  <div className={classes.accordion_header}>
+                    <h3>{`${findExercise?.name}`}</h3>
+                    <PopupButton
+                      isIconOnly={true}
+                      startContent={
+                        <Icon
+                          name="Info"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      }
+                      buttonStyle={classes.icon_button}
+                      title={
+                        <div className={classes.accordion_title}>
+                          <Avatar
+                            isBordered
+                            showFallback
+                            name={findExercise?.name}
+                            src={findExercise?.image}
+                          />
+                          <h2>{findExercise?.name}</h2>
+                        </div>
+                      }
+                      closebutton={"Close"}
+                      content={
+                        <div className={classes.exercise_desc_content}>
+                          <div>
+                            <h3>Steps:</h3>
+                            <p>{findExercise?.description.steps}</p>
+                          </div>
+                          <div>
+                            <h3>Benefits:</h3>
+                            <p>{findExercise?.description.benefits}</p>
+                          </div>
+                          <div>
+                            <h3>Mistakes</h3>
+                            <p>{findExercise?.description.mistakes}</p>
+                          </div>
+                        </div>
+                      }
+                    />
+                  </div>
                   <span>{getMinutes(i).toString().padStart(2, "0")}</span>:
                   <span>{getSeconds(i).toString().padStart(2, "0")}</span>
                 </div>
@@ -201,7 +241,7 @@ function Session() {
                   {exercise.sets.map((set, index) => {
                     const timer = timers[i]?.[index];
                     return (
-                      <div className={classes.set_container}>
+                      <div key={index} className={classes.set_container}>
                         <Input
                           aria-label="repetions"
                           variant="bordered"
@@ -248,7 +288,6 @@ function Session() {
                     onAction={() => {
                       if (isRunning[i]) {
                         pause(i);
-                        handleOnChangeSession("trainingTime", time[i], i);
                       } else {
                         start(i);
                       }
@@ -277,17 +316,19 @@ function Session() {
                   <PopupButton
                     triggerAction={() => {
                       pause(i);
-                      handleOnChangeSession("trainingTime", time[i], i);
                     }}
                     triggerButtonContent="Save"
-                    startContent={<Icon
-                      name="Check"
-                      size={16}
-                      color="white"
-                      strokeWidth={3}
-                    />}
+                    startContent={
+                      <Icon
+                        name="Check"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    }
                     onCancel={() => start(i)}
                     onConfirm={() => {
+                      handleOnChangeSession("trainingTime", time[i], i);
                       saveExercise(i);
                       handleOnChangeSession("isFinished", true, i);
                     }}

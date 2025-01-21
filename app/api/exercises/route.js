@@ -23,6 +23,8 @@ export async function POST(request) {
       const exercise = new models.Exercise({
         muscle: muscle,
         name: item.name,
+        description: item.description,
+        image: item.image,
       });
 
       const newExercise = await Exercise.create(exercise);
