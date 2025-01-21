@@ -1,44 +1,266 @@
-arms = [
-  { "name": "Barbell Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Barbell Preacher Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Bayesian Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Bodyweight Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Cable Crossover Bicep Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Cable Curl With Bar", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Cable Curl With Rope", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Concentration Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Drag Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Dumbbell Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Dumbbell Preacher Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Hammer Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Incline Dumbbell Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Machine Bicep Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Resistance Band Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Spider Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Barbell Standing Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Barbell Lying Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Bench Dip", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Crossbody Cable Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Close-Grip Push-Up", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Dumbbell Lying Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Dumbbell Standing Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Overhead Cable Triceps Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Tricep Bodyweight Extension", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Tricep Pushdown With Bar", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Tricep Pushdown With Rope", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Barbell Wrist Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Barbell Wrist Curl Behind the Back", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Bar Hang", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Dumbbell Wrist Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Farmers Walk", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Fat Bar Deadlift", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Gripper", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "One-Handed Bar Hang", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Plate Pinch", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Plate Wrist Curl", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Towel Pull-Up", "muscle": ["65101d9667cb93cb766bfe7e"] },
-  { "name": "Wrist Roller", "muscle": ["65101d9667cb93cb766bfe7e"] }
+arm = [
+  {
+    "name": "Barbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a barbell with an underhand grip, curl the bar upwards while keeping your elbows tucked to your sides, and slowly lower it back down.",
+      "benefits": "Strengthens the biceps and improves arm definition while enhancing forearm stability.",
+      "mistakes": "Avoid swinging your body or using momentum to lift the bar as it reduces the effectiveness."
+    },
+    "image": "barbell_curl.jpg"
+  },
+  {
+    "name": "Barbell Preacher Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit at a preacher bench, rest your arms on the pad, hold a barbell with an underhand grip, and curl the bar upwards.",
+      "benefits": "Isolates the biceps for targeted strength and reduces the risk of cheating during curls.",
+      "mistakes": "Do not let the bar drop too quickly as it puts unnecessary strain on your joints."
+    },
+    "image": "barbell_preacher_curl.jpg"
+  },
+  {
+    "name": "Bayesian Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Stand in front of a cable machine, hold the handle in one hand, step forward, and perform a curling motion while keeping your elbow stationary.",
+      "benefits": "Engages the biceps through a full range of motion and enhances peak contraction.",
+      "mistakes": "Avoid pulling with your shoulders or moving your elbow excessively during the curl."
+    },
+    "image": "bayesian_curl.jpg"
+  },
+  {
+    "name": "Bodyweight Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Use gymnastic rings or a low bar, grip tightly, lean back, and curl your body upward using your biceps.",
+      "benefits": "Builds bicep strength using body weight and improves grip endurance.",
+      "mistakes": "Avoid using momentum or over-arching your back during the movement."
+    },
+    "image": "bodyweight_curl.jpg"
+  },
+  {
+    "name": "Cable Crossover Bicep Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Stand between two cable pulleys, grab the handles with an underhand grip, and curl the handles toward your shoulders.",
+      "benefits": "Works both arms simultaneously and emphasizes the biceps with constant tension.",
+      "mistakes": "Do not overextend your elbows or let the cables pull you backward."
+    },
+    "image": "cable_crossover_bicep_curl.jpg"
+  },
+  {
+    "name": "Cable Curl With Bar",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Attach a straight bar to a cable pulley, stand upright, grip the bar with an underhand grip, and curl it toward your shoulders.",
+      "benefits": "Provides constant tension on the biceps throughout the range of motion.",
+      "mistakes": "Avoid leaning back or allowing your wrists to bend excessively."
+    },
+    "image": "cable_curl_with_bar.jpg"
+  },
+  {
+    "name": "Cable Curl With Rope",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Attach a rope to a low pulley, stand upright, grab the ends of the rope, and curl the handles toward your shoulders.",
+      "benefits": "Enhances bicep activation and allows for a more natural hand movement.",
+      "mistakes": "Do not allow your elbows to flare outward or use your shoulders to assist."
+    },
+    "image": "cable_curl_with_rope.jpg"
+  },
+  {
+    "name": "Concentration Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit on a bench, hold a dumbbell in one hand, rest your elbow on your inner thigh, and curl the dumbbell upward.",
+      "benefits": "Targets the biceps with precision and improves mind-muscle connection.",
+      "mistakes": "Avoid letting the dumbbell drop too quickly or swinging it to complete the curl."
+    },
+    "image": "concentration_curl.jpg"
+  },
+  {
+    "name": "Drag Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a barbell with an underhand grip, pull the bar upward close to your torso while keeping your elbows back.",
+      "benefits": "Focuses on the long head of the biceps and enhances the peak of the muscle.",
+      "mistakes": "Avoid using momentum or allowing your elbows to flare outward."
+    },
+    "image": "drag_curl.jpg"
+  },
+  {
+    "name": "Dumbbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a dumbbell in each hand, keep your arms at your sides, and curl the dumbbells upward simultaneously or alternately.",
+      "benefits": "Builds bicep strength and symmetry with individual arm focus.",
+      "mistakes": "Avoid swinging the weights or failing to control the lowering phase."
+    },
+    "image": "dumbbell_curl.jpg"
+  },
+  {
+    "name": "Dumbbell Preacher Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit at a preacher bench, hold a dumbbell in one hand, rest your arm on the pad, and curl the dumbbell upward.",
+      "benefits": "Isolates the biceps and ensures strict form for better activation.",
+      "mistakes": "Do not rush the movement or let your arm drift off the pad."
+    },
+    "image": "dumbbell_preacher_curl.jpg"
+  },
+  {
+    "name": "Hammer Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a dumbbell in each hand with a neutral grip (palms facing in) and curl the weights upward.",
+      "benefits": "Targets the brachialis and forearm muscles for improved arm size and strength.",
+      "mistakes": "Avoid leaning back or swinging the dumbbells to complete the curl."
+    },
+    "image": "hammer_curl.jpg"
+  },
+  {
+    "name": "Incline Dumbbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit on an incline bench, hold dumbbells in each hand, and curl them upward while keeping your back against the bench.",
+      "benefits": "Stretches and activates the long head of the biceps for greater growth.",
+      "mistakes": "Avoid lifting your back off the bench or letting the dumbbells drop too quickly."
+    },
+    "image": "incline_dumbbell_curl.jpg"
+  },
+  {
+    "name": "Machine Bicep Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit at a bicep curl machine, grip the handles, and curl the handles upward while keeping your elbows stationary.",
+      "benefits": "Provides consistent resistance and supports proper form.",
+      "mistakes": "Avoid using excessive weight that causes you to lose control of the movement."
+    },
+    "image": "machine_bicep_curl.jpg"
+  },
+  {
+    "name": "Resistance Band Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Stand on a resistance band, hold the handles, and curl them upward while keeping your elbows close to your sides.",
+      "benefits": "Great for variable resistance and portable strength training.",
+      "mistakes": "Avoid jerky movements or improper tension in the band."
+    },
+    "image": "resistance_band_curl.jpg"
+  },
+  {
+    "name": "Reverse Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a barbell or dumbbells with an overhand grip, curl the weight towards your chest while keeping your elbows tucked in.",
+      "benefits": "Works both the biceps and forearms, with an emphasis on the brachioradialis muscle.",
+      "mistakes": "Avoid letting your elbows flare out or using momentum to lift the weight."
+    },
+    "image": "reverse_curl.jpg"
+  },
+  {
+    "name": "Spider Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Lie face down on an incline bench, let your arms hang straight down, and curl the dumbbells upward.",
+      "benefits": "Emphasizes the biceps by keeping them in a fully stretched position throughout the movement.",
+      "mistakes": "Do not let your elbows drift forward or backward during the curl."
+    },
+    "image": "spider_curl.jpg"
+  },
+  {
+    "name": "Standing Barbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Stand tall holding a barbell with an underhand grip, curl the bar up towards your chest and lower it back down.",
+      "benefits": "Improves overall bicep strength and builds the long head of the biceps.",
+      "mistakes": "Avoid swaying your torso or using momentum to lift the bar."
+    },
+    "image": "standing_barbell_curl.jpg"
+  },
+  {
+    "name": "Standing Dumbbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Stand with a dumbbell in each hand, curl both dumbbells upward while keeping your elbows at your sides.",
+      "benefits": "Enhances bicep symmetry and works each arm individually.",
+      "mistakes": "Do not twist your wrists or sway your body while curling."
+    },
+    "image": "standing_dumbbell_curl.jpg"
+  },
+  {
+    "name": "Zottman Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Hold a pair of dumbbells with palms facing forward, curl the dumbbells up, and then rotate your wrists to lower the weight with your palms facing down.",
+      "benefits": "Engages both the biceps and forearms while improving grip strength.",
+      "mistakes": "Ensure you maintain proper posture and avoid excessive wrist rotation."
+    },
+    "image": "zottman_curl.jpg"
+  },
+  {
+    "name": "Single-Arm Cable Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Attach a single handle to a cable machine, stand with one hand gripping the handle, and curl it towards your shoulder.",
+      "benefits": "Provides constant tension on the biceps throughout the movement.",
+      "mistakes": "Do not lean back or use your body to assist in the movement."
+    },
+    "image": "single_arm_cable_curl.jpg"
+  },
+  {
+    "name": "EZ Bar Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Grip an EZ bar with an underhand grip and curl it toward your shoulders while keeping your elbows stationary.",
+      "benefits": "Helps reduce wrist strain compared to straight bar curls, while working the biceps effectively.",
+      "mistakes": "Avoid letting your elbows drift forward or backward."
+    },
+    "image": "ez_bar_curl.jpg"
+  },
+  {
+    "name": "Decline Dumbbell Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Lie on a decline bench, hold a dumbbell in each hand, and curl the dumbbells upward toward your shoulders.",
+      "benefits": "Engages the biceps from a different angle and targets the long head of the biceps.",
+      "mistakes": "Do not let your elbows drift forward during the movement."
+    },
+    "image": "decline_dumbbell_curl.jpg"
+  },
+  {
+    "name": "Bicep 21s",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Perform 7 half reps from the bottom to the halfway point, 7 half reps from the halfway point to the top, and 7 full reps to complete one set.",
+      "benefits": "Targets the biceps from various angles, enhancing muscle endurance and size.",
+      "mistakes": "Do not rush through the reps; maintain control of the weights throughout the movement."
+    },
+    "image": "bicep_21s.jpg"
+  },
+  {
+    "name": "Cable Preacher Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Sit at a preacher curl bench, attach a cable to the low pulley, and curl the cable towards your shoulders.",
+      "benefits": "Provides constant tension on the biceps, targeting the muscle effectively.",
+      "mistakes": "Do not lean forward or allow the weight to drop too quickly."
+    },
+    "image": "cable_preacher_curl.jpg"
+  },
+  {
+    "name": "Towel Curl",
+    "muscle": ["65101d9667cb93cb766bfe7e"],
+    "description": {
+      "steps": "Loop a towel over a bar or suspension trainer, hold the ends of the towel, and curl your body upward.",
+      "benefits": "Improves grip strength and activates the biceps and forearms.",
+      "mistakes": "Avoid using your shoulders to lift the body, and focus on isolating the biceps."
+    },
+    "image": "towel_curl.jpg"
+  }
 ]
+
 
 legs = [
   { "name": "Air Squat", "muscle": ["65101d9667cb93cb766bfe79"] },
