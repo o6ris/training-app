@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
-import { Accordion, AccordionItem } from "@heroui/react";
+import { Accordion, AccordionItem, Avatar } from "@heroui/react";
 import { Input } from "@heroui/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
@@ -131,7 +131,49 @@ function Session() {
               key={key}
               title={
                 <div>
-                  <h3>{`${findExercise?.name}`}</h3>
+                  <div className={classes.accordion_header}>
+                    <h3>{`${findExercise?.name}`}</h3>
+                    <PopupButton
+                      isIconOnly={true}
+                      startContent={
+                        <Icon
+                          name="Info"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      }
+                      buttonStyle={classes.icon_button}
+                      title={
+                        <div className={classes.accordion_title}>
+                          <Avatar
+                            isBordered
+                            showFallback
+                            name={findExercise?.name}
+                            src={findExercise?.image}
+                          />
+                          <h2>{findExercise?.name}</h2>
+                        </div>
+                      }
+                      closebutton={"Close"}
+                      content={
+                        <div className={classes.exercise_desc_content}>
+                          <div>
+                            <h3>Steps:</h3>
+                            <p>{findExercise?.description.steps}</p>
+                          </div>
+                          <div>
+                            <h3>Benefits:</h3>
+                            <p>{findExercise?.description.benefits}</p>
+                          </div>
+                          <div>
+                            <h3>Mistakes</h3>
+                            <p>{findExercise?.description.mistakes}</p>
+                          </div>
+                        </div>
+                      }
+                    />
+                  </div>
                   <span>{getMinutes(i).toString().padStart(2, "0")}</span>:
                   <span>{getSeconds(i).toString().padStart(2, "0")}</span>
                 </div>
@@ -199,7 +241,7 @@ function Session() {
                   {exercise.sets.map((set, index) => {
                     const timer = timers[i]?.[index];
                     return (
-                      <div className={classes.set_container}>
+                      <div key={index} className={classes.set_container}>
                         <Input
                           aria-label="repetions"
                           variant="bordered"
