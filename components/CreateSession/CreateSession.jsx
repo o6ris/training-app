@@ -8,6 +8,7 @@ import ButtonLink from "@core/ui/Button/ButtonLink";
 import useStats from "@modules/client/userRequests/useStats";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/userRequests/useUser";
+import Image from "next/image";
 
 function CreateSession() {
   const { data: userSession, status } = useSession();
@@ -22,25 +23,30 @@ function CreateSession() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getMuscles = async () => {
-    try {
+    try
+    {
       const response = await fetch(
         `${baseUrl}/api/muscles`,
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if (response) {
+      if (response)
+      {
         const muscles = await response.json();
-        if (muscles) {
+        if (muscles)
+        {
           setMuscles(muscles);
         }
       }
-    } catch (err) {
+    } catch (err)
+    {
       throw err;
     }
   };
 
   const getExercises = async () => {
-    try {
+    try
+    {
       const queryString = muscleIds
         .map((muscleId) => `muscle=${muscleId}`)
         .join("&");
@@ -50,13 +56,16 @@ function CreateSession() {
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if (response) {
+      if (response)
+      {
         const exercises = await response.json();
-        if (exercises) {
+        if (exercises)
+        {
           setExercises(exercises);
         }
       }
-    } catch (err) {
+    } catch (err)
+    {
       throw err;
     }
   };
@@ -66,7 +75,8 @@ function CreateSession() {
   }, []);
 
   useEffect(() => {
-    if (muscleIds.length > 0) {
+    if (muscleIds.length > 0)
+    {
       getExercises();
     }
   }, [muscleIds]);
@@ -110,8 +120,10 @@ function CreateSession() {
                 value: `${exercise.name
                   .charAt(0)
                   .toUpperCase()}${exercise.name.slice(1)}`,
+                image: exercise.image
               };
             })}
+            hasImage={true}
             label="Exercises"
             placeholder="Choose exercises"
             labelPlacement="outside"
@@ -125,10 +137,23 @@ function CreateSession() {
       </div>
       <div>
         {selectedExercises.length > 0 &&
-          selectedExercises.map((exercise) => {
+          selectedExercises.map((exercise, i) => {
             return (
-              <div>
-                <p>{exercise.name}</p>
+              <div className={classes.exercise_desc} key={i}>
+                <div className={classes.exercise_desc_header}>
+                  <h2>{exercise.name}</h2>
+                  <Image
+                    src={`/${exercise.image}`}
+                    width={50}
+                    height={50}
+                    alt="Picture of the author"
+                  />
+                </div>
+                <div className={classes.exercise_desc_content}>
+                  <p>{exercise.description.steps}</p>
+                  <p>{exercise.description.benefits}</p>
+                  <p>{exercise.description.mistakes}</p>
+                </div>
               </div>
             );
           })}

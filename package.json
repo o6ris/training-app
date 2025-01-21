@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.3.6",
+    "@heroui/react": "2.6.14",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.3",
     "chartjs-plugin-zoom": "^2.0.1",

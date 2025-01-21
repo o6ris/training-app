@@ -1,7 +1,7 @@
 import React from "react";
 import baseStyle from "../field.module.css";
 import classes from "./slider.module.css";
-import { Slider, Button } from "@nextui-org/react";
+import { Slider, Button } from "@heroui/react";
 
 function SliderField({
   label,

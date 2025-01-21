@@ -5,7 +5,7 @@ import classes from "./stats.module.css";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/userRequests/useUser";
 import useStats from "@modules/client/userRequests/useStats";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
 import LineChart from "@core/ui/Chart/LineChart";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
