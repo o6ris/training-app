@@ -89,9 +89,7 @@ export default function SelectField({
           <SelectItem key={item.key} textValue={item.value}>
             <div className={classes.select_item}>
               {hasImage &&
-                <Avatar showFallback name={items.find((el) =>
-                  el.key === item.key
-                )?.image} src={items.find((el) =>
+                <Avatar showFallback name={item.value} src={items.find((el) =>
                   el.key === item.key
                 )?.image} />}
               <p>{item.value}</p>

@@ -8,7 +8,7 @@ import ButtonLink from "@core/ui/Button/ButtonLink";
 import useStats from "@modules/client/userRequests/useStats";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/userRequests/useUser";
-import Image from "next/image";
+import { Accordion, AccordionItem, Avatar } from "@heroui/react";
 
 function CreateSession() {
   const { data: userSession, status } = useSession();
@@ -135,29 +135,41 @@ function CreateSession() {
           />
         )}
       </div>
-      <div>
-        {selectedExercises.length > 0 &&
-          selectedExercises.map((exercise, i) => {
-            return (
-              <div className={classes.exercise_desc} key={i}>
-                <div className={classes.exercise_desc_header}>
-                  <h2>{exercise.name}</h2>
-                  <Image
-                    src={`/${exercise.image}`}
-                    width={50}
-                    height={50}
-                    alt="Picture of the author"
-                  />
-                </div>
-                <div className={classes.exercise_desc_content}>
-                  <p>{exercise.description.steps}</p>
-                  <p>{exercise.description.benefits}</p>
-                  <p>{exercise.description.mistakes}</p>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+      {selectedExercises.length > 0 &&
+        selectedExercises.map((exercise, i) => {
+          return (
+            <div className={classes.exercise_desc} key={i}>
+              <Accordion>
+                <AccordionItem
+                  key={i + 1}
+                  aria-label={exercise.name}
+                  startContent={
+                    <Avatar isBordered showFallback name={exercise.name} src={exercise.image} />
+                  }
+                  title={exercise.name}
+                  classNames={{
+                    title: classes.accordion_title
+                  }}
+                >
+                  <div className={classes.exercise_desc_content}>
+                    <div>
+                      <h3>Steps:</h3>
+                      <p>{exercise.description.steps}</p>
+                    </div>
+                    <div>
+                      <h3>Benefits:</h3>
+                      <p>{exercise.description.benefits}</p>
+                    </div>
+                    <div>
+                      <h3>Mistakes</h3>
+                      <p>{exercise.description.mistakes}</p>
+                    </div>
+                  </div>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          );
+        })}
       {exerciseIds.length > 0 && (
         <ButtonLink
           url={"/session"}
