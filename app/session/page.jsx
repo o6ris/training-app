@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
-import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import { Input } from "@heroui/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
@@ -35,6 +35,7 @@ function Session() {
   const { userId } = useUser(userSession);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
 
   // console.log("session", session);
@@ -146,13 +147,27 @@ function Session() {
                       buttonStyle={classes.icon_button}
                       title={
                         <div className={classes.accordion_title}>
-                          <Avatar
-                            isBordered
-                            showFallback
-                            name={findExercise?.name}
-                            src={findExercise?.image}
+                          <PopupButton
+                            isIconOnly={true}
+                            startContent={
+                              <Avatar
+                                showFallback
+                                className="w-24 h-24"
+                                name={findExercise?.name}
+                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                              />
+                            }
+                            buttonStyle={classes.image_button}
+                            closebutton={"Close"}
+                            content={
+                              <Image
+                                isZoomed
+                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                                alt={findExercise?.name}
+                                width={400}
+                              />
+                            }
                           />
-                          <h2>{findExercise?.name}</h2>
                         </div>
                       }
                       closebutton={"Close"}

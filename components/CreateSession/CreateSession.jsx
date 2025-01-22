@@ -21,6 +21,7 @@ function CreateSession() {
   const { createSession, session } = useContext(SessionContext);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const getMuscles = async () => {
     try
@@ -144,7 +145,7 @@ function CreateSession() {
                   key={i + 1}
                   aria-label={exercise.name}
                   startContent={
-                    <Avatar isBordered showFallback name={exercise.name} src={exercise.image} />
+                    <Avatar isBordered showFallback name={exercise.name} src={`${cloudinaryUrl}${exercise?.image}`} />
                   }
                   title={exercise.name}
                   classNames={{

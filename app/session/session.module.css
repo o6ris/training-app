@@ -83,8 +83,13 @@
   text-transform: uppercase;
 }
 
-.icon_button {
+.icon_button, .image_button {
   background-color: transparent;
+}
+
+.image_button {
+  height: 100px;
+  width: 100px;
 }
 
 .finish_button {
