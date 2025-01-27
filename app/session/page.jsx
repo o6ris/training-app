@@ -41,25 +41,25 @@ function Session() {
   // console.log("session", session);
 
   const restTime = [
-    { key: 30, value: "30 seconds" },
-    { key: 45, value: "45 seconds" },
-    { key: 60, value: "1 minute" },
-    { key: 75, value: "1 minute 15 seconds" },
-    { key: 90, value: "1 minute 30 seconds" },
-    { key: 105, value: "1 minute 45 seconds" },
-    { key: 120, value: "2 minutes" },
-    { key: 135, value: "2 minutes 15 seconds" },
-    { key: 150, value: "2 minutes 30 seconds" },
-    { key: 165, value: "2 minutes 45 seconds" },
-    { key: 180, value: "3 minutes" },
-    { key: 195, value: "3 minutes 15 seconds" },
-    { key: 210, value: "3 minutes 30 seconds" },
-    { key: 225, value: "3 minutes 45 seconds" },
-    { key: 240, value: "4 minutes" },
-    { key: 255, value: "4 minutes 15 seconds" },
-    { key: 270, value: "4 minutes 30 seconds" },
-    { key: 285, value: "4 minutes 45 seconds" },
-    { key: 300, value: "5 minutes" },
+    { key: "30", value: "30 seconds" },
+    { key: "45", value: "45 seconds" },
+    { key: "60", value: "1 minute" },
+    { key: "75", value: "1 minute 15 seconds" },
+    { key: "90", value: "1 minute 30 seconds" },
+    { key: "105", value: "1 minute 45 seconds" },
+    { key: "120", value: "2 minutes" },
+    { key: "135", value: "2 minutes 15 seconds" },
+    { key: "150", value: "2 minutes 30 seconds" },
+    { key: "165", value: "2 minutes 45 seconds" },
+    { key: "180", value: "3 minutes" },
+    { key: "195", value: "3 minutes 15 seconds" },
+    { key: "210", value: "3 minutes 30 seconds" },
+    { key: "225", value: "3 minutes 45 seconds" },
+    { key: "240", value: "4 minutes" },
+    { key: "255", value: "4 minutes 15 seconds" },
+    { key: "270", value: "4 minutes 30 seconds" },
+    { key: "285", value: "4 minutes 45 seconds" },
+    { key: "300", value: "5 minutes" },
   ];
 
   const getExercises = async () => {
@@ -224,7 +224,7 @@ function Session() {
                   selectOnChange={(value) =>
                     handleOnChangeSession(
                       "restTime",
-                      parseInt(Array.from(value).join("")),
+                      Array.from(value).join(""),
                       i
                     )
                   }
