@@ -19,7 +19,7 @@ export default function SelectField({
   isDisabled,
   disallowEmptySelection,
   ariaLabel,
-  hasImage
+  hasImage,
 }) {
   const handleRemoveItem = (item) => {
     const updatedValue = new Set(value);
@@ -27,16 +27,14 @@ export default function SelectField({
     selectOnChange(updatedValue);
   };
   const renderValue = () => {
-    if (Array.isArray(value))
-    {
+    if (Array.isArray(value)) {
       return value;
-    } else
-    {
+    } else {
       return [value];
     }
   };
 
-  console.log("items", items)
+  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   return (
     <div className={baseStyle.input_container}>
@@ -56,12 +54,12 @@ export default function SelectField({
           classNames
             ? classNames
             : {
-              label: baseStyle.label,
-              value: baseStyle.value,
-              trigger: baseStyle.main_wrapper,
-              popoverContent: classes.listbox_container,
-              listbox: classes.listbox,
-            }
+                label: baseStyle.label,
+                value: baseStyle.value,
+                trigger: baseStyle.main_wrapper,
+                popoverContent: classes.listbox_container,
+                listbox: classes.listbox,
+              }
         }
         onSelectionChange={selectOnChange}
         renderValue={(items) => {
@@ -88,10 +86,15 @@ export default function SelectField({
         {(item) => (
           <SelectItem key={item.key} textValue={item.value}>
             <div className={classes.select_item}>
-              {hasImage &&
-                <Avatar showFallback name={item.value} src={items.find((el) =>
-                  el.key === item.key
-                )?.image} />}
+              {hasImage && (
+                <Avatar
+                  showFallback
+                  name={item.value}
+                  src={`${cloudinaryUrl}${
+                    items.find((el) => el.key === item.key)?.image
+                  }`}
+                />
+              )}
               <p>{item.value}</p>
             </div>
           </SelectItem>

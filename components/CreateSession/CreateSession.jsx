@@ -8,7 +8,7 @@ import ButtonLink from "@core/ui/Button/ButtonLink";
 import useStats from "@modules/client/userRequests/useStats";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/userRequests/useUser";
-import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 
 function CreateSession() {
   const { data: userSession, status } = useSession();
@@ -21,32 +21,28 @@ function CreateSession() {
   const { createSession, session } = useContext(SessionContext);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const getMuscles = async () => {
-    try
-    {
+    try {
       const response = await fetch(
         `${baseUrl}/api/muscles`,
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if (response)
-      {
+      if (response) {
         const muscles = await response.json();
-        if (muscles)
-        {
+        if (muscles) {
           setMuscles(muscles);
         }
       }
-    } catch (err)
-    {
+    } catch (err) {
       throw err;
     }
   };
 
   const getExercises = async () => {
-    try
-    {
+    try {
       const queryString = muscleIds
         .map((muscleId) => `muscle=${muscleId}`)
         .join("&");
@@ -56,16 +52,13 @@ function CreateSession() {
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if (response)
-      {
+      if (response) {
         const exercises = await response.json();
-        if (exercises)
-        {
+        if (exercises) {
           setExercises(exercises);
         }
       }
-    } catch (err)
-    {
+    } catch (err) {
       throw err;
     }
   };
@@ -75,8 +68,7 @@ function CreateSession() {
   }, []);
 
   useEffect(() => {
-    if (muscleIds.length > 0)
-    {
+    if (muscleIds.length > 0) {
       getExercises();
     }
   }, [muscleIds]);
@@ -120,7 +112,7 @@ function CreateSession() {
                 value: `${exercise.name
                   .charAt(0)
                   .toUpperCase()}${exercise.name.slice(1)}`,
-                image: exercise.image
+                image: exercise.image,
               };
             })}
             hasImage={true}
@@ -144,14 +136,25 @@ function CreateSession() {
                   key={i + 1}
                   aria-label={exercise.name}
                   startContent={
-                    <Avatar isBordered showFallback name={exercise.name} src={exercise.image} />
+                    <Avatar
+                      isBordered
+                      showFallback
+                      name={exercise.name}
+                      src={`${cloudinaryUrl}${exercise?.image}`}
+                    />
                   }
                   title={exercise.name}
                   classNames={{
-                    title: classes.accordion_title
+                    title: classes.accordion_title,
                   }}
                 >
                   <div className={classes.exercise_desc_content}>
+                    <Image
+                      isZoomed
+                      src={`${cloudinaryUrl}${exercise?.image}`}
+                      alt={exercise?.name}
+                      width={300}
+                    />
                     <div>
                       <h3>Steps:</h3>
                       <p>{exercise.description.steps}</p>
