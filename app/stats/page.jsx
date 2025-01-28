@@ -3,8 +3,8 @@
 import { useState } from "react";
 import classes from "./stats.module.css";
 import { useSession } from "next-auth/react";
-import useUser from "@modules/client/userRequests/useUser";
-import useStats from "@modules/client/userRequests/useStats";
+import useUser from "@modules/client/requests/useUser";
+import useStats from "@modules/client/requests/useStats";
 import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
 import LineChart from "@core/ui/Chart/LineChart";
@@ -86,7 +86,7 @@ function Stats() {
           return (
             <AccordionItem
               key={key}
-              textValue={exerciseName || 'Exercise'}
+              textValue={exerciseName || "Exercise"}
               title={
                 <div className={classes.title_wrapper}>
                   <h3>{exerciseName.toUpperCase()}</h3>

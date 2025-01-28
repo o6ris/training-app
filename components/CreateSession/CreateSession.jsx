@@ -2,80 +2,24 @@
 
 import { useState, useEffect, useContext } from "react";
 import classes from "./createSession.module.css";
+import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
-import useStats from "@modules/client/userRequests/useStats";
-import { useSession } from "next-auth/react";
-import useUser from "@modules/client/userRequests/useUser";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 
-function CreateSession() {
-  const { data: userSession, status } = useSession();
-  const { userId } = useUser(userSession);
-  const { getLatestStatByExercise, latestExercises } = useStats(userId);
-  const [muscles, setMuscles] = useState([]);
-  const [muscleIds, setMusculeIds] = useState([]);
-  const [exercises, setExercises] = useState([]);
-  const [exerciseIds, setExerciseIds] = useState([]);
+function CreateSession({ muscles }) {
+  const {
+    setMusculeIds,
+    muscleIds,
+    setExerciseIds,
+    exerciseIds,
+    latestExercises,
+    exercises,
+    isLoading,
+  } = useExercises();
   const { createSession, session } = useContext(SessionContext);
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-
-  const getMuscles = async () => {
-    try {
-      const response = await fetch(
-        `${baseUrl}/api/muscles`,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const muscles = await response.json();
-        if (muscles) {
-          setMuscles(muscles);
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const getExercises = async () => {
-    try {
-      const queryString = muscleIds
-        .map((muscleId) => `muscle=${muscleId}`)
-        .join("&");
-      const url = `${baseUrl}/api/exercises?${queryString}`;
-      const response = await fetch(
-        url,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const exercises = await response.json();
-        if (exercises) {
-          setExercises(exercises);
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  useEffect(() => {
-    getMuscles();
-  }, []);
-
-  useEffect(() => {
-    if (muscleIds.length > 0) {
-      getExercises();
-    }
-  }, [muscleIds]);
-
-  useEffect(() => {
-    getLatestStatByExercise(exerciseIds);
-  }, [exerciseIds]);
 
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
@@ -124,10 +68,12 @@ function CreateSession() {
             value={exerciseIds}
             isMultiline={true}
             selectionMode="multiple"
+            isLoading={isLoading}
           />
         )}
       </div>
       {selectedExercises.length > 0 &&
+        muscleIds.length > 0 &&
         selectedExercises.map((exercise, i) => {
           return (
             <div className={classes.exercise_desc} key={i}>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import classes from "./signup.module.css";
-import useUser from "@modules/client/userRequests/useUser";
+import useUser from "@modules/client/requests/useUser";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Icon from "@core/ui/Icons/Icon";

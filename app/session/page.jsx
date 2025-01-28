@@ -15,7 +15,7 @@ import InputField from "@core/ui/Fields/InputField/InputField";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
-import useUser from "@modules/client/userRequests/useUser";
+import useUser from "@modules/client/requests/useUser";
 
 function Session() {
   const {
@@ -130,7 +130,7 @@ function Session() {
           return (
             <AccordionItem
               key={key}
-              textValue={findExercise?.name || 'Exercise'}
+              textValue={findExercise?.name || "Exercise"}
               title={
                 <div>
                   <div className={classes.accordion_header}>
