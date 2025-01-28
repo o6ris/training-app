@@ -86,6 +86,7 @@ function Stats() {
           return (
             <AccordionItem
               key={key}
+              textValue={exerciseName || 'Exercise'}
               title={
                 <div className={classes.title_wrapper}>
                   <h3>{exerciseName.toUpperCase()}</h3>

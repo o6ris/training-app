@@ -130,6 +130,7 @@ function Session() {
           return (
             <AccordionItem
               key={key}
+              textValue={findExercise?.name || 'Exercise'}
               title={
                 <div>
                   <div className={classes.accordion_header}>
