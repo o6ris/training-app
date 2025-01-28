@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
@@ -9,16 +9,15 @@ import ButtonLink from "@core/ui/Button/ButtonLink";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 
 function CreateSession({ muscles }) {
+  const { createSession, session } = useContext(SessionContext);
+  const [muscleIds, setMusculeIds] = useState([]);
   const {
-    setMusculeIds,
-    muscleIds,
     setExerciseIds,
     exerciseIds,
     latestExercises,
     exercises,
     isLoading,
-  } = useExercises();
-  const { createSession, session } = useContext(SessionContext);
+  } = useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const selectedExercises = exercises.filter((exercise) => {

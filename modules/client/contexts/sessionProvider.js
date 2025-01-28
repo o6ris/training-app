@@ -4,15 +4,18 @@ export const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState([]);
+  const [exercisesId, setExercisesId] = useState([]);
 
   const createSession = (exercises, latestExercises) => {
     const exercisesList = [];
+    const exercisesId = [];
     exercises.forEach((exercise) => {
       const similarExercise = latestExercises.find(
         (el) => (el.exercise === exercise)
       );
       if (similarExercise) {
         exercisesList.push(similarExercise);
+        exercisesId.push(similarExercise.exercise)
       } else {
         exercisesList.push({
           exercise: exercise,
@@ -27,11 +30,14 @@ export const SessionProvider = ({ children }) => {
           ],
           isFinished: false,
         });
+        exercisesId.push(exercise)
       }
     });
     // console.log("exercisesList", exercisesList)
     setSession(exercisesList);
+    setExercisesId(exercisesId)
     localStorage.setItem("session", JSON.stringify(exercisesList));
+    localStorage.setItem("exercisesId", JSON.stringify(exercisesId));
   };
 
   const handleOnChangeSession = (name, value, index) => {
@@ -102,6 +108,8 @@ export const SessionProvider = ({ children }) => {
         handleAddSets,
         handleOnchangeSets,
         refreshExercise,
+        exercisesId,
+        setExercisesId,
       }}
     >
       {children}

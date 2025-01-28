@@ -16,6 +16,8 @@ import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/requests/useUser";
+import useExercises from "@modules/client/requests/useExercises";
+import Skeleton from "@core/ui/Skeleton/Skeleton";
 
 function Session() {
   const {
@@ -25,9 +27,11 @@ function Session() {
     handleAddSets,
     handleOnchangeSets,
     refreshExercise,
+    exercisesId,
+    setExercisesId,
   } = useContext(SessionContext);
+  const { exercises, isLoading } = useExercises(exercisesId, "exercise");
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
-  const [exercises, setExercises] = useState([]);
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers } = useTimer(session);
@@ -37,8 +41,6 @@ function Session() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
-
-  // console.log("session", session);
 
   const restTime = [
     { key: "30", value: "30 seconds" },
@@ -61,25 +63,6 @@ function Session() {
     { key: "285", value: "4 minutes 45 seconds" },
     { key: "300", value: "5 minutes" },
   ];
-
-  const getExercises = async () => {
-    try {
-      const url = `${baseUrl}/api/exercises`;
-      const response = await fetch(
-        url,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const exercises = await response.json();
-        if (exercises) {
-          setExercises(exercises);
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  };
 
   const saveExercise = async (i) => {
     try {
@@ -105,13 +88,11 @@ function Session() {
 
   useEffect(() => {
     const session = localStorage.getItem("session");
-    if (session) {
+    const exercisesId = localStorage.getItem("exercisesId");
+    if (session && exercisesId) {
       setSession(JSON.parse(session));
+      setExercisesId(JSON.parse(exercisesId));
     }
-  }, []);
-
-  useEffect(() => {
-    getExercises();
   }, []);
 
   return (
@@ -134,7 +115,11 @@ function Session() {
               title={
                 <div>
                   <div className={classes.accordion_header}>
-                    <h3>{`${findExercise?.name}`}</h3>
+                    {isLoading ? (
+                      <Skeleton width="40%" height="25px" />
+                    ) : (
+                      <h3>{`${findExercise?.name}`}</h3>
+                    )}
                     <PopupButton
                       isIconOnly={true}
                       startContent={
