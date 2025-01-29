@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import useUser from "@modules/client/requests/useUser";
 import useExercises from "@modules/client/requests/useExercises";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Session() {
   const {
@@ -32,6 +33,7 @@ function Session() {
   } = useContext(SessionContext);
   const { exercises, isLoading } = useExercises(exercisesId, "exercise");
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
+  const [isPending, startTransition] = useTransition();
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers } = useTimer(session);
@@ -63,6 +65,8 @@ function Session() {
     { key: "285", value: "4 minutes 45 seconds" },
     { key: "300", value: "5 minutes" },
   ];
+
+  console.log("session", session);
 
   const saveExercise = async (i) => {
     try {
@@ -365,15 +369,29 @@ function Session() {
       </Accordion>
       <PopupButton
         triggerAction={undefined}
-        triggerButtonContent="End Session"
+        triggerButtonContent={
+          isPending ? (
+            <ClipLoader
+              color={"#EDF1FF"}
+              loading={isPending}
+              size={20}
+              aria-label="Loading Spinner"
+            />
+          ) : (
+            "End Session"
+          )
+        }
+        isDisabled={isPending ? true : false}
         onCancel={undefined}
         onConfirm={() => {
-          router.push("/stats");
-          localStorage.removeItem("session");
+          startTransition(() => {
+            router.push("/stats");
+            localStorage.removeItem("session");
+          });
         }}
         buttonStyle={`${classes.button}`}
         title="Are you sure you want to end this session?"
-        content="Make sure you've completed all exercises before ending your session to prevent any unsaved progress."
+        content="Make sure you've saved all exercises before ending your session to prevent any unsaved progress."
       />
     </div>
   );

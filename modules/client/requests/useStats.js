@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
   const [latestStats, setLatestStats] = useState({});
   const [latestExercises, setLatestExercises] = useState([]);
   const [range, setRange] = useState("year");
@@ -9,6 +10,7 @@ export default function useStats(userId) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
     try {
+      setIsLoading(true);
       const url = `${baseUrl}/api/stats?user=${userId}&range=${range}`;
 
       const response = await fetch(
@@ -33,6 +35,8 @@ export default function useStats(userId) {
       }
     } catch (error) {
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -166,5 +170,6 @@ export default function useStats(userId) {
     startDate,
     getLatestStatByExercise,
     latestExercises,
+    isLoading,
   };
 }

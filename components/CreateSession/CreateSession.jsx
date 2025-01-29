@@ -1,23 +1,20 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useTransition } from "react";
 import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function CreateSession({ muscles }) {
   const { createSession, session } = useContext(SessionContext);
   const [muscleIds, setMusculeIds] = useState([]);
-  const {
-    setExerciseIds,
-    exerciseIds,
-    latestExercises,
-    exercises,
-    isLoading,
-  } = useExercises(muscleIds, "muscle");
+  const [isPending, startTransition] = useTransition();
+  const { setExerciseIds, exerciseIds, latestExercises, exercises, isLoading } =
+    useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const selectedExercises = exercises.filter((exercise) => {
@@ -122,8 +119,23 @@ function CreateSession({ muscles }) {
         <ButtonLink
           url={"/session"}
           // pass as an argument list of latests exercises
-          onAction={() => createSession(exerciseIds, latestExercises)}
-          buttonContent={"Create session"}
+          onAction={() =>
+            startTransition(() => {
+              createSession(exerciseIds, latestExercises);
+            })
+          }
+          buttonContent={
+            isPending ? (
+              <ClipLoader
+                color={"#EDF1FF"}
+                loading={isPending}
+                size={20}
+                aria-label="Loading Spinner"
+              />
+            ) : (
+              "Create session"
+            )
+          }
           buttonStyle={classes.add_session_button}
         />
       )}
