@@ -9,7 +9,7 @@ import PopupButton from "@core/ui/Button/PopupButton";
 import useUser from "@modules/client/requests/useUser";
 import Icon from "@core/ui/Icons/Icon";
 
-function page() {
+function Profile() {
   const [credentials, setCredentials] = useState();
   const [isEditable, setIsEditable] = useState(false);
   const [editCreds, setEditCreds] = useState(false);
@@ -217,4 +217,4 @@ function page() {
   );
 }
 
-export default page;
+export default Profile;

@@ -48,7 +48,7 @@ function Login() {
         buttonStyle={classes.login_creds}
       />
       <div className={classes.signup_section}>
-        <p>Don't have an account ?</p>
+        <p>don&apos;t have an account ?</p>
         <Link className={classes.signup_button} href="/signup">Sign up</Link>
       </div>
       OR
