@@ -44,14 +44,25 @@ export async function GET(request, { params }) {
   try {
     await connectDb();
     const muscles = request.nextUrl.searchParams.getAll("muscle");
+    const exercisesId = request.nextUrl.searchParams.getAll("exercise");
+
     const findExercises = async () => {
+      let allExercises = [];
       if (muscles.length > 0) {
-        let allExercises = [];
         for (const muscle of muscles) {
           if (!checkId(muscle)) {
             throw { message: "Wrong id", status: 500 };
           }
           const exercises = await Exercise.find({ muscle: { $in: [muscle] } });
+          allExercises = allExercises.concat(exercises);
+        }
+        return allExercises;
+      } else if (exercisesId.length > 0) {
+        for (const id of exercisesId) {
+          if (!checkId(id)) {
+            throw { message: "Wrong id", status: 500 };
+          }
+          const exercises = await Exercise.find({ _id: id });
           allExercises = allExercises.concat(exercises);
         }
         return allExercises;

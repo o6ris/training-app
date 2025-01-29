@@ -4,6 +4,9 @@ import baseStyle from "../field.module.css";
 import classes from "./selectField.module.css";
 import { Select, SelectItem, Chip } from "@heroui/react";
 import { Avatar } from "@heroui/react";
+import Icon from "@core/ui/Icons/Icon";
+import ClipLoader from "react-spinners/ClipLoader";
+import Skeleton from "@core/ui/Skeleton/Skeleton";
 
 export default function SelectField({
   items,
@@ -20,6 +23,7 @@ export default function SelectField({
   disallowEmptySelection,
   ariaLabel,
   hasImage,
+  isLoading,
 }) {
   const handleRemoveItem = (item) => {
     const updatedValue = new Set(value);
@@ -49,6 +53,18 @@ export default function SelectField({
         isMultiline={isMultiline}
         selectedKeys={renderValue()}
         isDisabled={isDisabled}
+        selectorIcon={
+          isLoading ? (
+            <ClipLoader
+              color={"#EDF1FF"}
+              loading={isLoading}
+              size={20}
+              aria-label="Loading Spinner"
+            />
+          ) : (
+            <Icon name="ChevronDown" size={16} color="#EDF1FF" />
+          )
+        }
         disallowEmptySelection={disallowEmptySelection}
         classNames={
           classNames
@@ -95,7 +111,11 @@ export default function SelectField({
                   }`}
                 />
               )}
-              <p>{item.value}</p>
+              {isLoading ? (
+                <Skeleton width="90%" height="20px" />
+              ) : (
+                <p>{item.value}</p>
+              )}
             </div>
           </SelectItem>
         )}

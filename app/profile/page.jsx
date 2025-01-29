@@ -6,7 +6,7 @@ import classes from "./profile.module.css";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import PopupButton from "@core/ui/Button/PopupButton";
-import useUser from "@modules/client/userRequests/useUser";
+import useUser from "@modules/client/requests/useUser";
 import Icon from "@core/ui/Icons/Icon";
 
 function page() {
@@ -23,7 +23,10 @@ function page() {
   const isEmailValid = validateEmail.test(credentials?.email);
   const isPasswordSame =
     credentials?.password === credentials?.confirmedPassword &&
-    (credentials?.password !== "" || credentials?.confirmedPassword !== "" || credentials?.password !== undefined || credentials?.confirmedPassword !== undefined);
+    (credentials?.password !== "" ||
+      credentials?.confirmedPassword !== "" ||
+      credentials?.password !== undefined ||
+      credentials?.confirmedPassword !== undefined);
 
   useEffect(() => {
     setCredentials(user);
@@ -35,7 +38,7 @@ function page() {
     setCredentials(t);
   };
 
-  console.log("credentials", credentials)
+  console.log("credentials", credentials);
 
   return (
     <div className={classes.container}>
@@ -113,11 +116,13 @@ function page() {
           }
         />
       </div>
-      {!editCreds && <BasicButton
-        onAction={() => setEditCreds(true)}
-        buttonContent={"Change password ?"}
-        buttonStyle={`${classes.display_creds}`}
-      />}
+      {!editCreds && (
+        <BasicButton
+          onAction={() => setEditCreds(true)}
+          buttonContent={"Change password ?"}
+          buttonStyle={`${classes.display_creds}`}
+        />
+      )}
       {editCreds && (
         <>
           <InputField

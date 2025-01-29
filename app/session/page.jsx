@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
@@ -15,7 +15,10 @@ import InputField from "@core/ui/Fields/InputField/InputField";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
-import useUser from "@modules/client/userRequests/useUser";
+import useUser from "@modules/client/requests/useUser";
+import useExercises from "@modules/client/requests/useExercises";
+import Skeleton from "@core/ui/Skeleton/Skeleton";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Session() {
   const {
@@ -25,9 +28,12 @@ function Session() {
     handleAddSets,
     handleOnchangeSets,
     refreshExercise,
+    exercisesId,
+    setExercisesId,
   } = useContext(SessionContext);
+  const { exercises, isLoading } = useExercises(exercisesId, "exercise");
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
-  const [exercises, setExercises] = useState([]);
+  const [isPending, startTransition] = useTransition();
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers } = useTimer(session);
@@ -38,48 +44,29 @@ function Session() {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
 
-  // console.log("session", session);
-
   const restTime = [
-    { key: "30", value: "30 seconds" },
-    { key: "45", value: "45 seconds" },
-    { key: "60", value: "1 minute" },
-    { key: "75", value: "1 minute 15 seconds" },
-    { key: "90", value: "1 minute 30 seconds" },
-    { key: "105", value: "1 minute 45 seconds" },
-    { key: "120", value: "2 minutes" },
-    { key: "135", value: "2 minutes 15 seconds" },
-    { key: "150", value: "2 minutes 30 seconds" },
-    { key: "165", value: "2 minutes 45 seconds" },
-    { key: "180", value: "3 minutes" },
-    { key: "195", value: "3 minutes 15 seconds" },
-    { key: "210", value: "3 minutes 30 seconds" },
-    { key: "225", value: "3 minutes 45 seconds" },
-    { key: "240", value: "4 minutes" },
-    { key: "255", value: "4 minutes 15 seconds" },
-    { key: "270", value: "4 minutes 30 seconds" },
-    { key: "285", value: "4 minutes 45 seconds" },
-    { key: "300", value: "5 minutes" },
+    { key: 30, value: "30 seconds" },
+    { key: 45, value: "45 seconds" },
+    { key: 60, value: "1 minute" },
+    { key: 75, value: "1 minute 15 seconds" },
+    { key: 90, value: "1 minute 30 seconds" },
+    { key: 105, value: "1 minute 45 seconds" },
+    { key: 120, value: "2 minutes" },
+    { key: 135, value: "2 minutes 15 seconds" },
+    { key: 150, value: "2 minutes 30 seconds" },
+    { key: 165, value: "2 minutes 45 seconds" },
+    { key: 180, value: "3 minutes" },
+    { key: 195, value: "3 minutes 15 seconds" },
+    { key: 210, value: "3 minutes 30 seconds" },
+    { key: 225, value: "3 minutes 45 seconds" },
+    { key: 240, value: "4 minutes" },
+    { key: 255, value: "4 minutes 15 seconds" },
+    { key: 270, value: "4 minutes 30 seconds" },
+    { key: 285, value: "4 minutes 45 seconds" },
+    { key: 300, value: "5 minutes" },
   ];
 
-  const getExercises = async () => {
-    try {
-      const url = `${baseUrl}/api/exercises`;
-      const response = await fetch(
-        url,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const exercises = await response.json();
-        if (exercises) {
-          setExercises(exercises);
-        }
-      }
-    } catch (err) {
-      throw err;
-    }
-  };
+  console.log("session", session);
 
   const saveExercise = async (i) => {
     try {
@@ -105,13 +92,11 @@ function Session() {
 
   useEffect(() => {
     const session = localStorage.getItem("session");
-    if (session) {
+    const exercisesId = localStorage.getItem("exercisesId");
+    if (session && exercisesId) {
       setSession(JSON.parse(session));
+      setExercisesId(JSON.parse(exercisesId));
     }
-  }, []);
-
-  useEffect(() => {
-    getExercises();
   }, []);
 
   return (
@@ -130,11 +115,15 @@ function Session() {
           return (
             <AccordionItem
               key={key}
-              textValue={findExercise?.name || 'Exercise'}
+              textValue={findExercise?.name || "Exercise"}
               title={
                 <div>
                   <div className={classes.accordion_header}>
-                    <h3>{`${findExercise?.name}`}</h3>
+                    {isLoading ? (
+                      <Skeleton width="40%" height="25px" />
+                    ) : (
+                      <h3>{`${findExercise?.name}`}</h3>
+                    )}
                     <PopupButton
                       isIconOnly={true}
                       startContent={
@@ -380,15 +369,29 @@ function Session() {
       </Accordion>
       <PopupButton
         triggerAction={undefined}
-        triggerButtonContent="End Session"
+        triggerButtonContent={
+          isPending ? (
+            <ClipLoader
+              color={"#EDF1FF"}
+              loading={isPending}
+              size={20}
+              aria-label="Loading Spinner"
+            />
+          ) : (
+            "End Session"
+          )
+        }
+        isDisabled={isPending ? true : false}
         onCancel={undefined}
         onConfirm={() => {
-          router.push("/stats");
-          localStorage.removeItem("session");
+          startTransition(() => {
+            router.push("/stats");
+            localStorage.removeItem("session");
+          });
         }}
         buttonStyle={`${classes.button}`}
         title="Are you sure you want to end this session?"
-        content="Make sure you've completed all exercises before ending your session to prevent any unsaved progress."
+        content="Make sure you've saved all exercises before ending your session to prevent any unsaved progress."
       />
     </div>
   );
