@@ -39,6 +39,7 @@ function Session() {
   const { startTimer, getFormattedTime, timers } = useTimer(session);
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
+  // console.log("time", time)
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
@@ -179,8 +180,6 @@ function Session() {
                       }
                     />
                   </div>
-                  <span>{getMinutes(i).toString().padStart(2, "0")}</span>:
-                  <span>{getSeconds(i).toString().padStart(2, "0")}</span>
                 </div>
               }
               classNames={{ base: classes.accordion_item }}
@@ -297,7 +296,23 @@ function Session() {
                         start(i);
                       }
                     }}
-                    buttonContent={isRunning[i] ? "Pause" : "Start"}
+                    buttonContent={
+                      <div>
+                        {time[0] === 0 && time[1] === 0 ? (
+                          "Start"
+                        ) : (
+                          <>
+                            <span>
+                              {getMinutes(i).toString().padStart(2, "0")}
+                            </span>
+                            :
+                            <span>
+                              {getSeconds(i).toString().padStart(2, "0")}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    }
                     startContent={
                       isRunning[i] ? (
                         <Icon
