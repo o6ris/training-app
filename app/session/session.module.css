@@ -1,0 +1,133 @@
+.session_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.accordion {
+  padding: 0;
+}
+
+.accordion_header, .accordion_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.accordion_title {
+  gap: 10px;
+}
+
+.accordion_title h2 {
+  color: var(--primary-color);
+}
+
+.exercise_desc_content * {
+
+  color: var(--primary-color);
+}
+
+.session_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sets_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.set_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.7fr;
+  grid-gap: 10px;
+}
+
+.timer_button {
+  display: flex;
+  flex-direction: row;
+  background-color: transparent;
+  border: 2px solid var(--primary-accent-color);
+  color: var(--primary-accent-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+}
+
+.accordion_item {
+  background-color: var(--secondary-color) !important;
+}
+
+.slider_track {
+  background-color: var(--primary-color) !important;
+}
+
+.stopwatch_buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.2fr;
+  gap: 10px;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--primary-accent-color);
+  color: var(--primary-light-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.icon_button, .image_button {
+  background-color: transparent;
+}
+
+.image_button {
+  height: 100px;
+  width: 100px;
+}
+
+.finish_button {
+  background-color: var(--success-color);
+}
+
+.reset_button {
+  background-color: var(--danger-color);
+}
+
+/* FIELD STYLE */
+.field_main_wrapper {
+  width: 100%;
+  min-height: 60px !important;
+  padding: 10px;
+  border: 2px solid var(--primary-light-color);
+}
+
+.field_value {
+  font-size: var(--font-xl);
+  /* color: var(--secondary-color); */
+  font-weight: var(--font-bold);
+}
+
+.select_listbox_container {
+  background-color: var(--primary-light-color);
+}
+
+.select_listbox > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.select_listbox > ul li > span > div > p {
+  color: var(--primary-color);
+}
+
+.select_listbox > ul li[data-focus="true"] {
+  background-color: transparent !important;
+}

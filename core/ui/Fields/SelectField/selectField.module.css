@@ -1,0 +1,49 @@
+.listbox_container {
+  background-color: var(--secondary-color);
+}
+
+.listbox > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.listbox > ul li[data-focus="true"] {
+  background-color: transparent !important;
+}
+
+.select_item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.select_item > p {
+  font-size: var(--font-xl) !important;
+  font-weight: var(--font-bold) !important;
+}
+
+.select_item > span {
+  font-size: var(--font-s);
+  font-weight: var(--font-light);
+  color: var(--primary-accent-color);
+}
+
+/* MULTILINE STYLE */
+.value_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.value_container div {
+  color: white;
+  background-color: var(--secondary-color);
+  /* height: 40px; */
+}
+
+.value_container div span {
+  font-weight: var(--font-bold);
+  font-size: var(--font-xl);
+}

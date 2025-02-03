@@ -1,0 +1,11 @@
+.slider {
+  background-color: var(--secondary-color) !important;
+}
+
+.label_value {
+  color: var(--primary-accent-color);
+  margin-bottom: 5px;
+  font-weight: var(--font-black);
+  font-size: var(--font-s);
+  margin-right: 15px;
+}

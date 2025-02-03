@@ -1,0 +1,37 @@
+{
+  "stats": {
+    "date": "2024-03-05T00:00:00.000Z",
+    "exercise": "6559f1f2d02b9f36fd7f57ab",
+    "user": "66239da55c9a5a85592b355d",
+    "rest_time": 180,
+    "training_time": 900,
+    "sets": [
+      {
+        "reps": 11,
+        "weight": 100
+      },
+      {
+        "reps": 10,
+        "weight": 110
+      },
+      {
+        "reps": 9,
+        "weight": 120
+      },
+      {
+        "reps": 8,
+        "weight": 120
+      }
+    ],
+    "rm": 180
+  },
+  "one_session": {
+    "muscles": ["65101d9667cb93cb766bfe7e", "65101d9667cb93cb766bfe79"],
+    "exercises": [
+      "6559e924d02b9f36fd7f574d",
+      "6559fcd5d02b9f36fd7f5859",
+      "6559f1f2d02b9f36fd7f57ab"
+    ],
+    "name": "Push"
+  }
+}

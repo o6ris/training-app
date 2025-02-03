@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  training-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3000/
+    image: training-app:latest
+    container_name: training-app-container
+    env_file:
+      - .env.local 
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

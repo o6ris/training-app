@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.login_creds, .login_google {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--primary-accent-color);
+  color: var(--primary-light-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.login_google {
+  background-color: transparent;
+  border: 2px solid var(--secondary-color);
+}
+
+.signup_section {
+  display: flex;
+  gap: 10px;
+}
+
+.signup_button {
+  color: var(--primary-accent-color);
+}

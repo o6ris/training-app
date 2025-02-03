@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.signup_button {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: var(--primary-accent-color);
+  color: var(--primary-light-color);
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.visible_button {
+  background-color: transparent;
+}

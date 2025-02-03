@@ -1,0 +1,21 @@
+:root {
+  --primary-color: #02091C;
+	--primary-accent-color: #2694F9;
+	--secondary-color: #1C2647;
+	--primary-light-color: #EDF1FF;
+	--success-color: #05BA8F;
+	--danger-color: #BA0505;
+
+	--font-xs: 10px;
+	--font-s: 12px;
+	--font-r: 14px;
+	--font-l: 16px;
+	--font-xl: 18px;
+	--font-xxl: 20px;
+	--font-3xl: 30px;
+	--font-light: 100;
+	--font-regular: 300;
+	--font-bold: 600;
+	--font-black: 900;
+
+}

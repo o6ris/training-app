@@ -1,0 +1,10 @@
+.value::placeholder {
+  color: var(--secondary-color);
+}
+
+.value {
+  font-size: var(--font-xl);
+  color: var(--primary-light-color);
+  font-weight: var(--font-bold);
+  font-style: italic;
+}
