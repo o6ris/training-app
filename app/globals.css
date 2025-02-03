@@ -34,7 +34,7 @@ h4 {
 }
 
 html {
-	height: 100vh;
+	height: 100dvh;
 	overflow: hidden;
 }
 
@@ -43,11 +43,12 @@ body,
 	height: 100%;
 	width: 100%;
 	padding: 1rem;
-	padding-bottom: 80px;
 	background-color: var(--primary-color);
 	overflow: auto;
 }
 
 body > div {
+	/* padding-bottom: 60px; */
 	position: relative;
 }
+
