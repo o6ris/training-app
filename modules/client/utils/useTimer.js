@@ -7,33 +7,21 @@ const useTimer = (session) => {
 
   // console.log("timers", timers)
 
-  useEffect(() => {
-    // Initialize timers based on the session rest times
-    const initialTimers = session.map((exercise) =>
-      exercise.sets.map(() => ({
-        seconds: exercise.restTime, // Set initial seconds based on restTime
-        isRunning: false, // Initially, timers are not running
-      }))
-    );
-    setTimers(initialTimers);
-
-    // Clear any existing intervals when session changes
-    intervalRefs.current.forEach((exerciseIntervals) =>
-      exerciseIntervals.forEach((interval) => clearInterval(interval))
+  const resetTimers = () => {
+    setTimers(
+      session.map((exercise) =>
+        exercise.sets.map(() => ({
+          seconds: exercise.restTime,
+          isRunning: false,
+        }))
+      )
     );
 
-    // Initialize interval references to null
+    // Reset intervalRefs to null
     intervalRefs.current = session.map((exercise) =>
       exercise.sets.map(() => null)
     );
-
-    // Cleanup on component unmount
-    return () => {
-      intervalRefs.current.forEach((exerciseIntervals) =>
-        exerciseIntervals.forEach((interval) => clearInterval(interval))
-      );
-    };
-  }, [session]); // Effect runs whenever session changes
+  };
 
   // Function to start a timer for a specific exercise and set index
   const startTimer = (exerciseIndex, setIndex) => {
@@ -92,6 +80,7 @@ const useTimer = (session) => {
     startTimer, // Function to start a timer
     getFormattedTime, // Function to format time
     timers, // Current timers state
+    resetTimers,
   };
 };
 

@@ -8,10 +8,8 @@ import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import { Input } from "@heroui/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
-import SelectField from "@core/ui/Fields/SelectField/SelectField";
-import SliderField from "@core/ui/Fields/SliderField/SliderField";
-import BasicButton from "@core/ui/Button/BasicButton";
 import InputField from "@core/ui/Fields/InputField/InputField";
+import BasicButton from "@core/ui/Button/BasicButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import { useSession } from "next-auth/react";
@@ -36,38 +34,15 @@ function Session() {
   const [isPending, startTransition] = useTransition();
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
     useStopwatch(false, session);
-  const { startTimer, getFormattedTime, timers } = useTimer(session);
+  const { startTimer, getFormattedTime, timers, resetTimers } =
+    useTimer(session);
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  // console.log("time", time)
+  // console.log("time", timers);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
-
-  const restTime = [
-    { key: 30, value: "30 seconds" },
-    { key: 45, value: "45 seconds" },
-    { key: 60, value: "1 minute" },
-    { key: 75, value: "1 minute 15 seconds" },
-    { key: 90, value: "1 minute 30 seconds" },
-    { key: 105, value: "1 minute 45 seconds" },
-    { key: 120, value: "2 minutes" },
-    { key: 135, value: "2 minutes 15 seconds" },
-    { key: 150, value: "2 minutes 30 seconds" },
-    { key: 165, value: "2 minutes 45 seconds" },
-    { key: 180, value: "3 minutes" },
-    { key: 195, value: "3 minutes 15 seconds" },
-    { key: 210, value: "3 minutes 30 seconds" },
-    { key: 225, value: "3 minutes 45 seconds" },
-    { key: 240, value: "4 minutes" },
-    { key: 255, value: "4 minutes 15 seconds" },
-    { key: 270, value: "4 minutes 30 seconds" },
-    { key: 285, value: "4 minutes 45 seconds" },
-    { key: 300, value: "5 minutes" },
-  ];
-
-  console.log("session", session);
 
   const saveExercise = async (i) => {
     try {
@@ -185,90 +160,126 @@ function Session() {
               classNames={{ base: classes.accordion_item }}
             >
               <div className={classes.session_container}>
-                {/* Choose RM */}
-                <InputField
-                  label="1RM"
-                  ariaLabel="One RM"
-                  variant="bordered"
-                  placeholder="Exemple: 100"
-                  labelPlacement="outside"
-                  isDisabled={exercise.isFinished}
-                  value={exercise.rm}
-                  onChange={(value) => handleOnChangeSession("rm", value, i)}
-                  classNames={{
-                    label: classes.label,
-                    inputWrapper: classes.field_main_wrapper,
-                    input: classes.field_value,
-                  }}
-                  endContent="Kg"
-                />
                 {/* Choose rest time */}
-                <SelectField
-                  items={restTime}
-                  label="Rest time"
-                  placeholder="1 minutes"
-                  labelPlacement="outside"
-                  variant="bordered"
-                  isDisabled={exercise.isFinished}
-                  selectOnChange={(value) =>
-                    handleOnChangeSession(
-                      "restTime",
-                      Array.from(value).join(""),
-                      i
-                    )
-                  }
-                  value={exercise.restTime}
-                  isMultiline={false}
-                  classNames={{
-                    // label: baseStyle.label,
-                    value: classes.field_value,
-                    trigger: classes.field_main_wrapper,
-                    popoverContent: classes.select_listbox_container,
-                    listbox: classes.select_listbox,
-                  }}
-                />
-                {/* Choose number of sets */}
-                <SliderField
-                  label="Choose sets number"
-                  color="secondary"
-                  value={exercise.sets.length}
-                  onChange={(value) => {
-                    handleAddSets("sets", value, i);
-                  }}
-                  classNames={{
-                    track: classes.slider_track,
-                  }}
-                  isDisabled={exercise.isFinished}
-                />
+                <div className={classes.session_first_section}>
+                  <InputField
+                    label={"Rest time"}
+                    variant="bordered"
+                    placeholder="1"
+                    labelPlacement="outside"
+                    value={exercise?.restTime}
+                    onChange={(value) =>
+                      handleOnChangeSession("restTime", value, i)
+                    }
+                    isDisabled={exercise.isFinished}
+                    classNames={{
+                      label: classes.label,
+                      inputWrapper: classes.field_main_wrapper,
+                      input: classes.field_value,
+                    }}
+                    type="number"
+                    endContent={"s"}
+                  />
+                  {/* Choose number of sets */}
+                  <InputField
+                    label={"Sets number"}
+                    variant="bordered"
+                    placeholder="1"
+                    labelPlacement="outside"
+                    value={exercise?.sets.length}
+                    onChange={(value) => {
+                      handleAddSets("sets", value, i);
+                    }}
+                    isDisabled={exercise.isFinished}
+                    classNames={{
+                      label: classes.label,
+                      inputWrapper: classes.field_main_wrapper,
+                      input: classes.field_value,
+                    }}
+                    type="number"
+                  />
+                </div>
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
                   {exercise.sets.map((set, index) => {
                     const timer = timers[i]?.[index];
                     return (
                       <div key={index} className={classes.set_container}>
-                        <Input
+                        <InputField
                           aria-label="repetions"
                           variant="bordered"
                           value={set.reps}
                           endContent="reps"
                           type="number"
-                          onValueChange={(value) =>
+                          onChange={(value) =>
                             handleOnchangeSets("reps", value, i, index)
                           }
+                          classNames={{
+                            label: classes.label,
+                            inputWrapper: classes.field_main_wrapper,
+                            input: classes.field_value,
+                          }}
                           isDisabled={exercise.isFinished}
                         />
-                        <Input
+                        <InputField
                           aria-label="repetions"
                           variant="bordered"
                           value={set.weight}
                           endContent="kg"
                           type="number"
-                          onValueChange={(value) =>
+                          onChange={(value) =>
                             handleOnchangeSets("weight", value, i, index)
                           }
+                          classNames={{
+                            label: classes.label,
+                            inputWrapper: classes.field_main_wrapper,
+                            input: classes.field_value,
+                          }}
                           isDisabled={exercise.isFinished}
                         />
-                        <BasicButton
+                        <PopupButton
+                          isIconOnly={true}
+                          triggerAction={() =>
+                            !timer?.isRunning && resetTimers()
+                          }
+                          startContent={
+                            <Icon
+                              name="Check"
+                              size={20}
+                              color="#2694F9"
+                              strokeWidth={3}
+                            />
+                          }
+                          buttonStyle={classes.timer_button}
+                          closebutton={"Close"}
+                          isDisabled={
+                            (!timer?.isRunning && timer?.seconds === 0) ||
+                            exercise.isFinished ||
+                            (timers.some((exerciseTimers) =>
+                              exerciseTimers.some(
+                                (setTimer) => setTimer.isRunning
+                              )
+                            ) &&
+                              !timer?.isRunning)
+                          }
+                          content={
+                            <BasicButton
+                              onAction={() => startTimer(i, index)}
+                              buttonContent={
+                                timer?.isRunning
+                                  ? getFormattedTime(timer.seconds)
+                                  : "Start rest time"
+                              }
+                              isDisabled={
+                                (timer?.isRunning === false &&
+                                  timer?.seconds === 0) ||
+                                exercise.isFinished
+                              }
+                              buttonStyle={classes.timer_button}
+                            />
+                          }
+                        />
+                        {/* <BasicButton
                           onAction={() => startTimer(i, index)}
                           buttonContent={
                             timer?.isRunning
@@ -281,7 +292,7 @@ function Session() {
                             exercise.isFinished
                           }
                           buttonStyle={classes.timer_button}
-                        />
+                        /> */}
                       </div>
                     );
                   })}
