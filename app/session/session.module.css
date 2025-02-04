@@ -115,7 +115,7 @@
 .field_main_wrapper {
   width: 100%;
   min-height: 60px !important;
-  padding: 1rem;
+  padding: 0.6rem;
   border: 2px solid var(--primary-light-color);
 }
 

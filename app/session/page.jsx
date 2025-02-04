@@ -165,9 +165,9 @@ function Session() {
                   <InputField
                     label={"Rest time"}
                     variant="bordered"
-                    placeholder="1"
+                    placeholder="60"
                     labelPlacement="outside"
-                    value={exercise?.restTime}
+                    value={exercise?.restTime || 60}
                     onChange={(value) =>
                       handleOnChangeSession("restTime", value, i)
                     }
@@ -177,6 +177,8 @@ function Session() {
                       inputWrapper: classes.field_main_wrapper,
                       input: classes.field_value,
                     }}
+                    min={1}
+                    max={600}
                     type="number"
                     endContent={"seconds"}
                   />
@@ -196,6 +198,9 @@ function Session() {
                       inputWrapper: classes.field_main_wrapper,
                       input: classes.field_value,
                     }}
+                    endContent={"sets"}
+                    min={1}
+                    max={9}
                     type="number"
                   />
                 </div>
@@ -241,17 +246,13 @@ function Session() {
                           triggerAction={() =>
                             !timer?.isRunning && resetTimers()
                           }
-                          triggerButtonContent={
-                            timer?.isRunning ? (
-                              getFormattedTime(timer.seconds)
-                            ) : (
-                              <Icon
-                                name="Check"
-                                size={20}
-                                color="#2694F9"
-                                strokeWidth={3}
-                              />
-                            )
+                          startContent={
+                            <Icon
+                              name="Check"
+                              size={20}
+                              color="#2694F9"
+                              strokeWidth={3}
+                            />
                           }
                           buttonStyle={classes.timer_button}
                           closebutton={"Close"}
