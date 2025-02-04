@@ -5,22 +5,38 @@ const useTimer = (session) => {
   const [timers, setTimers] = useState([]); // State to store timers
   const intervalRefs = useRef([]); // Reference to store interval IDs
 
-  // console.log("timers", timers)
 
   const resetTimers = () => {
-    setTimers(
-      session.map((exercise) =>
-        exercise.sets.map(() => ({
-          seconds: exercise.restTime,
-          isRunning: false,
-        }))
-      )
-    );
+    setTimers((prevTimers) => {
+      // If timers are empty, initialize them from session
+      if (prevTimers.length === 0) {
+        return session.map((exercise) =>
+          exercise.sets.map(() => ({
+            seconds: exercise.restTime,
+            isRunning: false,
+          }))
+        );
+      }
+      // Otherwise, update only the seconds and isRunning state
+      const timers = prevTimers.map((exerciseTimers, exerciseIndex) =>
+        exerciseTimers.map((timer, setIndex) => {
+          const restTime = timer.seconds; // Get corresponding exercise
 
-    // Reset intervalRefs to null
-    intervalRefs.current = session.map((exercise) =>
-      exercise.sets.map(() => null)
-    );
+          return {
+            ...timer,
+            seconds: restTime, // Reset time based on session
+            isRunning: false, // Stop the timer
+          };
+        })
+      );
+      return timers
+    });
+    // Reset intervalRefs only if they are empty
+    if (intervalRefs.current.length === 0) {
+      intervalRefs.current = session.map((exercise) =>
+        exercise.sets.map(() => null)
+      );
+    }
   };
 
   // Function to start a timer for a specific exercise and set index

@@ -178,7 +178,7 @@ function Session() {
                       input: classes.field_value,
                     }}
                     type="number"
-                    endContent={"s"}
+                    endContent={"seconds"}
                   />
                   {/* Choose number of sets */}
                   <InputField
@@ -238,17 +238,20 @@ function Session() {
                           isDisabled={exercise.isFinished}
                         />
                         <PopupButton
-                          isIconOnly={true}
                           triggerAction={() =>
                             !timer?.isRunning && resetTimers()
                           }
-                          startContent={
-                            <Icon
-                              name="Check"
-                              size={20}
-                              color="#2694F9"
-                              strokeWidth={3}
-                            />
+                          triggerButtonContent={
+                            timer?.isRunning ? (
+                              getFormattedTime(timer.seconds)
+                            ) : (
+                              <Icon
+                                name="Check"
+                                size={20}
+                                color="#2694F9"
+                                strokeWidth={3}
+                              />
+                            )
                           }
                           buttonStyle={classes.timer_button}
                           closebutton={"Close"}
