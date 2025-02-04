@@ -274,7 +274,7 @@ function Session() {
                   />
                   {/* Choose number of sets */}
                   <InputField
-                    label={"Sets number"}
+                    label={"Sets"}
                     variant="bordered"
                     placeholder="1"
                     labelPlacement="outside"
@@ -357,9 +357,19 @@ function Session() {
                             <BasicButton
                               onAction={() => startTimer(i, index)}
                               buttonContent={
-                                timer?.isRunning
-                                  ? getFormattedTime(timer.seconds)
-                                  : "Start rest time"
+                                timer?.isRunning ? (
+                                  getFormattedTime(timer.seconds)
+                                ) : (
+                                  <>
+                                    <Icon
+                                      name="Play"
+                                      size={16}
+                                      color="#2694F9"
+                                      strokeWidth={3}
+                                    />
+                                    {getFormattedTime(timer?.seconds)}
+                                  </>
+                                )
                               }
                               isDisabled={
                                 (timer?.isRunning === false &&
