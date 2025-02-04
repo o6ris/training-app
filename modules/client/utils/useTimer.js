@@ -20,11 +20,15 @@ const useTimer = (session) => {
       // Otherwise, update only the seconds and isRunning state
       const timers = prevTimers.map((exerciseTimers, exerciseIndex) =>
         exerciseTimers.map((timer, setIndex) => {
-          const restTime = timer.seconds; // Get corresponding exercise
+          const newRestTime = session[exerciseIndex].restTime; // Get the new session rest time
+          const updatedSeconds =
+          timer.seconds !== newRestTime
+            ? newRestTime // Use new value if it changed
+            : timer.seconds; // Otherwise, keep current value
 
           return {
             ...timer,
-            seconds: restTime, // Reset time based on session
+            seconds: updatedSeconds, // Reset time based on session
             isRunning: false, // Stop the timer
           };
         })
