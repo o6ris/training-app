@@ -160,148 +160,6 @@ function Session() {
               classNames={{ base: classes.accordion_item }}
             >
               <div className={classes.session_container}>
-                {/* Choose rest time */}
-                <div className={classes.session_first_section}>
-                  <InputField
-                    label={"Rest time"}
-                    variant="bordered"
-                    placeholder="60"
-                    labelPlacement="outside"
-                    value={exercise?.restTime || 60}
-                    onChange={(value) =>
-                      handleOnChangeSession("restTime", value, i)
-                    }
-                    isDisabled={exercise.isFinished}
-                    classNames={{
-                      label: classes.label,
-                      inputWrapper: classes.field_main_wrapper,
-                      input: classes.field_value,
-                    }}
-                    min={1}
-                    max={600}
-                    type="number"
-                    endContent={"seconds"}
-                  />
-                  {/* Choose number of sets */}
-                  <InputField
-                    label={"Sets number"}
-                    variant="bordered"
-                    placeholder="1"
-                    labelPlacement="outside"
-                    value={exercise?.sets.length}
-                    onChange={(value) => {
-                      handleAddSets("sets", value, i);
-                    }}
-                    isDisabled={exercise.isFinished}
-                    classNames={{
-                      label: classes.label,
-                      inputWrapper: classes.field_main_wrapper,
-                      input: classes.field_value,
-                    }}
-                    endContent={"sets"}
-                    min={1}
-                    max={9}
-                    type="number"
-                  />
-                </div>
-                {/* Choose reps and weight */}
-                <div className={classes.sets_container}>
-                  {exercise.sets.map((set, index) => {
-                    const timer = timers[i]?.[index];
-                    return (
-                      <div key={index} className={classes.set_container}>
-                        <InputField
-                          aria-label="repetions"
-                          variant="bordered"
-                          value={set.reps}
-                          endContent="reps"
-                          type="number"
-                          onChange={(value) =>
-                            handleOnchangeSets("reps", value, i, index)
-                          }
-                          classNames={{
-                            label: classes.label,
-                            inputWrapper: classes.field_main_wrapper,
-                            input: classes.field_value,
-                          }}
-                          isDisabled={exercise.isFinished}
-                        />
-                        <InputField
-                          aria-label="repetions"
-                          variant="bordered"
-                          value={set.weight}
-                          endContent="kg"
-                          type="number"
-                          onChange={(value) =>
-                            handleOnchangeSets("weight", value, i, index)
-                          }
-                          classNames={{
-                            label: classes.label,
-                            inputWrapper: classes.field_main_wrapper,
-                            input: classes.field_value,
-                          }}
-                          isDisabled={exercise.isFinished}
-                        />
-                        <PopupButton
-                          triggerAction={() =>
-                            !timer?.isRunning && resetTimers()
-                          }
-                          startContent={
-                            <Icon
-                              name="Check"
-                              size={20}
-                              color="#2694F9"
-                              strokeWidth={3}
-                            />
-                          }
-                          buttonStyle={classes.timer_button}
-                          closebutton={"Close"}
-                          isDisabled={
-                            (!timer?.isRunning && timer?.seconds === 0) ||
-                            exercise.isFinished ||
-                            (timers.some((exerciseTimers) =>
-                              exerciseTimers.some(
-                                (setTimer) => setTimer.isRunning
-                              )
-                            ) &&
-                              !timer?.isRunning)
-                          }
-                          content={
-                            <BasicButton
-                              onAction={() => startTimer(i, index)}
-                              buttonContent={
-                                timer?.isRunning
-                                  ? getFormattedTime(timer.seconds)
-                                  : "Start rest time"
-                              }
-                              isDisabled={
-                                (timer?.isRunning === false &&
-                                  timer?.seconds === 0) ||
-                                exercise.isFinished
-                              }
-                              buttonStyle={classes.timer_button}
-                            />
-                          }
-                        />
-                        {/* <BasicButton
-                          onAction={() => startTimer(i, index)}
-                          buttonContent={
-                            timer?.isRunning
-                              ? getFormattedTime(timer.seconds)
-                              : "DONE"
-                          }
-                          isDisabled={
-                            (timer?.isRunning === false &&
-                              timer?.seconds === 0) ||
-                            exercise.isFinished
-                          }
-                          buttonStyle={classes.timer_button}
-                        /> */}
-                      </div>
-                    );
-                  })}
-                </div>
-                {/* stopwatch buttons */}
                 <div className={classes.stopwatch_buttons}>
                   <BasicButton
                     onAction={() => {
@@ -392,6 +250,131 @@ function Session() {
                     isDisabled={exercise.isFinished}
                   />
                 </div>
+                {/* Choose rest time */}
+                <div className={classes.session_first_section}>
+                  <InputField
+                    label={"Rest time"}
+                    variant="bordered"
+                    placeholder="60"
+                    labelPlacement="outside"
+                    value={exercise?.restTime || 60}
+                    onChange={(value) =>
+                      handleOnChangeSession("restTime", value, i)
+                    }
+                    isDisabled={exercise.isFinished}
+                    classNames={{
+                      label: classes.label,
+                      inputWrapper: classes.field_main_wrapper,
+                      input: classes.field_value,
+                    }}
+                    min={1}
+                    max={600}
+                    type="number"
+                    endContent={"seconds"}
+                  />
+                  {/* Choose number of sets */}
+                  <InputField
+                    label={"Sets number"}
+                    variant="bordered"
+                    placeholder="1"
+                    labelPlacement="outside"
+                    value={exercise?.sets.length}
+                    onChange={(value) => {
+                      handleAddSets("sets", value, i);
+                    }}
+                    isDisabled={exercise.isFinished}
+                    classNames={{
+                      label: classes.label,
+                      inputWrapper: classes.field_main_wrapper,
+                      input: classes.field_value,
+                    }}
+                    endContent={"sets"}
+                    min={1}
+                    max={9}
+                    type="number"
+                  />
+                </div>
+                {/* Choose reps and weight */}
+                <div className={classes.sets_container}>
+                  {exercise.sets.map((set, index) => {
+                    const timer = timers[i]?.[index];
+                    return (
+                      <div key={index} className={classes.set_container}>
+                        <InputField
+                          aria-label="repetions"
+                          variant="bordered"
+                          value={set.reps}
+                          endContent="reps"
+                          type="number"
+                          onChange={(value) =>
+                            handleOnchangeSets("reps", value, i, index)
+                          }
+                          classNames={{
+                            label: classes.label,
+                            inputWrapper: classes.field_main_wrapper,
+                            input: classes.field_value,
+                          }}
+                          isDisabled={exercise.isFinished}
+                        />
+                        <InputField
+                          aria-label="repetions"
+                          variant="bordered"
+                          value={set.weight}
+                          endContent="kg"
+                          type="number"
+                          onChange={(value) =>
+                            handleOnchangeSets("weight", value, i, index)
+                          }
+                          classNames={{
+                            label: classes.label,
+                            inputWrapper: classes.field_main_wrapper,
+                            input: classes.field_value,
+                          }}
+                          isDisabled={exercise.isFinished}
+                        />
+                        <PopupButton
+                          triggerAction={() =>
+                            !timer?.isRunning && resetTimers()
+                          }
+                          triggerButtonContent={
+                            timer?.isRunning
+                              ? getFormattedTime(timer.seconds)
+                              : "Start rest time"
+                          }
+                          buttonStyle={classes.timer_button}
+                          closebutton={"Close"}
+                          isDisabled={
+                            (!timer?.isRunning && timer?.seconds === 0) ||
+                            exercise.isFinished ||
+                            (timers.some((exerciseTimers) =>
+                              exerciseTimers.some(
+                                (setTimer) => setTimer.isRunning
+                              )
+                            ) &&
+                              !timer?.isRunning)
+                          }
+                          content={
+                            <BasicButton
+                              onAction={() => startTimer(i, index)}
+                              buttonContent={
+                                timer?.isRunning
+                                  ? getFormattedTime(timer.seconds)
+                                  : "Start rest time"
+                              }
+                              isDisabled={
+                                (timer?.isRunning === false &&
+                                  timer?.seconds === 0) ||
+                                exercise.isFinished
+                              }
+                              buttonStyle={classes.timer_button}
+                            />
+                          }
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* stopwatch buttons */}
               </div>
             </AccordionItem>
           );

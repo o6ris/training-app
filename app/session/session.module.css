@@ -31,13 +31,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .session_first_section {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 1rem;
+  gap: 0.5rem;
 }
 
 .sets_container {
@@ -49,10 +49,12 @@
 
 .set_container {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.3fr;
-  grid-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 0.5fr;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
   width: 100%;
-  align-items: end;
+  align-items: start;
 }
 
 .timer_button {
@@ -65,7 +67,7 @@
   font-weight: var(--font-black);
   font-style: italic;
   width: 100%;
-  min-height: 60px !important;
+  grid-column: span 2;
 }
 
 .accordion_item {
@@ -79,7 +81,7 @@
 .stopwatch_buttons {
   display: grid;
   grid-template-columns: 1fr 1fr 0.2fr;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .button {
@@ -92,6 +94,7 @@
   font-weight: var(--font-black);
   font-style: italic;
   text-transform: uppercase;
+  padding: 0;
 }
 
 .icon_button, .image_button {
