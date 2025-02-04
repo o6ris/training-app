@@ -6,13 +6,14 @@
 	--success-color: #05BA8F;
 	--danger-color: #BA0505;
 
-	--font-xs: 10px;
-	--font-s: 12px;
-	--font-r: 14px;
-	--font-l: 16px;
-	--font-xl: 18px;
-	--font-xxl: 20px;
-	--font-3xl: 30px;
+	--font-xs: 0.625rem;  /* 10px / 16 = 0.625rem */
+	--font-s: 0.75rem;    /* 12px / 16 = 0.75rem */
+	--font-r: 0.875rem;   /* 14px / 16 = 0.875rem */
+	--font-l: 1rem;       /* 16px / 16 = 1rem */
+	--font-xl: 1.125rem;  /* 18px / 16 = 1.125rem */
+	--font-xxl: 1.25rem;  /* 20px / 16 = 1.25rem */
+	--font-3xl: 1.875rem; /* 30px / 16 = 1.875rem */
+	
 	--font-light: 100;
 	--font-regular: 300;
 	--font-bold: 600;
