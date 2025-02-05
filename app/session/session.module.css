@@ -135,7 +135,7 @@
   width: 100px;
 }
 
-.finish_button {
+.save_button {
   background-color: var(--success-color);
 }
 

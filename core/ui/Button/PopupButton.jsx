@@ -23,6 +23,8 @@ export default function PopupButton({
   isIconOnly,
   startContent,
   closebutton = "Cancel",
+  confirmButton = "Confirm",
+  confirmButtonStyle,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
@@ -43,7 +45,7 @@ export default function PopupButton({
       </Button>
       <Modal
         backdrop="blur"
-        scrollBehavior={scrollBehavior} 
+        scrollBehavior={scrollBehavior}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement={placement}
@@ -73,13 +75,13 @@ export default function PopupButton({
                 </Button>
                 {onConfirm && (
                   <Button
-                    className={classes.confirm_button}
+                    className={`${confirmButtonStyle} ${classes.confirm_button}`}
                     onPress={() => {
                       onClose();
                       onConfirm();
                     }}
                   >
-                    Confirm
+                    {confirmButton}
                   </Button>
                 )}
               </ModalFooter>

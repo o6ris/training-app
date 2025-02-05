@@ -161,6 +161,7 @@ function Session() {
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
+                  {/* Start stopwatch */}
                   <BasicButton
                     onAction={() => {
                       if (isRunning[i]) {
@@ -206,6 +207,7 @@ function Session() {
                     buttonStyle={`${classes.button} ${classes.start_button}`}
                     isDisabled={exercise.isFinished}
                   />
+                  {/* Save exercise */}
                   <PopupButton
                     triggerAction={() => {
                       pause(i);
@@ -213,10 +215,10 @@ function Session() {
                     triggerButtonContent="Save"
                     startContent={
                       <Icon
-                        name="Check"
+                        name="Save"
                         size={16}
                         color="white"
-                        strokeWidth={3}
+                        strokeWidth={2}
                       />
                     }
                     onCancel={() => start(i)}
@@ -225,11 +227,14 @@ function Session() {
                       saveExercise(i);
                       handleOnChangeSession("isFinished", true, i);
                     }}
-                    buttonStyle={`${classes.button} ${classes.finish_button}`}
+                    buttonStyle={`${classes.button} ${classes.save_button}`}
                     title="Are you sure you want to end this exercise?"
                     content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
                     isDisabled={exercise.isFinished}
+                    confirmButton="Save"
+                    confirmButtonStyle={classes.save_button}
                   />
+                  {/* refresh exercise */}
                   <PopupButton
                     triggerAction={() => {
                       pause(i);
@@ -248,6 +253,8 @@ function Session() {
                     title="Are you sure you want to reset this exercise?"
                     content="Confirming will erase all progress and restart this exercise from zero."
                     isDisabled={exercise.isFinished}
+                    confirmButton="Reset"
+                    confirmButtonStyle={classes.reset_button}
                   />
                 </div>
                 {/* Choose RM */}
