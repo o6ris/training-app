@@ -8,7 +8,8 @@
   padding: 0;
 }
 
-.accordion_header, .accordion_title {
+.accordion_header,
+.accordion_title {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -23,7 +24,6 @@
 }
 
 .exercise_desc_content * {
-
   color: var(--primary-color);
 }
 
@@ -97,7 +97,30 @@
   padding: 0;
 }
 
-.icon_button, .image_button {
+.modal_content * {
+  color: var(--primary-color);
+}
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+}
+
+.label_with_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.input_info {
+  background-color: transparent;
+  align-items: flex-end;
+}
+
+.icon_button,
+.image_button {
   background-color: transparent;
 }
 

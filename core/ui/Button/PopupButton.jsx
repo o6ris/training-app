@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import classes from "./popupButton.module.css";
 import {
   Modal,
@@ -22,9 +22,10 @@ export default function PopupButton({
   isDisabled,
   isIconOnly,
   startContent,
-  closebutton = "Cancel"
+  closebutton = "Cancel",
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [scrollBehavior, setScrollBehavior] = useState("inside");
 
   return (
     <>
@@ -42,6 +43,7 @@ export default function PopupButton({
       </Button>
       <Modal
         backdrop="blur"
+        scrollBehavior={scrollBehavior} 
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement={placement}
