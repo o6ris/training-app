@@ -250,6 +250,65 @@ function Session() {
                     isDisabled={exercise.isFinished}
                   />
                 </div>
+                {/* Choose RM */}
+                <InputField
+                  label={
+                    <div className={classes.label_with_info}>
+                      <span>1RM (kg)</span>
+                      <PopupButton
+                        isIconOnly={true}
+                        startContent={
+                          <Icon
+                            name="Info"
+                            size={16}
+                            color="white"
+                            strokeWidth={2}
+                          />
+                        }
+                        buttonStyle={classes.input_info}
+                        title={"What is exactly 1RM?"}
+                        closebutton={"Close"}
+                        content={
+                          <div className={classes.modal_content}>
+                            <p>
+                            Your 1RM is the maximum weight you can lift for one rep of a given exercise. It serves as a benchmark to choose the appropriate weight for your training goal.
+                            </p>
+                            <div>
+                              <h3>How to do 1RM test?</h3>
+                              <ul>
+                                <li><strong>Warm-Up:</strong> Start with 5-10 minutes of light cardio, followed by dynamic stretching, and then warm-up sets (50-60% of your estimated 1RM).</li>
+                                <li><strong>Gradual Increase:</strong> Start with a light weight, gradually increase by 5-10% after each successful attempt, performing 1-3 reps per increase.</li>
+                                <li><strong>Final Attempt:</strong> Rest for 2-4 minutes between attempts. Your final attempt should be your maximum weight that you can lift for one rep with proper form.</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h3>How to Estimate Your 1RM?</h3>
+                              <p>If you don't know your exact 1RM, you can estimate it by performing a set of reps at a weight you can handle, then using an equation like the Epley formula:</p>
+                              <p>1RM = Weight × (1 + 0.0333 × Reps)</p>
+                              <p>(e.g: 50kg x (1 + 0.333 * 12) = 63kg)</p>
+                            </div>
+                            <p>
+                            As you continue to train and get stronger, your 1RM will naturally increase. Regularly adjusting your 1RM every 4 - 6 weeks ensures that you're always lifting an appropriate weight for your current strength level and allows you to continue making progress.
+                            </p>
+                          </div>
+                        }
+                      />
+                    </div>
+                  }
+                  ariaLabel="One RM"
+                  variant="bordered"
+                  placeholder="Exemple: 100"
+                  labelPlacement="outside"
+                  isDisabled={exercise.isFinished}
+                  value={exercise.rm}
+                  onChange={(value) => handleOnChangeSession("rm", value, i)}
+                  classNames={{
+                    label: classes.label,
+                    inputWrapper: classes.field_main_wrapper,
+                    input: classes.field_value,
+                  }}
+                  endContent="Kg"
+                />
                 {/* Choose rest time */}
                 <div className={classes.session_first_section}>
                   <InputField
@@ -408,6 +467,7 @@ function Session() {
                     type="number"
                   />
                 </div>
+                <hr className={classes.section_separation} />
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
                   {exercise.sets.map((set, index) => {
@@ -469,7 +529,10 @@ function Session() {
                                       </ul>
                                     </div>
                                     <p>
-                                    By adjusting your reps based on weight, sets, and rest time, you&rsquo;ll optimize your training for better results and progression!
+                                      By adjusting your reps based on weight,
+                                      sets, and rest time, you&rsquo;ll optimize
+                                      your training for better results and
+                                      progression!
                                     </p>
                                   </div>
                                 }
@@ -555,8 +618,9 @@ function Session() {
                                       </h3>
                                       <ul>
                                         <li>
-                                          - If you can&rsquo;t complete your reps with
-                                          proper form, reduce the weight.
+                                          - If you can&rsquo;t complete your
+                                          reps with proper form, reduce the
+                                          weight.
                                         </li>
                                         <li>
                                           - If you can do more reps than planned

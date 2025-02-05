@@ -47,6 +47,11 @@
   width: 100%;
 }
 
+.section_separation{
+  margin: 1.5rem auto;
+  width: 70%;
+}
+
 .set_container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -112,6 +117,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  height: 15px;
 }
 
 .input_info {
