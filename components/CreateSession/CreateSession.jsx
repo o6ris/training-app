@@ -50,7 +50,7 @@ function CreateSession({ muscles }) {
                 content={
                   <div className={classes.modal_content}>
                     <p>
-                      When building a workout session, it's important to start
+                      When building a workout session, it&apos;s important to start
                       by selecting the muscles you want to train.
                     </p>
                     <p>
@@ -101,7 +101,7 @@ function CreateSession({ muscles }) {
                       Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
                       </p>
                       <p>
-                      Once you've picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
+                      Once you&apos;ve picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
                       </p>
                     </div>
                   }
