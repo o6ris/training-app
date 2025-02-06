@@ -72,8 +72,6 @@ export async function GET(request) {
       dateFilter = { $gte: startDate };
     }
 
-    console.log("dateFilter", dateFilter);
-
     const stats = await Stats.find({
       user: user,
       date: { ...dateFilter },

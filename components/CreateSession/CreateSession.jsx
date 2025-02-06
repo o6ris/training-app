@@ -8,6 +8,8 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import Icon from "@core/ui/Icons/Icon";
+import PopupButton from "@core/ui/Button/PopupButton";
 
 function CreateSession({ muscles }) {
   const { createSession, session } = useContext(SessionContext);
@@ -34,7 +36,33 @@ function CreateSession({ muscles }) {
               )}`,
             };
           })}
-          label="Muscle"
+          label={
+            <div className={classes.label_with_info}>
+              <span>Muscles</span>
+              <PopupButton
+                isIconOnly={true}
+                startContent={
+                  <Icon name="Info" size={16} color="white" strokeWidth={2} />
+                }
+                buttonStyle={classes.info_button}
+                title={"Why Choose Muscles First When Creating Your Workout?"}
+                closebutton={"Close"}
+                content={
+                  <div className={classes.modal_content}>
+                    <p>
+                      When building a workout session, it's important to start
+                      by selecting the muscles you want to train.
+                    </p>
+                    <p>
+                      Instead of randomly picking exercises, choosing your
+                      target muscles first ensures that your workout is
+                      structured and balanced.
+                    </p>
+                  </div>
+                }
+              />
+            </div>
+          }
           placeholder="Choose muscle"
           labelPlacement="outside"
           variant="bordered"
@@ -56,7 +84,30 @@ function CreateSession({ muscles }) {
               };
             })}
             hasImage={true}
-            label="Exercises"
+            label={
+              <div className={classes.label_with_info}>
+                <span>Exercises</span>
+                <PopupButton
+                  isIconOnly={true}
+                  startContent={
+                    <Icon name="Info" size={16} color="white" strokeWidth={2} />
+                  }
+                  buttonStyle={classes.info_button}
+                  title={"Now, Choose Your Exercises!"}
+                  closebutton={"Close"}
+                  content={
+                    <div className={classes.modal_content}>
+                      <p>
+                      Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
+                      </p>
+                      <p>
+                      Once you've picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
+                      </p>
+                    </div>
+                  }
+                />
+              </div>
+            }
             placeholder="Choose exercises"
             labelPlacement="outside"
             variant="bordered"

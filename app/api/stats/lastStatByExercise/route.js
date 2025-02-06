@@ -7,7 +7,6 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
   const user = request.nextUrl.searchParams.get("user");
   const exercises = request.nextUrl.searchParams.getAll("exercise");
-  console.log("exercises", exercises);
   try {
     await connectDb();
     const stats = await Stats.find({
@@ -46,8 +45,6 @@ export async function GET(request) {
       }
     });
 
-    // console.log("stats", stats);
-    console.log("latestExercise", latestExercise);
     return NextResponse.json(latestExercise, { status: 200 });
   } catch (err) {
     const { message, status } = err;

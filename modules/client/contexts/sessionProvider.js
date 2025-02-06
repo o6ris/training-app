@@ -11,11 +11,11 @@ export const SessionProvider = ({ children }) => {
     const exercisesId = [];
     exercises.forEach((exercise) => {
       const similarExercise = latestExercises.find(
-        (el) => (el.exercise === exercise)
+        (el) => el.exercise === exercise
       );
       if (similarExercise) {
         exercisesList.push(similarExercise);
-        exercisesId.push(similarExercise.exercise)
+        exercisesId.push(similarExercise.exercise);
       } else {
         exercisesList.push({
           exercise: exercise,
@@ -30,12 +30,11 @@ export const SessionProvider = ({ children }) => {
           ],
           isFinished: false,
         });
-        exercisesId.push(exercise)
+        exercisesId.push(exercise);
       }
     });
-    // console.log("exercisesList", exercisesList)
     setSession(exercisesList);
-    setExercisesId(exercisesId)
+    setExercisesId(exercisesId);
     localStorage.setItem("session", JSON.stringify(exercisesList));
     localStorage.setItem("exercisesId", JSON.stringify(exercisesId));
   };
@@ -64,19 +63,25 @@ export const SessionProvider = ({ children }) => {
   };
 
   const handleAddSets = (name, value, index) => {
-    const set = {
-      reps: 0,
-      weight: 0,
-    };
-    const tempSession = [...session];
-    const tempExercise = tempSession[index];
-    tempExercise[name] = Array.isArray(tempExercise[name])
-      ? Array.from({ length: value }, () => ({ ...set }))
-      : new Array(value).fill(set);
+    // Validate that value is between 1 and 9
+    if (value >= 0 && value < 10) {
+      const set = {
+        reps: 0,
+        weight: 0,
+      };
+      const tempSession = [...session];
+      const tempExercise = tempSession[index];
+      tempExercise[name] = Array.isArray(tempExercise[name])
+        ? Array.from({ length: value }, () => ({ ...set }))
+        : new Array(value).fill(set);
 
-    tempSession[index] = tempExercise;
-    setSession(tempSession);
-    localStorage.setItem("session", JSON.stringify(tempSession));
+      tempSession[index] = tempExercise;
+      setSession(tempSession);
+      localStorage.setItem("session", JSON.stringify(tempSession));
+    } else {
+      // Optionally, handle the case where value is out of the desired range
+      console.warn("Value must be between 1 and 9.");
+    }
   };
 
   const refreshExercise = (index) => {

@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     const session = await request.json();
-    console.log("session", session)
     await connectDb();
     const renderSession = async () => {
       if (Array.isArray(session)) {

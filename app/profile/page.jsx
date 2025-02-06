@@ -38,8 +38,6 @@ function Profile() {
     setCredentials(t);
   };
 
-  console.log("credentials", credentials);
-
   return (
     <div className={classes.container}>
       <InputField
@@ -90,8 +88,7 @@ function Profile() {
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
         value={credentials?.email}
-        onChange={(value) => handleOnChange("email", value)}
-        isDisabled={!isEditable}
+        isDisabled={true}
       />
       <div className={classes.buttons_wrapper}>
         <BasicButton

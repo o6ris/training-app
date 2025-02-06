@@ -5,35 +5,43 @@ const useTimer = (session) => {
   const [timers, setTimers] = useState([]); // State to store timers
   const intervalRefs = useRef([]); // Reference to store interval IDs
 
-  // console.log("timers", timers)
 
-  useEffect(() => {
-    // Initialize timers based on the session rest times
-    const initialTimers = session.map((exercise) =>
-      exercise.sets.map(() => ({
-        seconds: exercise.restTime, // Set initial seconds based on restTime
-        isRunning: false, // Initially, timers are not running
-      }))
-    );
-    setTimers(initialTimers);
+  const resetTimers = () => {
+    setTimers((prevTimers) => {
+      // If timers are empty, initialize them from session
+      if (prevTimers.length === 0) {
+        return session.map((exercise) =>
+          exercise.sets.map(() => ({
+            seconds: exercise.restTime,
+            isRunning: false,
+          }))
+        );
+      }
+      // Otherwise, update only the seconds and isRunning state
+      const timers = prevTimers.map((exerciseTimers, exerciseIndex) =>
+        exerciseTimers.map((timer, setIndex) => {
+          const newRestTime = session[exerciseIndex].restTime; // Get the new session rest time
+          const updatedSeconds =
+          timer.seconds !== newRestTime
+            ? newRestTime // Use new value if it changed
+            : timer.seconds; // Otherwise, keep current value
 
-    // Clear any existing intervals when session changes
-    intervalRefs.current.forEach((exerciseIntervals) =>
-      exerciseIntervals.forEach((interval) => clearInterval(interval))
-    );
-
-    // Initialize interval references to null
-    intervalRefs.current = session.map((exercise) =>
-      exercise.sets.map(() => null)
-    );
-
-    // Cleanup on component unmount
-    return () => {
-      intervalRefs.current.forEach((exerciseIntervals) =>
-        exerciseIntervals.forEach((interval) => clearInterval(interval))
+          return {
+            ...timer,
+            seconds: updatedSeconds, // Reset time based on session
+            isRunning: false, // Stop the timer
+          };
+        })
       );
-    };
-  }, [session]); // Effect runs whenever session changes
+      return timers
+    });
+    // Reset intervalRefs only if they are empty
+    if (intervalRefs.current.length === 0) {
+      intervalRefs.current = session.map((exercise) =>
+        exercise.sets.map(() => null)
+      );
+    }
+  };
 
   // Function to start a timer for a specific exercise and set index
   const startTimer = (exerciseIndex, setIndex) => {
@@ -92,6 +100,7 @@ const useTimer = (session) => {
     startTimer, // Function to start a timer
     getFormattedTime, // Function to format time
     timers, // Current timers state
+    resetTimers,
   };
 };
 
