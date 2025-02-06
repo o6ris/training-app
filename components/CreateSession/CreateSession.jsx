@@ -101,7 +101,7 @@ function CreateSession({ muscles }) {
                       Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
                       </p>
                       <p>
-                      Make sure to choose exercises that match your goal, and pay attention to the movement shown in the picture to execute them correctly.
+                      Once you've picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
                       </p>
                     </div>
                   }
