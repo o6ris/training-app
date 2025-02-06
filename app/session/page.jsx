@@ -289,12 +289,12 @@ function Session() {
                             </div>
                             <div>
                               <h3>How to Estimate Your 1RM?</h3>
-                              <p>If you don't know your exact 1RM, you can estimate it by performing a set of reps at a weight you can handle, then using an equation like the Epley formula:</p>
+                              <p>If you don&apos;t know your exact 1RM, you can estimate it by performing a set of reps at a weight you can handle, then using an equation like the Epley formula:</p>
                               <p>1RM = Weight × (1 + 0.0333 × Reps)</p>
                               <p>(e.g: 50kg x (1 + 0.333 * 12) = 63kg)</p>
                             </div>
                             <p>
-                            As you continue to train and get stronger, your 1RM will naturally increase. Regularly adjusting your 1RM every 4 - 6 weeks ensures that you're always lifting an appropriate weight for your current strength level and allows you to continue making progress.
+                            As you continue to train and get stronger, your 1RM will naturally increase. Regularly adjusting your 1RM every 4 - 6 weeks ensures that you&apos;re always lifting an appropriate weight for your current strength level and allows you to continue making progress.
                             </p>
                           </div>
                         }
@@ -502,7 +502,7 @@ function Session() {
                                   <div className={classes.modal_content}>
                                     <p>
                                       The number of reps you perform determines
-                                      the type of gains you'll achieve. The
+                                      the type of gains you&apos;ll achieve. The
                                       ideal rep range depends on the weight you
                                       lift, the number of sets, and your rest
                                       time.
