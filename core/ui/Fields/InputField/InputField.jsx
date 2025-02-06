@@ -12,6 +12,8 @@ function InputField({
   value,
   endContent,
   isDisabled,
+  min,
+  max,
   type,
 }) {
   return (
@@ -34,6 +36,8 @@ function InputField({
                 input: classes.value,
               }
         }
+        min={min}
+        max={max}
         type={type}
         endContent={endContent}
       />

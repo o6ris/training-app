@@ -1,21 +1,22 @@
 .session_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
 }
 
 .accordion {
   padding: 0;
 }
 
-.accordion_header, .accordion_title {
+.accordion_header,
+.accordion_title {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 .accordion_title {
-  gap: 10px;
+  gap: 1rem;
 }
 
 .accordion_title h2 {
@@ -23,7 +24,6 @@
 }
 
 .exercise_desc_content * {
-
   color: var(--primary-color);
 }
 
@@ -31,19 +31,35 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
+}
+
+.session_first_section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.5rem;
 }
 
 .sets_container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
+  width: 100%;
+}
+
+.section_separation{
+  margin: 1.5rem auto;
+  width: 70%;
 }
 
 .set_container {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.7fr;
-  grid-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 0.5fr;
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+  width: 100%;
+  align-items: start;
 }
 
 .timer_button {
@@ -55,6 +71,8 @@
   font-size: var(--font-xl);
   font-weight: var(--font-black);
   font-style: italic;
+  width: 100%;
+  grid-column: span 2;
 }
 
 .accordion_item {
@@ -68,7 +86,7 @@
 .stopwatch_buttons {
   display: grid;
   grid-template-columns: 1fr 1fr 0.2fr;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .button {
@@ -81,9 +99,34 @@
   font-weight: var(--font-black);
   font-style: italic;
   text-transform: uppercase;
+  padding: 0;
 }
 
-.icon_button, .image_button {
+.modal_content * {
+  color: var(--primary-color);
+}
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+}
+
+.label_with_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 15px;
+}
+
+.input_info {
+  background-color: transparent;
+  align-items: flex-end;
+}
+
+.icon_button,
+.image_button {
   background-color: transparent;
 }
 
@@ -92,7 +135,7 @@
   width: 100px;
 }
 
-.finish_button {
+.save_button {
   background-color: var(--success-color);
 }
 
@@ -104,7 +147,7 @@
 .field_main_wrapper {
   width: 100%;
   min-height: 60px !important;
-  padding: 10px;
+  padding: 0.6rem;
   border: 2px solid var(--primary-light-color);
 }
 

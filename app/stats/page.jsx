@@ -68,7 +68,7 @@ function Stats() {
       <div className={classes.global_data_wrapper}>
         {isLoading ? (
           <Skeleton
-            height={"120px"}
+            height={"4rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
         ) : (
@@ -79,7 +79,7 @@ function Stats() {
         )}
         {isLoading ? (
           <Skeleton
-            height={"120px"}
+            height={"4rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
         ) : (
@@ -92,15 +92,15 @@ function Stats() {
       {isLoading ? (
         <>
           <Skeleton
-            height={"300px"}
+            height={"12rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
           <Skeleton
-            height={"70px"}
+            height={"1rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
           <Skeleton
-            height={"70px"}
+            height={"1rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
         </>
@@ -144,25 +144,26 @@ function Stats() {
                       </p>
                       <p className={classes.data_title}>Reps</p>
                     </div>
-                    <PopupButton
-                      buttonStyle={`${classes.data} ${classes.volume}`}
-                      closebutton="Close"
-                      triggerButtonContent={
-                        <>
-                          <p className={classes.data_value}>
-                            {latestStat?.sets.reduce(
-                              (sum, current) =>
-                                sum + (current.reps * current.weight) / 1000,
-                              0
-                            )}{" "}
-                            T
-                          </p>
-                          <p className={classes.data_title}>Volume</p>
-                        </>
-                      }
-                      content={<VolumeDetails stat={latestStat} />}
-                      title="Volume details"
-                    />
+                    <div className={`${classes.data} ${classes.volume}`}>
+                      <PopupButton
+                        buttonStyle={classes.volume_button}
+                        closebutton="Close"
+                        triggerButtonContent={
+                          <>
+                            <p className={classes.data_value}>
+                              {latestStat?.sets.reduce(
+                                (sum, current) =>
+                                  sum + (current.reps * current.weight) / 1000,
+                                0
+                              )}{" "}
+                            </p>
+                          </>
+                        }
+                        content={<VolumeDetails stat={latestStat} />}
+                        title="Volume details"
+                      />
+                      <p className={classes.data_title}>Volume(T)</p>
+                    </div>
                     <div className={`${classes.data} ${classes.rest_time}`}>
                       <p className={classes.data_value}>{`${getMinutes(
                         latestStat?.rest_time

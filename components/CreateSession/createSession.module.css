@@ -22,3 +22,19 @@
 .accordion_title{
   color: var(--primary-light-color);
 }
+
+.label_with_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.info_button {
+  background-color: transparent;
+  padding: 0;
+  align-items: flex-end;
+}
+
+.modal_content * {
+  color: var(--primary-color);
+}
