@@ -32,7 +32,7 @@ function Stats() {
 
   const getMinutes = (seconds) => Math.floor(seconds / 60);
   const getSeconds = (seconds) => seconds % 60;
-  console.log("stats", stats);
+
   return (
     <div className={classes.data_container}>
       <SelectField
@@ -58,7 +58,6 @@ function Stats() {
         ariaLabel="Range"
         labelPlacement="outside"
         selectOnChange={(value) => {
-          console.log(value);
           return setRange(Array.from(value).join(""));
         }}
         value={range}

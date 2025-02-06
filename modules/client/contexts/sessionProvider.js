@@ -33,7 +33,6 @@ export const SessionProvider = ({ children }) => {
         exercisesId.push(exercise);
       }
     });
-    // console.log("exercisesList", exercisesList)
     setSession(exercisesList);
     setExercisesId(exercisesId);
     localStorage.setItem("session", JSON.stringify(exercisesList));

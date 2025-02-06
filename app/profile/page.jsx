@@ -38,8 +38,6 @@ function Profile() {
     setCredentials(t);
   };
 
-  console.log("credentials", credentials);
-
   return (
     <div className={classes.container}>
       <InputField

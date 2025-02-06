@@ -5,7 +5,7 @@ export default function useStats(userId) {
   const [isLoading, setIsLoading] = useState([]);
   const [latestStats, setLatestStats] = useState({});
   const [latestExercises, setLatestExercises] = useState([]);
-  const [range, setRange] = useState("year");
+  const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const getStats = async () => {
@@ -64,7 +64,6 @@ export default function useStats(userId) {
           delete element.training_time;
           delete element.rest_time;
         });
-        // console.log("stats", stats);
         setLatestExercises(stats);
       }
     } catch (error) {

@@ -38,7 +38,6 @@ function Session() {
     useTimer(session);
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  // console.log("time", timers);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
