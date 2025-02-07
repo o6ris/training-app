@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import User from "@modules/server/models/user";
+import Whitelisted from "@modules/server/models/whitelistedEmail";
 import connectDb from "lib/mongodb";
 
 export const authOptions = {
@@ -48,6 +49,10 @@ export const authOptions = {
       if (account?.provider === "google") {
         await connectDb();
         try {
+          const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
+          if(!whiteListedEmailSet.has(user.email)) {
+            throw { message: "Email is not whitelisted", status: 400 };
+          }
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
             const newUser = new User({
@@ -58,8 +63,8 @@ export const authOptions = {
           }
           return true;
         } catch (err) {
-          console.error("err", err);
-          return false;
+          console.error("Sign-in error:", err);
+          return false
         }
       }
     },
