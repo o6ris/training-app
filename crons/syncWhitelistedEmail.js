@@ -5,8 +5,10 @@ import fs from "fs";
 
 dotenv.config();
 
+const validateEmail = /^[a-z0-9._-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+
 const auth = new google.auth.GoogleAuth({
-  keyFile: "./tough-star-389810-705ca1002720.json",
+  keyFile: "./google-service-key.json",
   scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
 });
 
@@ -41,13 +43,31 @@ async function syncWhitelist() {
   const existingEmails = await WhitelistedEmail.find({}, "email");
   const existingEmailSet = new Set(existingEmails.map(e => e.email));
 
-  const newEntries = sheetData.filter(e => !existingEmailSet.has(e.email));
+  const newEntries = [];
+  const invalidEmails = [];
+
+  for (const entry of sheetData) {
+    // Validate the email format
+    if (validateEmail.test(entry.email)) {
+      if (!existingEmailSet.has(entry.email)) {
+        newEntries.push(entry);
+      }
+    } else {
+      invalidEmails.push(entry);  // Collect invalid emails
+      console.log(`❌ Invalid email format: ${entry}`);
+    }
+  }
 
   if (newEntries.length > 0) {
     await WhitelistedEmail.insertMany(newEntries);
     console.log(`✅ Whitelist updated! Added ${newEntries.length} new emails.`);
   } else {
     console.log("✅ No new emails to add.");
+  }
+
+  // Log the invalid emails at the end
+  if (invalidEmails.length > 0) {
+    console.log(`⚠️ Invalid email format(s):`, invalidEmails);
   }
 }
 
