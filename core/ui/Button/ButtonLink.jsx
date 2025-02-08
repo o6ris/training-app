@@ -6,7 +6,11 @@ import classes from "./button.module.css";
 
 function ButtonLink({ url, buttonContent, buttonStyle, onAction }) {
   return (
-    <Link onClick={() => onAction()} className={`${classes.button} ${buttonStyle}`} href={url}>
+    <Link
+      onClick={() => onAction()}
+      className={`${classes.button} ${buttonStyle}`}
+      href={url}
+    >
       {buttonContent}
     </Link>
   );
