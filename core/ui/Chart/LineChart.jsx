@@ -2,8 +2,9 @@ import React, { useRef } from "react";
 import { Line } from "react-chartjs-2";
 import useLineChart from "@modules/client/charts/useLineChart";
 
-function LineChart({ stats, getStatById, range }) {
-  const { chartData } = useLineChart(stats, range);
+function LineChart({ stats, getStatById, range, customEndDate }) {
+  console.log("stats", stats)
+  const { chartData } = useLineChart(stats, range, customEndDate);
   const chartRef = useRef(null);
 
   const handleClick = (event) => {

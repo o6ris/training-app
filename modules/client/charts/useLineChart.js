@@ -14,7 +14,7 @@ const generateDateRange = (startDate, endDate) => {
   return dates;
 };
 
-const filterStatsByRange = (stats, range) => {
+const filterStatsByRange = (stats, range, customEndDate) => {
   const now = new Date();
   let startDate;
 
@@ -36,7 +36,7 @@ const filterStatsByRange = (stats, range) => {
       startDate = new Date(0);
   }
 
-  const endDate = new Date();
+  const endDate = customEndDate ? new Date(customEndDate) : new Date();
 
   return {
     filteredStats: stats.filter((stat) => new Date(stat.date) >= startDate),
@@ -45,13 +45,14 @@ const filterStatsByRange = (stats, range) => {
   };
 };
 
-export default function useLineChart(stats, range) {
+export default function useLineChart(stats, range, customEndDate = null) {
   Chart.register(CategoryScale, zoomPlugin);
 
   const chartData = useMemo(() => {
     const { filteredStats, startDate, endDate } = filterStatsByRange(
       stats,
-      range
+      range,
+      customEndDate
     );
     const dateRange = generateDateRange(startDate, endDate);
 

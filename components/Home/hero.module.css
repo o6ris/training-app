@@ -1,8 +1,8 @@
 .hero_wrapper {
-  width: 100vw; /* Full viewport width */
-  margin-left: -1rem; /* Cancel the root layout padding */
+  width: 100vw;
+  margin-left: -1rem;
   margin-right: -1rem;
-  min-height: 80vh; /* Full viewport height */
+  min-height: 80vh; 
   display: flex;
   padding: 20px;
 
