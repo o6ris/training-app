@@ -5,6 +5,10 @@ import Link from "next/link";
 function Navigation() {
   return (
     <nav className={classes.nav}>
+      <Link className={classes.link} href="/home">
+        <Icon name="Home" size={16} color="#02091C" strokeWidth={2} />
+        <span>Home</span>
+      </Link>
       <Link className={classes.link} href="/createSession">
         <Icon name="Dumbbell" size={16} color="#02091C" strokeWidth={2} />
         <span>Workout</span>

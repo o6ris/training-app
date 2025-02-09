@@ -1,7 +1,12 @@
 import classes from "./home.module.css";
 import ButtonLink from "@core/ui/Button/ButtonLink";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../api/auth/[...nextauth]/route"
 
-function page() {
+export default async function Home() {
+
+  const session = await getServerSession(authOptions)
+
   return (
     <main className={classes.main_wrapper}>
       <section className={classes.hero_wrapper}>
@@ -16,7 +21,7 @@ function page() {
             performance, and stay consistent with your fitness goals.
           </i>
           <ButtonLink
-            url={"/login"}
+            url={session === null ? "/login" : "/createSession"}
             buttonContent={"Get Started"}
             buttonStyle={classes.cta}
           />
@@ -47,5 +52,3 @@ function page() {
     </main>
   );
 }
-
-export default page;
