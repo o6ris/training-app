@@ -7,7 +7,9 @@ import formatDate from "@modules/client/utils/formatDate";
 const generateDateRange = (startDate, endDate) => {
   const dates = [];
   let currentDate = new Date(startDate);
-  while (currentDate <= endDate) {
+  let extendedEndDate = new Date(endDate);
+  extendedEndDate.setDate(extendedEndDate.getDate() + 5); // Add 5 extra days
+  while (currentDate <= extendedEndDate) {
     dates.push(new Date(currentDate));
     currentDate.setDate(currentDate.getDate() + 1);
   }
