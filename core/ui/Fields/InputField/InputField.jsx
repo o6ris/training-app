@@ -15,6 +15,8 @@ function InputField({
   min,
   max,
   type,
+  isInvalid,
+  errorMessage,
 }) {
   return (
     <div className={baseStyle.input_container}>
@@ -40,6 +42,8 @@ function InputField({
         max={max}
         type={type}
         endContent={endContent}
+        isInvalid={isInvalid}
+        errorMessage={errorMessage}
       />
     </div>
   );

@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
+import classes from "./lineChart.module.css"
 import { Line } from "react-chartjs-2";
 import useLineChart from "@modules/client/charts/useLineChart";
 
-function LineChart({ stats, getStatById, range }) {
-  const { chartData } = useLineChart(stats, range);
+function LineChart({ stats, getStatById, range, customEndDate }) {
+  const { chartData } = useLineChart(stats, range, customEndDate);
   const chartRef = useRef(null);
 
   const handleClick = (event) => {
@@ -23,7 +24,7 @@ function LineChart({ stats, getStatById, range }) {
   };
 
   return (
-    <div style={{ overflowX: "auto" }}>
+    <div className={classes.chart_wrapper}>
       <Line
         ref={chartRef}
         options={{
@@ -65,6 +66,8 @@ function LineChart({ stats, getStatById, range }) {
                 maxTicksLimit: 6,
               },
               suggestedMin: 0,
+              suggestedMax:
+                Math.max(...chartData.datasets[0].data.map((d) => d.y)) * 1.3,
             },
           },
           onClick: handleClick,

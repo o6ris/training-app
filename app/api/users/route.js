@@ -12,7 +12,7 @@ export async function POST(request) {
     const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
     
     if(!whiteListedEmailSet.has(email)) {
-      throw { message: "Email is not whitelisted", status: 400 };
+      throw { message: "Email is not whitelisted", status: 403 };
     }
     
     if (emailExist) {

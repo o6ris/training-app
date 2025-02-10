@@ -16,7 +16,7 @@
     "dotenv": "^16.4.7",
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.2",
-    "framer-motion": "^11.1.7",
+    "framer-motion": "^11.18.2",
     "lucide-react": "^0.378.0",
     "mongodb": "^6.1.0",
     "mongoose": "^7.5.2",

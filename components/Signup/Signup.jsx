@@ -11,6 +11,7 @@ function Signup() {
     password: "",
     confirmedPassword: "",
   });
+  const [isError, setIsError] = useState({});
   const [disabledButton, setDisabledButton] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
@@ -33,6 +34,16 @@ function Signup() {
     }
   }, [isPasswordSame, validateEmail]);
 
+  useEffect(() => {
+    if (isError) {
+      const timer = setTimeout(() => {
+        setIsError(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isError]);
+
   return (
     <div className={classes.container}>
       <InputField
@@ -41,6 +52,12 @@ function Signup() {
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
         onChange={(value) => handleOnChange("email", value)}
+        isInvalid={isError.bool}
+        errorMessage={
+          isError.status === 403
+            ? "Access denined (not white listed?)"
+            : "Credentials are incorrect."
+        }
       />
       <InputField
         label="Password"
@@ -49,6 +66,12 @@ function Signup() {
         labelPlacement="outside"
         onChange={(value) => handleOnChange("password", value)}
         type={isVisible ? "text" : "password"}
+        isInvalid={isError.bool}
+        errorMessage={
+          isError.status === 403
+            ? "Access denined (not white listed?)"
+            : "Credentials are incorrect."
+        }
         endContent={
           <BasicButton
             buttonStyle={classes.visible_button}
@@ -58,6 +81,12 @@ function Signup() {
               ) : (
                 <Icon name="EyeOff" size={16} color="white" strokeWidth={3} />
               )
+            }
+            isInvalid={isError.bool}
+            errorMessage={
+              isError.status === 403
+                ? "Access denined (not white listed?)"
+                : "Credentials are incorrect."
             }
             isIconOnly={true}
             onAction={toggleVisible}
@@ -76,6 +105,12 @@ function Signup() {
         labelPlacement="outside"
         onChange={(value) => handleOnChange("confirmedPassword", value)}
         type={isVisible ? "text" : "password"}
+        isInvalid={isError.bool}
+        errorMessage={
+          isError.status === 403
+            ? "Access denined (not white listed?)"
+            : "Credentials are incorrect."
+        }
         endContent={
           <BasicButton
             buttonStyle={classes.visible_button}

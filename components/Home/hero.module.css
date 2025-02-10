@@ -1,0 +1,39 @@
+.hero_wrapper {
+  width: 100vw;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  min-height: 80vh;
+  display: flex;
+  padding: 20px;
+  background: url("/hero_section.png"), var(--bg-color-gradient);
+  background-size: cover;
+  background-position: 35% 10%;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+
+@media only screen and (min-width: 600px) {
+  .title {
+    font-size: var(--font-3xl);
+  }
+  .hero_content {
+    padding: 0 3rem;
+  }
+}
+
+.hero_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 4rem;
+}
+
+.cta {
+  background-color: var(--primary-accent-color);
+  width: fit-content !important;
+  padding: 0 1rem !important;
+  box-shadow: 5px 5px 15px #02091c;
+  margin-top: 1rem;
+  align-self: center;
+}
