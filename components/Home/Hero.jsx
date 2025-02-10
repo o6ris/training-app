@@ -14,6 +14,7 @@ function Hero({ session }) {
           whileInView="visible"
           variants={framerMotion.rightFadeInVariant}
           viewport={{ once: true, amount: 0.2 }}
+          className={classes.title}
         >
           <span>Track your Workouts.</span>
           <br />
