@@ -11,3 +11,23 @@
 .chart_wrapper p {
   text-align: center;
 }
+
+.lineChart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.chart_subtitle {
+  font-size: var(--font-xs);
+  color: var(--primary-accent-color);
+}
+
+.cta {
+  background-color: var(--primary-accent-color);
+  padding: 0 1rem !important;
+  box-shadow: 5px 5px 15px #02091c;
+  margin-top: 1rem;
+  align-self: center;
+}

@@ -189,7 +189,7 @@ function Stats() {
                   <div className={classes.chart_wrapper}>
                     <div>
                       <h3>Volume (T)</h3>
-                      <p className={classes.chart_subti}>
+                      <p className={classes.chart_subtitle}>
                         {formatDate(startDate, false)} -{" "}
                         {formatDate(new Date(), false)}
                       </p>

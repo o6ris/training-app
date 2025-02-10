@@ -12,7 +12,7 @@ export default async function Home() {
     <main className={classes.main_wrapper}>
       <Hero session={session} />
       <Benefits />
-      <Chart />
+      <Chart session={session} />
     </main>
   );
 }
