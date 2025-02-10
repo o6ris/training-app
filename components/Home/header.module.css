@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.link {
+  background-color: transparent;
+  padding: 0;
+  font-size: var(--font-r);
+  font-weight: var(--font-regular);
+  color: var(--primary_light-color);
+}

@@ -16,6 +16,11 @@
   cursor: pointer;
 }
 
+.active_link {
+  color: var(--primary-accent-color) !important;
+  font-weight: var(--font-bold);
+}
+
 .nav span {
   color: var(--primary-color);
 }

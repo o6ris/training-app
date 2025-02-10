@@ -1,5 +1,6 @@
 "use client";
 
+import classes from "./pageSignup.module.css"
 import Signup from "components/Signup/Signup";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function Home() {
   
   if (status === "unauthenticated") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className={classes.signup_wrapper}>
         <Signup />
       </main>
     );

@@ -1,0 +1,5 @@
+.chart_wrapper {
+  overflow-x: auto;
+  width: 100%;
+  min-height: 250px;
+}
