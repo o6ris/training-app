@@ -11,6 +11,7 @@ import Icon from "@core/ui/Icons/Icon";
 
 function Login() {
   const [credentials, setCredentials] = useState();
+  const [isError, setIsError] = useState();
   const [disabledButton, setDisabledButton] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
@@ -31,7 +32,8 @@ function Login() {
     if (res.ok) {
       return res;
     } else {
-      console.error(res.error);
+      setIsError(true);
+      console.error(res);
     }
   };
 
@@ -42,6 +44,16 @@ function Login() {
       setDisabledButton(true);
     }
   }, [validateEmail]);
+
+  useEffect(() => {
+    if (isError) {
+      const timer = setTimeout(() => {
+        setIsError(false);
+      }, 5000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [isError]);
   return (
     <div className={classes.container}>
       <InputField
@@ -50,6 +62,8 @@ function Login() {
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
         onChange={(value) => handleOnChange("email", value)}
+        isInvalid={isError}
+        errorMessage="Credentials are incorrect."
       />
       <InputField
         label="Password"
@@ -58,6 +72,8 @@ function Login() {
         labelPlacement="outside"
         onChange={(value) => handleOnChange("password", value)}
         type={isVisible ? "text" : "password"}
+        isInvalid={isError}
+        errorMessage="Credentials are incorrect."
         endContent={
           <BasicButton
             buttonStyle={classes.visible_button}
