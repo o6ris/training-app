@@ -1,5 +1,6 @@
 "use client";
 
+import classes from "./pageLogin.module.css"
 import Login from "components/Login/Login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function LoginPage() {
   
   if (status === "unauthenticated") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className={classes.login_wrapper}>
         <Login />
       </main>
     );

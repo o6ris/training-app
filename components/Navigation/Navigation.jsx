@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 function Navigation() {
   const pathname = usePathname();
-  console.log("pathname", pathname);
+
   return (
     <nav className={classes.nav}>
       <Link className={classes.link} href="/home">
