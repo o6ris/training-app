@@ -44,7 +44,16 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "credentials") {
-        return true;
+        await connectDb();
+        try {
+          const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
+          if(!whiteListedEmailSet.has(user.email)) {
+            throw { message: "Email is not whitelisted", status: 400 };
+          }
+          return true;
+        } catch (err) {
+          return false;
+        }
       }
       if (account?.provider === "google") {
         await connectDb();

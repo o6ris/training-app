@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import classes from "./login.module.css";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Image from "node_modules/next/image";
@@ -11,7 +11,7 @@ import Icon from "@core/ui/Icons/Icon";
 
 function Login() {
   const [credentials, setCredentials] = useState();
-  const [isError, setIsError] = useState();
+  const [isError, setIsError] = useState({});
   const [disabledButton, setDisabledButton] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
@@ -32,7 +32,7 @@ function Login() {
     if (res.ok) {
       return res;
     } else {
-      setIsError(true);
+      setIsError({ status: res.status, bool: true });
       console.error(res);
     }
   };
@@ -50,7 +50,7 @@ function Login() {
       const timer = setTimeout(() => {
         setIsError(false);
       }, 5000);
-  
+
       return () => clearTimeout(timer);
     }
   }, [isError]);
@@ -62,8 +62,12 @@ function Login() {
         placeholder="john.doe@mail.com"
         labelPlacement="outside"
         onChange={(value) => handleOnChange("email", value)}
-        isInvalid={isError}
-        errorMessage="Credentials are incorrect."
+        isInvalid={isError.bool}
+        errorMessage={
+          isError.status === 403
+            ? "Access denined (not white listed?)"
+            : "Credentials are incorrect."
+        }
       />
       <InputField
         label="Password"
@@ -72,8 +76,12 @@ function Login() {
         labelPlacement="outside"
         onChange={(value) => handleOnChange("password", value)}
         type={isVisible ? "text" : "password"}
-        isInvalid={isError}
-        errorMessage="Credentials are incorrect."
+        isInvalid={isError.bool}
+        errorMessage={
+          isError.status === 403
+            ? "Access denined (not white listed?)"
+            : "Credentials are incorrect."
+        }
         endContent={
           <BasicButton
             buttonStyle={classes.visible_button}
