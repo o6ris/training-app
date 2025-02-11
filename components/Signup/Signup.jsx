@@ -147,7 +147,7 @@ function Signup() {
             <p>
               This version of the app is a{" "}
               <strong>V0, an early MVP (Minimum Viable Product)</strong>. That
-              means it's still in <strong>testing mode</strong>, and I need a
+              means it&apos;s still in <strong>testing mode</strong>, and I need a
               small group of users to help shape it before a full release.
             </p>
             <p>
