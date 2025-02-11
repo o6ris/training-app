@@ -30,13 +30,14 @@ export default function PopupButton({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
 
+  console.log("autoOpen", autoOpen)
+
   useEffect(() => {
-    if (autoOpen) {
-      onOpenChange(true);
+    if (autoOpen === true) {
+      setTimeout(() => {
+        onOpenChange(true);
+      }, [1500])
     }
-    return () => {
-      onOpenChange(false);
-    };
   }, [autoOpen]);
 
   return (
