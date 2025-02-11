@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import classes from "./login.module.css";
 import { signIn } from "next-auth/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
-import Image from "node_modules/next/image";
+import PopupButton from "@core/ui/Button/PopupButton";
+import Image from "next/image";
 import Link from "next/link";
 import Icon from "@core/ui/Icons/Icon";
 
@@ -22,6 +24,8 @@ function Login() {
     t[name] = value;
     setCredentials(t);
   };
+
+  const router = useRouter();
 
   const handleLogin = async () => {
     const res = await signIn("credentials", {
@@ -121,6 +125,46 @@ function Login() {
             height={18}
             alt="Picture of the author"
           />
+        }
+      />
+      <hr />
+      <PopupButton
+        triggerButtonContent={"Get Whitelisted"}
+        buttonStyle={`${classes.login_google} ${classes.whitelisted_button}`}
+        title={"Why join the Whitelist?"}
+        confirmButton="Join!"
+        onConfirm={() => router.push("https://forms.gle/HPNRcuLnmLnvMBwo6")}
+        autoOpen={true}
+        content={
+          <div className={classes.whilisted_modal_content}>
+            <p>
+              This version of the app is a{" "}
+              <strong>V0, an early MVP (Minimum Viable Product)</strong>. That
+              means it's still in <strong>testing mode</strong>, and I need a
+              small group of users to help shape it before a full release.
+            </p>
+            <p>
+              By getting whitelisted, you&apos;ll be part of an{" "}
+              <strong>exclusive group of early testers</strong> who will:
+            </p>
+            <ul>
+              <li>
+                ✅ <strong>Try out new features</strong> before anyone else
+              </li>
+              <li>
+                ✅ <strong>Give feedback</strong> on what works and what doesn&apos;t
+              </li>
+              <li>
+                ✅ <strong>Report bugs</strong> and suggest improvements
+              </li>
+            </ul>
+            <p>
+              Your insights will be <strong>crucial</strong> in making the app
+              better. If you&apos;re interested in testing and shaping the future of
+              this app,
+              🚀
+            </p>
+          </div>
         }
       />
     </div>

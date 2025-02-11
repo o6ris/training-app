@@ -6,7 +6,8 @@
   width: 100%;
 }
 
-.login_creds, .login_google {
+.login_creds,
+.login_google {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -23,6 +24,38 @@
   border: 2px solid var(--secondary-color);
 }
 
+.whitelisted_button {
+  color: var(--primary-accent-color);
+  background: linear-gradient(
+    to right,
+    var(--primary-color) 25%,
+    #1a2b5a 50%,
+    var(--primary-color) 80%
+  );
+  background-size: 200% 100%; /* Gradient covers double the width */
+  animation: pulse 5s linear infinite;
+}
+@keyframes pulse {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+  20% {
+    transform: scale(0.98);
+  }
+  24% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(0.99);
+  }
+  30% {
+    transform: scale(1);
+  }
+}
+
 .signup_section {
   display: flex;
   gap: 10px;
@@ -34,4 +67,14 @@
 
 .visible_button {
   background-color: transparent;
+}
+
+.whilisted_modal_content * {
+  color: var(--primary-color);
+}
+
+.whilisted_modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
