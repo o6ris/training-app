@@ -2,13 +2,20 @@
 
 import classes from "./header.module.css";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@heroui/react";
 import { signOut } from "next-auth/react";
 
 function Header({ session }) {
   return (
     <header className={classes.header}>
-      <h2>GrindPAL</h2>
+      <Image
+        src="/logo-white.svg"
+        alt="GrindPal Logo"
+        width={150}
+        height={150}
+        priority
+      />
       <div className={classes.button_wrapper}>
         {session ? (
           <Button
