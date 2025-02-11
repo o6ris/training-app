@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./popupButton.module.css";
 import {
   Modal,
@@ -25,9 +25,19 @@ export default function PopupButton({
   closebutton = "Cancel",
   confirmButton = "Confirm",
   confirmButtonStyle,
+  autoOpen,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
+
+  useEffect(() => {
+    if (autoOpen) {
+      onOpenChange(true);
+    }
+    return () => {
+      onOpenChange(false);
+    };
+  }, [autoOpen]);
 
   return (
     <>
