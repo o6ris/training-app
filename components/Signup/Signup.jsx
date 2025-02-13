@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import classes from "./signup.module.css";
 import useUser from "@modules/client/requests/useUser";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
-import PopupButton from "@core/ui/Button/PopupButton";
+// import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
 function Signup() {
@@ -22,7 +22,7 @@ function Signup() {
   const isPasswordSame =
     credentials?.password === credentials?.confirmedPassword &&
     (credentials?.password !== "" || credentials?.confirmedPassword !== "");
-  const router = useRouter();
+  // const router = useRouter();
   const handleOnChange = (name, value) => {
     const t = { ...credentials };
     t[name] = value;
@@ -38,6 +38,7 @@ function Signup() {
   }, [isPasswordSame, validateEmail]);
 
   useEffect(() => {
+    console.log("isError", isError)
     if (isError) {
       const timer = setTimeout(() => {
         setIsError(false);
@@ -135,7 +136,7 @@ function Signup() {
         buttonStyle={classes.signup_button}
         isDisabled={disabledButton}
       />
-      <PopupButton
+      {/* <PopupButton
         triggerButtonContent={"Get Whitelisted"}
         buttonStyle={`${classes.signup_button} ${classes.whitelisted_button}`}
         title={"Why join the Whitelist?"}
@@ -173,7 +174,7 @@ function Signup() {
             </p>
           </div>
         }
-      />
+      /> */}
     </div>
   );
 }
