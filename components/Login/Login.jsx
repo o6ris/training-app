@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import classes from "./login.module.css";
 import { signIn } from "next-auth/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
-import PopupButton from "@core/ui/Button/PopupButton";
+// import PopupButton from "@core/ui/Button/PopupButton";
 import Image from "next/image";
 import Link from "next/link";
 import Icon from "@core/ui/Icons/Icon";
@@ -25,7 +25,7 @@ function Login() {
     setCredentials(t);
   };
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleLogin = async () => {
     const res = await signIn("credentials", {
@@ -128,7 +128,7 @@ function Login() {
         }
       />
       <hr />
-      <PopupButton
+      {/* <PopupButton
         triggerButtonContent={"Get Whitelisted"}
         buttonStyle={`${classes.login_google} ${classes.whitelisted_button}`}
         title={"Why join the Whitelist?"}
@@ -166,7 +166,7 @@ function Login() {
             </p>
           </div>
         }
-      />
+      /> */}
     </div>
   );
 }

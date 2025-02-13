@@ -1,5 +1,5 @@
 import User from "@modules/server/models/user";
-import Whitelisted from "@modules/server/models/whitelistedEmail";
+// import Whitelisted from "@modules/server/models/whitelistedEmail";
 import connectDb from "lib/mongodb";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
@@ -9,11 +9,11 @@ export async function POST(request) {
     const { email, password } = await request.json();
     await connectDb();
     const emailExist = await User.findOne({ email });
-    const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
+    // const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
     
-    if(!whiteListedEmailSet.has(email)) {
-      throw { message: "Email is not whitelisted", status: 403 };
-    }
+    // if(!whiteListedEmailSet.has(email)) {
+    //   throw { message: "Email is not whitelisted", status: 403 };
+    // }
     
     if (emailExist) {
       throw { message: "Email already exist", status: 400 };
