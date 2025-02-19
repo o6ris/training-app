@@ -12,11 +12,10 @@ function ExerciseList({ exercises, addExercise, removeExercise, exerciseIds }) {
       `${
         muscle.length < 2
           ? muscle[0].name
-          : `${muscle[0].name} - ${muscle[1].name}`
+          : `${muscle[0].name} & ${muscle[1].name}`
       }`
   );
-  // console.log(exercises);
-  // console.log("exercisesByMuscle", exercisesByMuscle);
+
   return (
     <div className={classes.list_wrapper}>
       {Object.entries(exercisesByMuscle).map(([muscle, exercises]) => (

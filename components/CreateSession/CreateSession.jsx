@@ -26,6 +26,8 @@ function CreateSession({ muscles }) {
   } = useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
+  
+
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
   });
@@ -41,6 +43,7 @@ function CreateSession({ muscles }) {
               value: `${muscle.name.charAt(0).toUpperCase()}${muscle.name.slice(
                 1
               )}`,
+              image: muscle.image
             };
           })}
           label={
@@ -77,6 +80,7 @@ function CreateSession({ muscles }) {
           value={muscleIds}
           isMultiline={true}
           selectionMode="multiple"
+          hasImage={true}
         />
         {/* Choose Exercises */}
         {muscleIds.length > 0 && (
