@@ -5,6 +5,7 @@ import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import ExerciseList from "@components/ExercisesList/ExerciseList";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -23,6 +24,8 @@ function CreateSession({ muscles }) {
     return exerciseIds.includes(exercise._id);
   });
 
+  console.log("exerciseIds", exerciseIds)
+
   return (
     <>
       <div className={classes.session_container}>
@@ -38,7 +41,7 @@ function CreateSession({ muscles }) {
           })}
           label={
             <div className={classes.label_with_info}>
-              <span>Muscles</span>
+              <span>Choose Muscles</span>
               <PopupButton
                 isIconOnly={true}
                 startContent={
@@ -50,8 +53,8 @@ function CreateSession({ muscles }) {
                 content={
                   <div className={classes.modal_content}>
                     <p>
-                      When building a workout session, it&apos;s important to start
-                      by selecting the muscles you want to train.
+                      When building a workout session, it&apos;s important to
+                      start by selecting the muscles you want to train.
                     </p>
                     <p>
                       Instead of randomly picking exercises, choosing your
@@ -63,7 +66,7 @@ function CreateSession({ muscles }) {
               />
             </div>
           }
-          placeholder="Choose muscle"
+          placeholder="eg: Chest, Legs, Arms, ..."
           labelPlacement="outside"
           variant="bordered"
           selectOnChange={(value) => setMusculeIds(Array.from(value))}
@@ -73,50 +76,65 @@ function CreateSession({ muscles }) {
         />
         {/* Choose Exercises */}
         {muscleIds.length > 0 && (
-          <SelectField
-            items={exercises?.map((exercise) => {
-              return {
-                key: exercise._id,
-                value: `${exercise.name
-                  .charAt(0)
-                  .toUpperCase()}${exercise.name.slice(1)}`,
-                image: exercise.image,
-              };
-            })}
-            hasImage={true}
-            label={
-              <div className={classes.label_with_info}>
-                <span>Exercises</span>
-                <PopupButton
-                  isIconOnly={true}
-                  startContent={
-                    <Icon name="Info" size={16} color="white" strokeWidth={2} />
-                  }
-                  buttonStyle={classes.info_button}
-                  title={"Now, Choose Your Exercises!"}
-                  closebutton={"Close"}
-                  content={
-                    <div className={classes.modal_content}>
-                      <p>
-                      Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
-                      </p>
-                      <p>
-                      Once you&apos;ve picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
-                      </p>
-                    </div>
-                  }
-                />
-              </div>
+          <PopupButton
+            buttonStyle={classes.add_session_button}
+            triggerButtonContent="add exercise"
+            closebutton={"Close"}
+            size="full"
+            isTransparent={true}
+            content={
+              <ExerciseList
+                exercises={exercises}
+                setExerciseIds={setExerciseIds}
+                exerciseIds={exerciseIds}
+                isLoading={isLoading}
+              />
             }
-            placeholder="Choose exercises"
-            labelPlacement="outside"
-            variant="bordered"
-            selectOnChange={(value) => setExerciseIds(Array.from(value))}
-            value={exerciseIds}
-            isMultiline={true}
-            selectionMode="multiple"
-            isLoading={isLoading}
           />
+          // <SelectField
+          //   items={exercises?.map((exercise) => {
+          //     return {
+          //       key: exercise._id,
+          //       value: `${exercise.name
+          //         .charAt(0)
+          //         .toUpperCase()}${exercise.name.slice(1)}`,
+          //       image: exercise.image,
+          //     };
+          //   })}
+          //   hasImage={true}
+          //   label={
+          //     <div className={classes.label_with_info}>
+          //       <span>Exercises</span>
+          //       <PopupButton
+          //         isIconOnly={true}
+          //         startContent={
+          //           <Icon name="Info" size={16} color="white" strokeWidth={2} />
+          //         }
+          //         buttonStyle={classes.info_button}
+          //         title={"Now, Choose Your Exercises!"}
+          //         closebutton={"Close"}
+          //         content={
+          //           <div className={classes.modal_content}>
+          //             <p>
+          //             Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
+          //             </p>
+          //             <p>
+          //             Once you&apos;ve picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
+          //             </p>
+          //           </div>
+          //         }
+          //       />
+          //     </div>
+          //   }
+          //   placeholder="Choose exercises"
+          //   labelPlacement="outside"
+          //   variant="bordered"
+          //   selectOnChange={(value) => setExerciseIds(Array.from(value))}
+          //   value={exerciseIds}
+          //   isMultiline={true}
+          //   selectionMode="multiple"
+          //   isLoading={isLoading}
+          // />
         )}
       </div>
       {selectedExercises.length > 0 &&

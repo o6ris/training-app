@@ -1,0 +1,31 @@
+.list_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.select_item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.select_button {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  background-color: transparent;
+  width: 100%;
+}
+
+.exercise_desc_content * {
+  color: var(--primary-color);
+}
+
+.exercise_desc_content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
