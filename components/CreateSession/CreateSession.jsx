@@ -30,8 +30,6 @@ function CreateSession({ muscles }) {
     return exerciseIds.includes(exercise._id);
   });
 
-  console.log("exerciseIds", exerciseIds);
-
   return (
     <>
       <div className={classes.session_container}>
@@ -83,8 +81,10 @@ function CreateSession({ muscles }) {
         {/* Choose Exercises */}
         {muscleIds.length > 0 && (
           <PopupButton
-            buttonStyle={classes.add_session_button}
-            triggerButtonContent="add exercise"
+            buttonStyle={classes.add_exercises_button}
+            triggerButtonContent={
+              exerciseIds?.length > 0 ? "Update Exercises" : "+ Add exercises"
+            }
             closebutton={"Close"}
             size="full"
             isTransparent={true}
