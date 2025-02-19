@@ -31,18 +31,15 @@ export default function SelectField({
     selectOnChange(updatedValue);
   };
   const renderValue = () => {
-    if (Array.isArray(value)) {
-      return value;
-    } else {
-      return [value];
-    }
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
   };
 
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   return (
     <div className={baseStyle.input_container}>
-      <p className={baseStyle.label}>{label}</p>
+      <div className={baseStyle.label}>{label}</div>
       <Select
         items={items}
         aria-label={label || ariaLabel}
