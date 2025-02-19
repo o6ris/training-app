@@ -81,9 +81,21 @@ function CreateSession({ muscles }) {
         {/* Choose Exercises */}
         {muscleIds.length > 0 && (
           <PopupButton
+            isDisabled={isLoading}
             buttonStyle={classes.add_exercises_button}
             triggerButtonContent={
-              exerciseIds?.length > 0 ? "Update Exercises" : "+ Add exercises"
+              isLoading ? (
+                <ClipLoader
+                  color={"#2694f9"}
+                  loading={isLoading}
+                  size={20}
+                  aria-label="Loading Spinner"
+                />
+              ) : exerciseIds?.length > 0 ? (
+                "Update Exercises"
+              ) : (
+                "+ Add exercises"
+              )
             }
             closebutton={"Close"}
             size="full"
@@ -94,7 +106,6 @@ function CreateSession({ muscles }) {
                 addExercise={addExercise}
                 removeExercise={removeExercise}
                 exerciseIds={exerciseIds}
-                isLoading={isLoading}
               />
             }
           />
