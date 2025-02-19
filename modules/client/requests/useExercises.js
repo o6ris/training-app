@@ -33,6 +33,15 @@ export default function useExercises(list, queryName) {
     }
   };
 
+  const addExercise = (exercise) => {
+    setExerciseIds((prevExercises) => [...prevExercises, exercise]);
+  };
+  const removeExercise = (exercise) => {
+    setExerciseIds((prevExercises) =>
+      prevExercises.filter((item) => item !== exercise)
+    );
+  };
+
   useEffect(() => {
     if (list.length > 0) {
       getExercises();
@@ -51,5 +60,7 @@ export default function useExercises(list, queryName) {
     latestExercises,
     exercises,
     isLoading,
+    addExercise,
+    removeExercise,
   };
 }

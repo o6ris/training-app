@@ -14,7 +14,7 @@ function BasicButton({
 }) {
   return (
     <Button
-      onClick={onAction}
+      onPress={onAction}
       className={buttonStyle}
       startContent={startContent}
       isIconOnly={isIconOnly}

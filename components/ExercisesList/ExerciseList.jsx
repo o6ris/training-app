@@ -2,16 +2,9 @@ import { useState } from "react";
 import classes from "./exercisesList.module.css";
 import { Avatar, Image } from "@heroui/react";
 import PopupButton from "@core/ui/Button/PopupButton";
+import Icon from "@core/ui/Icons/Icon";
 
-function ExerciseList({ exercises, setExerciseIds, exerciseIds }) {
-  const addExercise = (exercise) => {
-    setExerciseIds((prevExercises) => [...prevExercises, exercise]);
-  };
-  const removeExercise = (exercise) => {
-    setExerciseIds((prevExercises) =>
-      prevExercises.filter((item) => item !== exercise)
-    );
-  };
+function ExerciseList({ exercises, addExercise, removeExercise, exerciseIds }) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   return (
     <div className={classes.list_wrapper}>
@@ -31,14 +24,9 @@ function ExerciseList({ exercises, setExerciseIds, exerciseIds }) {
                 </>
               }
               closebutton={"Close"}
-              confirmButton={
-                exerciseIds?.includes(exercise._id) ? "Remove" : "Add"
-              }
-              onConfirm={() =>
-                exerciseIds?.includes(exercise._id)
-                  ? removeExercise(exercise._id)
-                  : addExercise(exercise._id)
-              }
+              confirmButton={"Add"}
+              onConfirm={() => addExercise(exercise._id)}
+              isDisabled={exerciseIds?.includes(exercise._id)}
               content={
                 <div className={classes.exercise_desc_content}>
                   <Image
@@ -62,6 +50,22 @@ function ExerciseList({ exercises, setExerciseIds, exerciseIds }) {
                 </div>
               }
             />
+            {exerciseIds?.includes(exercise._id) && (
+              <PopupButton
+                isIconOnly={true}
+                buttonStyle={classes.remove_button}
+                startContent={
+                  <Icon
+                    name="Trash"
+                    size={16}
+                    color="#ba0505"
+                    strokeWidth={2}
+                  />
+                }
+                content={"Do you really want to remove this exercise?"}
+                onConfirm={() => removeExercise(exercise._id)}
+              />
+            )}
           </div>
         );
       })}

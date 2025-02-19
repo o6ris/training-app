@@ -20,6 +20,10 @@
 }
 
 .accordion_title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   color: var(--primary-light-color);
 }
 
@@ -37,4 +41,8 @@
 
 .modal_content * {
   color: var(--primary-color);
+}
+
+.remove_button {
+  background-color: transparent;
 }

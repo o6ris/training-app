@@ -16,15 +16,21 @@ function CreateSession({ muscles }) {
   const { createSession, session } = useContext(SessionContext);
   const [muscleIds, setMusculeIds] = useState([]);
   const [isPending, startTransition] = useTransition();
-  const { setExerciseIds, exerciseIds, latestExercises, exercises, isLoading } =
-    useExercises(muscleIds, "muscle");
+  const {
+    exerciseIds,
+    latestExercises,
+    exercises,
+    isLoading,
+    addExercise,
+    removeExercise,
+  } = useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
   });
 
-  console.log("exerciseIds", exerciseIds)
+  console.log("exerciseIds", exerciseIds);
 
   return (
     <>
@@ -85,56 +91,13 @@ function CreateSession({ muscles }) {
             content={
               <ExerciseList
                 exercises={exercises}
-                setExerciseIds={setExerciseIds}
+                addExercise={addExercise}
+                removeExercise={removeExercise}
                 exerciseIds={exerciseIds}
                 isLoading={isLoading}
               />
             }
           />
-          // <SelectField
-          //   items={exercises?.map((exercise) => {
-          //     return {
-          //       key: exercise._id,
-          //       value: `${exercise.name
-          //         .charAt(0)
-          //         .toUpperCase()}${exercise.name.slice(1)}`,
-          //       image: exercise.image,
-          //     };
-          //   })}
-          //   hasImage={true}
-          //   label={
-          //     <div className={classes.label_with_info}>
-          //       <span>Exercises</span>
-          //       <PopupButton
-          //         isIconOnly={true}
-          //         startContent={
-          //           <Icon name="Info" size={16} color="white" strokeWidth={2} />
-          //         }
-          //         buttonStyle={classes.info_button}
-          //         title={"Now, Choose Your Exercises!"}
-          //         closebutton={"Close"}
-          //         content={
-          //           <div className={classes.modal_content}>
-          //             <p>
-          //             Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
-          //             </p>
-          //             <p>
-          //             Once you&apos;ve picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
-          //             </p>
-          //           </div>
-          //         }
-          //       />
-          //     </div>
-          //   }
-          //   placeholder="Choose exercises"
-          //   labelPlacement="outside"
-          //   variant="bordered"
-          //   selectOnChange={(value) => setExerciseIds(Array.from(value))}
-          //   value={exerciseIds}
-          //   isMultiline={true}
-          //   selectionMode="multiple"
-          //   isLoading={isLoading}
-          // />
         )}
       </div>
       {selectedExercises.length > 0 &&
@@ -154,10 +117,25 @@ function CreateSession({ muscles }) {
                       src={`${cloudinaryUrl}${exercise?.image}`}
                     />
                   }
-                  title={exercise.name}
-                  classNames={{
-                    title: classes.accordion_title,
-                  }}
+                  title={
+                    <div className={classes.accordion_title}>
+                      {exercise.name}
+                      <PopupButton
+                        isIconOnly={true}
+                        buttonStyle={classes.remove_button}
+                        startContent={
+                          <Icon
+                            name="Trash"
+                            size={16}
+                            color="#ba0505"
+                            strokeWidth={2}
+                          />
+                        }
+                        content={"Do you really want to remove this exercise?"}
+                        onConfirm={() => removeExercise(exercise._id)}
+                      />
+                    </div>
+                  }
                 >
                   <div className={classes.exercise_desc_content}>
                     <Image
