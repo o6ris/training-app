@@ -8,6 +8,7 @@ import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
+import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
@@ -438,7 +439,11 @@ function Session() {
                     type="number"
                   />
                   {/* Choose number of sets */}
-                  <InputField
+                  <SelectField
+                    items={Array.from({ length: 9 }, (_, i) => ({
+                      key: String(i + 1),
+                      value: i + 1,
+                    }))}
                     label={
                       <div className={classes.label_with_info}>
                         <span>Sets</span>
@@ -496,23 +501,30 @@ function Session() {
                       </div>
                     }
                     variant="bordered"
-                    placeholder="1"
+                    placeholder="eg: 1"
                     labelPlacement="outside"
-                    value={exercise?.sets.length}
-                    onChange={(value) => {
-                      if (Number(value) !== exercise?.sets.length) {
-                        return handleAddSets("sets", Number(value), i);
+                    value={String(exercise?.sets.length)}
+                    selectOnChange={(value) => {
+                      if (
+                        Number(Array.from(value).join("")) !==
+                        exercise?.sets.length
+                      ) {
+                        return handleAddSets(
+                          "sets",
+                          Number(Array.from(value).join("")),
+                          i
+                        );
                       }
                     }}
                     isDisabled={exercise.isFinished}
                     classNames={{
                       label: classes.label,
-                      inputWrapper: classes.field_main_wrapper,
-                      input: classes.field_value,
+                      trigger: classes.field_main_wrapper,
+                      value: classes.field_value,
+                      popoverContent: classes.select_listbox_container,
+                      listbox: classes.select_listbox,
                     }}
-                    min={0}
-                    max={9}
-                    type="number"
+                    isMultiline={false}
                   />
                 </div>
                 <hr className={classes.section_separation} />

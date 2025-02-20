@@ -4,7 +4,6 @@ export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [latestStats, setLatestStats] = useState({});
-  const [latestExercises, setLatestExercises] = useState([]);
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -37,35 +36,6 @@ export default function useStats(userId) {
       throw error;
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const getLatestStatByExercise = async (exerciseIds) => {
-    try {
-      const queryString = exerciseIds
-        .map((exerciseId) => `exercise=${exerciseId}`)
-        .join("&");
-      const url = `${baseUrl}/api/stats/lastStatByExercise?user=${userId}&${queryString}`;
-      const response = await fetch(
-        url,
-        { method: "GET" },
-        { next: { revalidate: 10 } }
-      );
-      if (response) {
-        const stats = await response.json() ?? [];
-        const formattedStats = stats.map((element) => ({
-          trainingTime: 0,
-          restTime: element.rest_time,
-          isFinished: false,
-          exercise: element.exercise._id,
-          sets: element.sets,
-          rm: element.rm
-        }));
-        
-        setLatestExercises(formattedStats);
-      }
-    } catch (error) {
-      throw error;
     }
   };
 
@@ -165,8 +135,6 @@ export default function useStats(userId) {
     range,
     setRange,
     startDate,
-    getLatestStatByExercise,
-    latestExercises,
     isLoading,
   };
 }

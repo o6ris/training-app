@@ -65,19 +65,21 @@ export const SessionProvider = ({ children }) => {
   const handleAddSets = (name, value, index) => {
     // Validate that value is between 1 and 9
     if (value >= 0 && value < 10) {
-      const set = {
+      const newSet = {
         reps: 0,
         weight: 0,
       };
       const tempSession = [...session];
       const tempExercise = tempSession[index];
-      tempExercise[name] = Array.isArray(tempExercise[name])
-        ? Array.from({ length: value }, () => ({ ...set }))
-        : new Array(value).fill(set);
-
-      tempSession[index] = tempExercise;
-      setSession(tempSession);
-      localStorage.setItem("session", JSON.stringify(tempSession));
+      if (value > tempExercise[name].length) {
+        tempExercise[name] = [...tempExercise[name], newSet]
+        tempSession[index] = tempExercise;
+        setSession(tempSession);
+      } else {
+        tempExercise[name].pop()
+        tempSession[index] = tempExercise;
+        setSession(tempSession);
+      }
     } else {
       // Optionally, handle the case where value is out of the desired range
       console.warn("Value must be between 1 and 9.");
