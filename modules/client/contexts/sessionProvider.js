@@ -70,18 +70,17 @@ export const SessionProvider = ({ children }) => {
         weight: 0,
       };
       const tempSession = [...session];
-      const tempExercise = tempSession[index];
-      if (value > tempExercise[name].length) {
-        tempExercise[name] = [...tempExercise[name], newSet]
-        tempSession[index] = tempExercise;
-        setSession(tempSession);
+      const tempExercise = { ...tempSession[index] };
+      const currentLength = tempExercise[name].length;
+      if (value > currentLength) {
+        const setsToAdd = Array(value - currentLength).fill(newSet);
+        tempExercise[name] = [...tempExercise[name], ...setsToAdd];
       } else {
-        tempExercise[name].pop()
-        tempSession[index] = tempExercise;
-        setSession(tempSession);
+        tempExercise[name] = tempExercise[name].slice(0, value);
       }
+      tempSession[index] = tempExercise;
+      setSession(tempSession);
     } else {
-      // Optionally, handle the case where value is out of the desired range
       console.warn("Value must be between 1 and 9.");
     }
   };
