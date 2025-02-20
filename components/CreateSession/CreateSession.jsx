@@ -13,7 +13,7 @@ import Icon from "@core/ui/Icons/Icon";
 import PopupButton from "@core/ui/Button/PopupButton";
 
 function CreateSession({ muscles }) {
-  const { createSession, session } = useContext(SessionContext);
+  const { createSession } = useContext(SessionContext);
   const [muscleIds, setMusculeIds] = useState([]);
   const [isPending, startTransition] = useTransition();
   const {
@@ -25,9 +25,7 @@ function CreateSession({ muscles }) {
     removeExercise,
   } = useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-
   
-
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
   });
@@ -43,7 +41,7 @@ function CreateSession({ muscles }) {
               value: `${muscle.name.charAt(0).toUpperCase()}${muscle.name.slice(
                 1
               )}`,
-              image: muscle.image
+              image: muscle.image,
             };
           })}
           label={
@@ -180,7 +178,6 @@ function CreateSession({ muscles }) {
       {exerciseIds.length > 0 && (
         <ButtonLink
           url={"/session"}
-          // pass as an argument list of latests exercises
           onAction={() =>
             startTransition(() => {
               createSession(exerciseIds, latestExercises);

@@ -19,7 +19,7 @@ export const SessionProvider = ({ children }) => {
       } else {
         exercisesList.push({
           exercise: exercise,
-          restTime: "60",
+          restTime: 60,
           trainingTime: 0,
           rm: 0,
           sets: [
