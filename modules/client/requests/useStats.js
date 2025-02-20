@@ -52,19 +52,17 @@ export default function useStats(userId) {
         { next: { revalidate: 10 } }
       );
       if (response) {
-        const stats = await response.json();
-        stats.forEach((element) => {
-          element.trainingTime = 0;
-          element.restTime = element.rest_time;
-          element.isFinished = false;
-          element.exercise = element.exercise._id;
-          delete element.date;
-          delete element.user;
-          delete element._id;
-          delete element.training_time;
-          delete element.rest_time;
-        });
-        setLatestExercises(stats);
+        const stats = await response.json() ?? [];
+        const formattedStats = stats.map((element) => ({
+          trainingTime: 0,
+          restTime: element.rest_time,
+          isFinished: false,
+          exercise: element.exercise._id,
+          sets: element.sets,
+          rm: element.rm
+        }));
+        
+        setLatestExercises(formattedStats);
       }
     } catch (error) {
       throw error;
