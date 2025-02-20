@@ -38,8 +38,6 @@ function Session() {
     useTimer(session);
   const { data: userSession, status } = useSession();
   const { userId } = useUser(userSession);
-  console.log("session in session", structuredClone(session));
-  const clonedSession = structuredClone(session);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
@@ -418,7 +416,7 @@ function Session() {
                     variant="bordered"
                     placeholder="60"
                     labelPlacement="outside"
-                    value={exercise?.restTime || 60}
+                    value={exercise?.restTime}
                     onChange={(value) => {
                       if (Number(value) !== exercise.restTime) {
                         return handleOnChangeSession(
@@ -434,7 +432,7 @@ function Session() {
                       inputWrapper: classes.field_main_wrapper,
                       input: classes.field_value,
                     }}
-                    min={1}
+                    min={0}
                     max={600}
                     type="number"
                   />
@@ -602,6 +600,7 @@ function Session() {
                           variant="bordered"
                           value={set.reps}
                           type="number"
+                          min={1}
                           onChange={(value) => {
                             if (Number(value) !== set.reps) {
                               handleOnchangeSets(
@@ -708,6 +707,7 @@ function Session() {
                           variant="bordered"
                           value={set.weight}
                           type="number"
+                          min={1}
                           onChange={(value) => {
                             if (Number(value) !== set.weight) {
                               handleOnchangeSets(
