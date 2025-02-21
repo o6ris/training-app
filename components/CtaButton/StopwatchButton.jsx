@@ -3,10 +3,16 @@ import BasicButton from "@core/ui/Button/BasicButton";
 import Icon from "@core/ui/Icons/Icon";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 
-function StopwatchButton({ session, i, exercise }) {
-  const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
-    useStopwatch(false, session);
-
+function StopwatchButton({
+  i,
+  exercise,
+  time,
+  getSeconds,
+  getMinutes,
+  isRunning,
+  start,
+  pause,
+}) {
   return (
     <BasicButton
       onAction={() => {

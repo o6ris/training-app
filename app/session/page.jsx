@@ -16,6 +16,7 @@ import Skeleton from "@core/ui/Skeleton/Skeleton";
 import ClipLoader from "react-spinners/ClipLoader";
 import ResetButton from "@components/CtaButton/ResetButton";
 import SaveButton from "@components/CtaButton/SaveButton";
+import StopwatchButton from "@components/CtaButton/StopwatchButton";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 
 function Session() {
@@ -33,7 +34,7 @@ function Session() {
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [isPending, startTransition] = useTransition();
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
-  useStopwatch(false, session);
+    useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers, resetTimers } =
     useTimer(session);
 
@@ -137,50 +138,15 @@ function Session() {
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
                   {/* Use it instead of stopwatchButton to prevent stopwatch to stop when we close the accordion */}
-                  <BasicButton
-                    onAction={() => {
-                      if (isRunning[i]) {
-                        pause(i);
-                      } else {
-                        start(i);
-                      }
-                    }}
-                    buttonContent={
-                      <div>
-                        {time[0] === 0 && time[1] === 0 ? (
-                          "Start"
-                        ) : (
-                          <>
-                            <span>
-                              {getMinutes(i).toString().padStart(2, "0")}
-                            </span>
-                            :
-                            <span>
-                              {getSeconds(i).toString().padStart(2, "0")}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    }
-                    startContent={
-                      isRunning[i] ? (
-                        <Icon
-                          name="Pause"
-                          size={16}
-                          color="white"
-                          strokeWidth={3}
-                        />
-                      ) : (
-                        <Icon
-                          name="Play"
-                          size={16}
-                          color="white"
-                          strokeWidth={3}
-                        />
-                      )
-                    }
-                    buttonStyle={`${classes.button} ${classes.start_button}`}
-                    isDisabled={exercise.isFinished}
+                  <StopwatchButton
+                    i={i}
+                    exercise={exercise}
+                    time={time}
+                    getSeconds={getSeconds}
+                    getMinutes={getMinutes}
+                    isRunning={isRunning}
+                    start={start}
+                    pause={pause}
                   />
                   <ResetButton
                     session={session}
@@ -188,6 +154,10 @@ function Session() {
                     i={i}
                     exercise={exercise}
                     resetExercise={resetExercise}
+                    time={time}
+                    start={start}
+                    pause={pause}
+                    reset={reset}
                   />
                 </div>
                 {/* Choose RM */}
@@ -717,6 +687,9 @@ function Session() {
                   session={session}
                   i={i}
                   exercise={exercise}
+                  time={time}
+                  start={start}
+                  pause={pause}
                 />
               </div>
             </AccordionItem>

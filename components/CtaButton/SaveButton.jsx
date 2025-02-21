@@ -1,14 +1,20 @@
 import classes from "./ctaButton.module.css";
 import { useSession } from "next-auth/react";
 import useUser from "@modules/client/requests/useUser";
-import useStopwatch from "@modules/client/utils/useStopwatch";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
-function SaveButton({ handleOnChangeSession, session, i, exercise }) {
+function SaveButton({
+  handleOnChangeSession,
+  session,
+  i,
+  exercise,
+  time,
+  start,
+  pause,
+}) {
   const { data: userSession } = useSession();
   const { userId } = useUser(userSession);
-  const { time, start, pause } = useStopwatch(false, session);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
