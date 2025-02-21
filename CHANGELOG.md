@@ -1,6 +1,6 @@
 # Changelog
 
-## [2025-02-20] - Merge dev → main
+## [0.0.1] - 2025-02-20
 
 ### 🚀 Features  
 - **CreateSession**: Replaced `SelectField` with an "Add Exercises" button pop-up using a custom `ExerciseList` component.  
