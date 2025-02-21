@@ -45,16 +45,16 @@ export default function useExercises(list, queryName) {
         { next: { revalidate: 10 } }
       );
       if (response) {
-        const stats = await response.json() ?? [];
+        const stats = (await response.json()) ?? [];
         const latestExercises = stats.map((element) => ({
           trainingTime: 0,
           restTime: element.rest_time,
           isFinished: false,
           exercise: element.exercise._id,
           sets: element.sets,
-          rm: element.rm
+          rm: element.rm,
         }));
-        
+
         setLatestExercises(latestExercises);
       }
     } catch (error) {
@@ -80,7 +80,7 @@ export default function useExercises(list, queryName) {
   }, [list]);
 
   useEffect(() => {
-    getStatsByExercises(exerciseIds);
+    if (exerciseIds.length > 0) getStatsByExercises(exerciseIds);
   }, [exerciseIds]);
 
   return {
