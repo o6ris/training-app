@@ -3,8 +3,16 @@ import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 import useStopwatch from "@modules/client/utils/useStopwatch";
 
-function ResetButton({ session, handleOnChangeSession, i, exercise, resetExercise }) {
-  const { time, start, pause, reset } = useStopwatch(false, session);
+function ResetButton({
+  handleOnChangeSession,
+  i,
+  exercise,
+  resetExercise,
+  time,
+  start,
+  pause,
+  reset,
+}) {
   return (
     <PopupButton
       triggerAction={() => {
