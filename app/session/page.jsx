@@ -136,6 +136,7 @@ function Session() {
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
+                  {/* Use it instead of stopwatchButton to prevent stopwatch to stop when we close the accordion */}
                   <BasicButton
                     onAction={() => {
                       if (isRunning[i]) {
