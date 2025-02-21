@@ -85,7 +85,7 @@ export const SessionProvider = ({ children }) => {
     }
   };
 
-  const refreshExercise = (index) => {
+  const resetExercise = (index) => {
     const tempSession = [...session];
     tempSession[index] = {
       exercise: session[index].exercise,
@@ -113,7 +113,7 @@ export const SessionProvider = ({ children }) => {
         handleOnChangeSession,
         handleAddSets,
         handleOnchangeSets,
-        refreshExercise,
+        resetExercise,
         exercisesId,
         setExercisesId,
       }}
