@@ -1,5 +1,11 @@
 # Changelog
 
-## [0.0.2] - 2025-02-21
-### 🐛 Bug Fixes  
-- **Stopwatch**: Fixed issue where the timer didn't pause when saving an exercise.
+## [0.1.2] - 2025-02-20
+
+### 🚀 Features  
+- **Forgot Password Page**: Added UI for the password reset page (functionality not implemented yet).  
+
+### 🐛 Bug Fixes & 🎨 UI/UX Improvements  
+
+### 🔄 Merged Pull Requests  
+
