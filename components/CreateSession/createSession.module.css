@@ -5,6 +5,23 @@
   gap: 20px;
 }
 
+.add_exercises_button {
+  background-color: transparent;
+  border: 2px solid var(--primary-accent-color);
+  color: var(--primary-accent-color);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  height: 60px;
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  text-transform: uppercase;
+  font-style: italic;
+}
+
 .add_session_button {
   background-color: var(--primary-accent-color);
 }
@@ -20,6 +37,10 @@
 }
 
 .accordion_title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   color: var(--primary-light-color);
 }
 
@@ -37,4 +58,8 @@
 
 .modal_content * {
   color: var(--primary-color);
+}
+
+.remove_button {
+  background-color: transparent;
 }

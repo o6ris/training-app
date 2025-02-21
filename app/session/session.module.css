@@ -85,7 +85,7 @@
 
 .stopwatch_buttons {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.2fr;
+  grid-template-columns: 1fr 0.2fr;
   gap: 0.5rem;
 }
 
@@ -133,14 +133,6 @@
 .image_button {
   height: 100px;
   width: 100px;
-}
-
-.save_button {
-  background-color: var(--success-color);
-}
-
-.reset_button {
-  background-color: var(--danger-color);
 }
 
 /* FIELD STYLE */
