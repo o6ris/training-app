@@ -150,11 +150,17 @@ function Stats() {
                         triggerButtonContent={
                           <>
                             <p className={classes.data_value}>
-                              {latestStat?.sets.reduce(
-                                (sum, current) =>
-                                  sum + (current.reps * current.weight) / 1000,
-                                0
-                              )}{" "}
+                              {(() => {
+                                const value = latestStat?.sets.reduce(
+                                  (sum, current) =>
+                                    sum +
+                                    (current.reps * current.weight) / 1000,
+                                  0
+                                );
+                                return Number.isInteger(value)
+                                  ? value
+                                  : parseFloat(value.toFixed(2));
+                              })()}
                             </p>
                           </>
                         }
