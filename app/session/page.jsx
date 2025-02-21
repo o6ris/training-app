@@ -14,9 +14,9 @@ import Icon from "@core/ui/Icons/Icon";
 import useExercises from "@modules/client/requests/useExercises";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import ClipLoader from "react-spinners/ClipLoader";
-import StopwatchButton from "@components/CtaButton/StopwatchButton";
 import ResetButton from "@components/CtaButton/ResetButton";
 import SaveButton from "@components/CtaButton/SaveButton";
+import useStopwatch from "@modules/client/utils/useStopwatch";
 
 function Session() {
   const {
@@ -32,6 +32,8 @@ function Session() {
   const { exercises, isLoading } = useExercises(exercisesId, "exercise");
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [isPending, startTransition] = useTransition();
+  const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
+  useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers, resetTimers } =
     useTimer(session);
 
@@ -134,10 +136,50 @@ function Session() {
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
-                  <StopwatchButton
-                    session={session}
-                    i={i}
-                    exercise={exercise}
+                  <BasicButton
+                    onAction={() => {
+                      if (isRunning[i]) {
+                        pause(i);
+                      } else {
+                        start(i);
+                      }
+                    }}
+                    buttonContent={
+                      <div>
+                        {time[0] === 0 && time[1] === 0 ? (
+                          "Start"
+                        ) : (
+                          <>
+                            <span>
+                              {getMinutes(i).toString().padStart(2, "0")}
+                            </span>
+                            :
+                            <span>
+                              {getSeconds(i).toString().padStart(2, "0")}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    }
+                    startContent={
+                      isRunning[i] ? (
+                        <Icon
+                          name="Pause"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      ) : (
+                        <Icon
+                          name="Play"
+                          size={16}
+                          color="white"
+                          strokeWidth={3}
+                        />
+                      )
+                    }
+                    buttonStyle={`${classes.button} ${classes.start_button}`}
+                    isDisabled={exercise.isFinished}
                   />
                   <ResetButton
                     session={session}
