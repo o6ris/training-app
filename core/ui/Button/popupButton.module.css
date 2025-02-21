@@ -2,6 +2,10 @@
   background-color: var(--primary-light-color);
 }
 
+.wrapper_transparent {
+  background-color: var(--bg-color-transparent);
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -30,6 +34,11 @@
   background-color: transparent;
   border: 2px solid var(--secondary-color);
   color: var(--secondary-color);
+}
+
+.cancel_transparent_button {
+  border: 2px solid var(--primary-light-color);
+  color: var(--primary-light-color);
 }
 
 .confirm_button {

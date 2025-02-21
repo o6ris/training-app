@@ -5,6 +5,7 @@ import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
+import ExerciseList from "@components/ExercisesList/ExerciseList";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -12,13 +13,19 @@ import Icon from "@core/ui/Icons/Icon";
 import PopupButton from "@core/ui/Button/PopupButton";
 
 function CreateSession({ muscles }) {
-  const { createSession, session } = useContext(SessionContext);
+  const { createSession } = useContext(SessionContext);
   const [muscleIds, setMusculeIds] = useState([]);
   const [isPending, startTransition] = useTransition();
-  const { setExerciseIds, exerciseIds, latestExercises, exercises, isLoading } =
-    useExercises(muscleIds, "muscle");
+  const {
+    exerciseIds,
+    latestExercises,
+    exercises,
+    isLoading,
+    addExercise,
+    removeExercise,
+  } = useExercises(muscleIds, "muscle");
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-
+  
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
   });
@@ -34,11 +41,12 @@ function CreateSession({ muscles }) {
               value: `${muscle.name.charAt(0).toUpperCase()}${muscle.name.slice(
                 1
               )}`,
+              image: muscle.image,
             };
           })}
           label={
             <div className={classes.label_with_info}>
-              <span>Muscles</span>
+              <span>Choose Muscles</span>
               <PopupButton
                 isIconOnly={true}
                 startContent={
@@ -50,8 +58,8 @@ function CreateSession({ muscles }) {
                 content={
                   <div className={classes.modal_content}>
                     <p>
-                      When building a workout session, it&apos;s important to start
-                      by selecting the muscles you want to train.
+                      When building a workout session, it&apos;s important to
+                      start by selecting the muscles you want to train.
                     </p>
                     <p>
                       Instead of randomly picking exercises, choosing your
@@ -63,59 +71,45 @@ function CreateSession({ muscles }) {
               />
             </div>
           }
-          placeholder="Choose muscle"
+          placeholder="eg: Chest, Legs, Arms, ..."
           labelPlacement="outside"
           variant="bordered"
           selectOnChange={(value) => setMusculeIds(Array.from(value))}
           value={muscleIds}
           isMultiline={true}
           selectionMode="multiple"
+          hasImage={true}
         />
         {/* Choose Exercises */}
         {muscleIds.length > 0 && (
-          <SelectField
-            items={exercises?.map((exercise) => {
-              return {
-                key: exercise._id,
-                value: `${exercise.name
-                  .charAt(0)
-                  .toUpperCase()}${exercise.name.slice(1)}`,
-                image: exercise.image,
-              };
-            })}
-            hasImage={true}
-            label={
-              <div className={classes.label_with_info}>
-                <span>Exercises</span>
-                <PopupButton
-                  isIconOnly={true}
-                  startContent={
-                    <Icon name="Info" size={16} color="white" strokeWidth={2} />
-                  }
-                  buttonStyle={classes.info_button}
-                  title={"Now, Choose Your Exercises!"}
-                  closebutton={"Close"}
-                  content={
-                    <div className={classes.modal_content}>
-                      <p>
-                      Each exercise focuses on specific muscle fibers, helping you build strength where it matters.
-                      </p>
-                      <p>
-                      Once you&apos;ve picked an exercise, click on the image to view it in a larger format and see the correct technique to perform the movement properly. This ensures you get the most out of your workout while avoiding injury..
-                      </p>
-                    </div>
-                  }
+          <PopupButton
+            isDisabled={isLoading}
+            buttonStyle={classes.add_exercises_button}
+            triggerButtonContent={
+              isLoading ? (
+                <ClipLoader
+                  color={"#2694f9"}
+                  loading={isLoading}
+                  size={20}
+                  aria-label="Loading Spinner"
                 />
-              </div>
+              ) : exerciseIds?.length > 0 ? (
+                "Update Exercises"
+              ) : (
+                "+ Add exercises"
+              )
             }
-            placeholder="Choose exercises"
-            labelPlacement="outside"
-            variant="bordered"
-            selectOnChange={(value) => setExerciseIds(Array.from(value))}
-            value={exerciseIds}
-            isMultiline={true}
-            selectionMode="multiple"
-            isLoading={isLoading}
+            closebutton={"Close"}
+            size="full"
+            isTransparent={true}
+            content={
+              <ExerciseList
+                exercises={exercises}
+                addExercise={addExercise}
+                removeExercise={removeExercise}
+                exerciseIds={exerciseIds}
+              />
+            }
           />
         )}
       </div>
@@ -136,10 +130,25 @@ function CreateSession({ muscles }) {
                       src={`${cloudinaryUrl}${exercise?.image}`}
                     />
                   }
-                  title={exercise.name}
-                  classNames={{
-                    title: classes.accordion_title,
-                  }}
+                  title={
+                    <div className={classes.accordion_title}>
+                      {exercise.name}
+                      <PopupButton
+                        isIconOnly={true}
+                        buttonStyle={classes.remove_button}
+                        startContent={
+                          <Icon
+                            name="Trash"
+                            size={16}
+                            color="#ba0505"
+                            strokeWidth={2}
+                          />
+                        }
+                        content={"Do you really want to remove this exercise?"}
+                        onConfirm={() => removeExercise(exercise._id)}
+                      />
+                    </div>
+                  }
                 >
                   <div className={classes.exercise_desc_content}>
                     <Image
@@ -169,7 +178,6 @@ function CreateSession({ muscles }) {
       {exerciseIds.length > 0 && (
         <ButtonLink
           url={"/session"}
-          // pass as an argument list of latests exercises
           onAction={() =>
             startTransition(() => {
               createSession(exerciseIds, latestExercises);

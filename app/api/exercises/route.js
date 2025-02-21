@@ -54,18 +54,38 @@ export async function GET(request, { params }) {
             throw { message: "Wrong id", status: 500 };
           }
           const exercises = await Exercise.find({ muscle: { $in: [muscle] } });
-          allExercises = allExercises.concat(exercises);
+
+          // Create a Map to store unique exercises by their _id
+          const exerciseMap = new Map();
+          // Merge allExercises and exercises and iterate over them
+          [...allExercises, ...exercises].forEach((exercise) => {
+            // Store each exercise in the Map using _id as the key
+            // If an exercise with the same _id already exists, it will be replaced
+            exerciseMap.set(exercise._id.toString(), exercise);
+          });
+          // Convert the Map values (unique exercises) back into an array
+          allExercises = Array.from(exerciseMap.values());
         }
         return allExercises;
-      } else if (exercisesId.length > 0) {
-        for (const id of exercisesId) {
-          if (!checkId(id)) {
-            throw { message: "Wrong id", status: 500 };
+        } else if (exercisesId.length > 0) {
+          for (const id of exercisesId) {
+            if (!checkId(id)) {
+              throw { message: "Wrong id", status: 500 };
+            }
+            const exercises = await Exercise.find({ _id: id });
+            
+                      // Create a Map to store unique exercises by their _id
+          const exerciseMap = new Map();
+          // Merge allExercises and exercises and iterate over them
+          [...allExercises, ...exercises].forEach((exercise) => {
+            // Store each exercise in the Map using _id as the key
+            // If an exercise with the same _id already exists, it will be replaced
+            exerciseMap.set(exercise._id.toString(), exercise);
+          });
+          // Convert the Map values (unique exercises) back into an array
+          allExercises = Array.from(exerciseMap.values());
           }
-          const exercises = await Exercise.find({ _id: id });
-          allExercises = allExercises.concat(exercises);
-        }
-        return allExercises;
+          return allExercises;
       }
       return Exercise.find();
     };

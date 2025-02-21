@@ -19,7 +19,7 @@ export const SessionProvider = ({ children }) => {
       } else {
         exercisesList.push({
           exercise: exercise,
-          restTime: "60",
+          restTime: 60,
           trainingTime: 0,
           rm: 0,
           sets: [
@@ -65,26 +65,27 @@ export const SessionProvider = ({ children }) => {
   const handleAddSets = (name, value, index) => {
     // Validate that value is between 1 and 9
     if (value >= 0 && value < 10) {
-      const set = {
+      const newSet = {
         reps: 0,
         weight: 0,
       };
       const tempSession = [...session];
-      const tempExercise = tempSession[index];
-      tempExercise[name] = Array.isArray(tempExercise[name])
-        ? Array.from({ length: value }, () => ({ ...set }))
-        : new Array(value).fill(set);
-
+      const tempExercise = { ...tempSession[index] };
+      const currentLength = tempExercise[name].length;
+      if (value > currentLength) {
+        const setsToAdd = Array(value - currentLength).fill(newSet);
+        tempExercise[name] = [...tempExercise[name], ...setsToAdd];
+      } else {
+        tempExercise[name] = tempExercise[name].slice(0, value);
+      }
       tempSession[index] = tempExercise;
       setSession(tempSession);
-      localStorage.setItem("session", JSON.stringify(tempSession));
     } else {
-      // Optionally, handle the case where value is out of the desired range
       console.warn("Value must be between 1 and 9.");
     }
   };
 
-  const refreshExercise = (index) => {
+  const resetExercise = (index) => {
     const tempSession = [...session];
     tempSession[index] = {
       exercise: session[index].exercise,
@@ -112,7 +113,7 @@ export const SessionProvider = ({ children }) => {
         handleOnChangeSession,
         handleAddSets,
         handleOnchangeSets,
-        refreshExercise,
+        resetExercise,
         exercisesId,
         setExercisesId,
       }}

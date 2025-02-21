@@ -5,18 +5,18 @@ import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
-import { Input } from "@heroui/react";
-import useStopwatch from "@modules/client/utils/useStopwatch";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
+import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
-import { useSession } from "next-auth/react";
-import useUser from "@modules/client/requests/useUser";
 import useExercises from "@modules/client/requests/useExercises";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import ClipLoader from "react-spinners/ClipLoader";
+import ResetButton from "@components/CtaButton/ResetButton";
+import SaveButton from "@components/CtaButton/SaveButton";
+import useStopwatch from "@modules/client/utils/useStopwatch";
 
 function Session() {
   const {
@@ -25,7 +25,7 @@ function Session() {
     handleOnChangeSession,
     handleAddSets,
     handleOnchangeSets,
-    refreshExercise,
+    resetExercise,
     exercisesId,
     setExercisesId,
   } = useContext(SessionContext);
@@ -33,37 +33,13 @@ function Session() {
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [isPending, startTransition] = useTransition();
   const { time, getSeconds, getMinutes, isRunning, start, pause, reset } =
-    useStopwatch(false, session);
+  useStopwatch(false, session);
   const { startTimer, getFormattedTime, timers, resetTimers } =
     useTimer(session);
-  const { data: userSession, status } = useSession();
-  const { userId } = useUser(userSession);
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
-
-  const saveExercise = async (i) => {
-    try {
-      const url = `${baseUrl}/api/stats`;
-      delete session[i].isFinished;
-      const response = await fetch(
-        url,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            ...session[i],
-            rest_time: session[i].restTime,
-            training_time: session[i].trainingTime,
-            user: userId,
-          }),
-        },
-        { next: { revalidate: 10 } }
-      );
-    } catch (error) {
-      throw error;
-    }
-  };
 
   useEffect(() => {
     const session = localStorage.getItem("session");
@@ -160,7 +136,7 @@ function Session() {
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
-                  {/* Start stopwatch */}
+                  {/* Use it instead of stopwatchButton to prevent stopwatch to stop when we close the accordion */}
                   <BasicButton
                     onAction={() => {
                       if (isRunning[i]) {
@@ -206,54 +182,12 @@ function Session() {
                     buttonStyle={`${classes.button} ${classes.start_button}`}
                     isDisabled={exercise.isFinished}
                   />
-                  {/* Save exercise */}
-                  <PopupButton
-                    triggerAction={() => {
-                      pause(i);
-                    }}
-                    triggerButtonContent="Save"
-                    startContent={
-                      <Icon
-                        name="Save"
-                        size={16}
-                        color="white"
-                        strokeWidth={2}
-                      />
-                    }
-                    onCancel={() => start(i)}
-                    onConfirm={() => {
-                      handleOnChangeSession("trainingTime", time[i], i);
-                      saveExercise(i);
-                      handleOnChangeSession("isFinished", true, i);
-                    }}
-                    buttonStyle={`${classes.button} ${classes.save_button}`}
-                    title="Are you sure you want to end this exercise?"
-                    content="Once confirmed, this exercise will be marked as complete permanently, with no option to change the data."
-                    isDisabled={exercise.isFinished}
-                    confirmButton="Save"
-                    confirmButtonStyle={classes.save_button}
-                  />
-                  {/* refresh exercise */}
-                  <PopupButton
-                    triggerAction={() => {
-                      pause(i);
-                      handleOnChangeSession("trainingTime", time[i], i);
-                    }}
-                    triggerButtonContent={
-                      <Icon name="RefreshCcw" size={16} color="white" />
-                    }
-                    onCancel={() => start(i)}
-                    onConfirm={() => {
-                      reset(i);
-                      refreshExercise(i);
-                    }}
-                    buttonStyle={`${classes.button} ${classes.reset_button}`}
-                    isIconOnly={true}
-                    title="Are you sure you want to reset this exercise?"
-                    content="Confirming will erase all progress and restart this exercise from zero."
-                    isDisabled={exercise.isFinished}
-                    confirmButton="Reset"
-                    confirmButtonStyle={classes.reset_button}
+                  <ResetButton
+                    session={session}
+                    handleOnChangeSession={handleOnChangeSession}
+                    i={i}
+                    exercise={exercise}
+                    resetExercise={resetExercise}
                   />
                 </div>
                 {/* Choose RM */}
@@ -277,24 +211,52 @@ function Session() {
                         content={
                           <div className={classes.modal_content}>
                             <p>
-                            Your 1RM is the maximum weight you can lift for one rep of a given exercise. It serves as a benchmark to choose the appropriate weight for your training goal.
+                              Your 1RM is the maximum weight you can lift for
+                              one rep of a given exercise. It serves as a
+                              benchmark to choose the appropriate weight for
+                              your training goal.
                             </p>
                             <div>
                               <h3>How to do 1RM test?</h3>
                               <ul>
-                                <li><strong>Warm-Up:</strong> Start with 5-10 minutes of light cardio, followed by dynamic stretching, and then warm-up sets (50-60% of your estimated 1RM).</li>
-                                <li><strong>Gradual Increase:</strong> Start with a light weight, gradually increase by 5-10% after each successful attempt, performing 1-3 reps per increase.</li>
-                                <li><strong>Final Attempt:</strong> Rest for 2-4 minutes between attempts. Your final attempt should be your maximum weight that you can lift for one rep with proper form.</li>
+                                <li>
+                                  <strong>Warm-Up:</strong> Start with 5-10
+                                  minutes of light cardio, followed by dynamic
+                                  stretching, and then warm-up sets (50-60% of
+                                  your estimated 1RM).
+                                </li>
+                                <li>
+                                  <strong>Gradual Increase:</strong> Start with
+                                  a light weight, gradually increase by 5-10%
+                                  after each successful attempt, performing 1-3
+                                  reps per increase.
+                                </li>
+                                <li>
+                                  <strong>Final Attempt:</strong> Rest for 2-4
+                                  minutes between attempts. Your final attempt
+                                  should be your maximum weight that you can
+                                  lift for one rep with proper form.
+                                </li>
                               </ul>
                             </div>
                             <div>
                               <h3>How to Estimate Your 1RM?</h3>
-                              <p>If you don&apos;t know your exact 1RM, you can estimate it by performing a set of reps at a weight you can handle, then using an equation like the Epley formula:</p>
+                              <p>
+                                If you don&apos;t know your exact 1RM, you can
+                                estimate it by performing a set of reps at a
+                                weight you can handle, then using an equation
+                                like the Epley formula:
+                              </p>
                               <p>1RM = Weight × (1 + 0.0333 × Reps)</p>
                               <p>(e.g: 50kg x (1 + 0.333 * 12) = 63kg)</p>
                             </div>
                             <p>
-                            As you continue to train and get stronger, your 1RM will naturally increase. Regularly adjusting your 1RM every 4 - 6 weeks ensures that you&apos;re always lifting an appropriate weight for your current strength level and allows you to continue making progress.
+                              As you continue to train and get stronger, your
+                              1RM will naturally increase. Regularly adjusting
+                              your 1RM every 4 - 6 weeks ensures that
+                              you&apos;re always lifting an appropriate weight
+                              for your current strength level and allows you to
+                              continue making progress.
                             </p>
                           </div>
                         }
@@ -307,12 +269,17 @@ function Session() {
                   labelPlacement="outside"
                   isDisabled={exercise.isFinished}
                   value={exercise.rm}
-                  onChange={(value) => handleOnChangeSession("rm", value, i)}
+                  onChange={(value) => {
+                    if (Number(value) !== exercise.rm) {
+                      return handleOnChangeSession("rm", Number(value), i);
+                    }
+                  }}
                   classNames={{
                     label: classes.label,
                     inputWrapper: classes.field_main_wrapper,
                     input: classes.field_value,
                   }}
+                  type="number"
                   endContent="Kg"
                 />
                 {/* Choose rest time */}
@@ -383,22 +350,32 @@ function Session() {
                     variant="bordered"
                     placeholder="60"
                     labelPlacement="outside"
-                    value={exercise?.restTime || 60}
-                    onChange={(value) =>
-                      handleOnChangeSession("restTime", value, i)
-                    }
+                    value={exercise?.restTime}
+                    onChange={(value) => {
+                      if (Number(value) !== exercise.restTime) {
+                        return handleOnChangeSession(
+                          "restTime",
+                          Number(value),
+                          i
+                        );
+                      }
+                    }}
                     isDisabled={exercise.isFinished}
                     classNames={{
                       label: classes.label,
                       inputWrapper: classes.field_main_wrapper,
                       input: classes.field_value,
                     }}
-                    min={1}
+                    min={0}
                     max={600}
                     type="number"
                   />
                   {/* Choose number of sets */}
-                  <InputField
+                  <SelectField
+                    items={Array.from({ length: 9 }, (_, i) => ({
+                      key: String(i + 1),
+                      value: i + 1,
+                    }))}
                     label={
                       <div className={classes.label_with_info}>
                         <span>Sets</span>
@@ -456,21 +433,30 @@ function Session() {
                       </div>
                     }
                     variant="bordered"
-                    placeholder="1"
+                    placeholder="eg: 1"
                     labelPlacement="outside"
-                    value={exercise?.sets.length}
-                    onChange={(value) => {
-                      handleAddSets("sets", value, i);
+                    value={String(exercise?.sets.length)}
+                    selectOnChange={(value) => {
+                      if (
+                        Number(Array.from(value).join("")) !==
+                        exercise?.sets.length
+                      ) {
+                        return handleAddSets(
+                          "sets",
+                          Number(Array.from(value).join("")),
+                          i
+                        );
+                      }
                     }}
                     isDisabled={exercise.isFinished}
                     classNames={{
                       label: classes.label,
-                      inputWrapper: classes.field_main_wrapper,
-                      input: classes.field_value,
+                      trigger: classes.field_main_wrapper,
+                      value: classes.field_value,
+                      popoverContent: classes.select_listbox_container,
+                      listbox: classes.select_listbox,
                     }}
-                    min={1}
-                    max={9}
-                    type="number"
+                    isMultiline={false}
                   />
                 </div>
                 <hr className={classes.section_separation} />
@@ -548,9 +534,17 @@ function Session() {
                           variant="bordered"
                           value={set.reps}
                           type="number"
-                          onChange={(value) =>
-                            handleOnchangeSets("reps", value, i, index)
-                          }
+                          min={1}
+                          onChange={(value) => {
+                            if (Number(value) !== set.reps) {
+                              handleOnchangeSets(
+                                "reps",
+                                Number(value),
+                                i,
+                                index
+                              );
+                            }
+                          }}
                           classNames={{
                             label: classes.label,
                             inputWrapper: classes.field_main_wrapper,
@@ -559,7 +553,7 @@ function Session() {
                           isDisabled={exercise.isFinished}
                         />
                         <InputField
-                          aria-label="repetions"
+                          aria-label="weight"
                           label={
                             <div className={classes.label_with_info}>
                               <span>Weight (kg)</span>
@@ -647,9 +641,17 @@ function Session() {
                           variant="bordered"
                           value={set.weight}
                           type="number"
-                          onChange={(value) =>
-                            handleOnchangeSets("weight", value, i, index)
-                          }
+                          min={1}
+                          onChange={(value) => {
+                            if (Number(value) !== set.weight) {
+                              handleOnchangeSets(
+                                "weight",
+                                Number(value),
+                                i,
+                                index
+                              );
+                            }
+                          }}
                           classNames={{
                             label: classes.label,
                             inputWrapper: classes.field_main_wrapper,
@@ -709,7 +711,13 @@ function Session() {
                     );
                   })}
                 </div>
-                {/* stopwatch buttons */}
+                {/* save button */}
+                <SaveButton
+                  handleOnChangeSession={handleOnChangeSession}
+                  session={session}
+                  i={i}
+                  exercise={exercise}
+                />
               </div>
             </AccordionItem>
           );

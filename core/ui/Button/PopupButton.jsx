@@ -17,6 +17,7 @@ export default function PopupButton({
   buttonStyle,
   triggerButtonContent,
   placement = "center",
+  size = "md",
   title,
   content,
   isDisabled,
@@ -26,17 +27,16 @@ export default function PopupButton({
   confirmButton = "Confirm",
   confirmButtonStyle,
   autoOpen,
+  isTransparent,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
-
-  console.log("autoOpen", autoOpen)
 
   useEffect(() => {
     if (autoOpen === true) {
       setTimeout(() => {
         onOpenChange(true);
-      }, [1500])
+      }, [1500]);
     }
   }, [autoOpen]);
 
@@ -56,12 +56,15 @@ export default function PopupButton({
       </Button>
       <Modal
         backdrop="blur"
+        size={size}
         scrollBehavior={scrollBehavior}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement={placement}
         classNames={{
-          base: classes.wrapper,
+          base: `${
+            isTransparent ? classes.wrapper_transparent : classes.wrapper
+          }`,
           header: classes.header,
         }}
       >
@@ -76,7 +79,9 @@ export default function PopupButton({
               </ModalBody>
               <ModalFooter>
                 <Button
-                  className={classes.cancel_button}
+                  className={`${classes.cancel_button} ${
+                    isTransparent ? classes.cancel_transparent_button : ""
+                  }`}
                   onPress={() => {
                     onClose();
                     onCancel && onCancel();
