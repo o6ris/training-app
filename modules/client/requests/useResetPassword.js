@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-export default function useRequestReset(email) {
+export default function useRequestReset() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [message, setMessage] = useState("");
-  console.log("message", message, typeof message)
 
   const getNewPassword = async (email) => {
-    try {
+    try
+    {
       const url = `${baseUrl}/api/auth/request-reset`;
       const response = await fetch(
         url,
@@ -17,20 +17,55 @@ export default function useRequestReset(email) {
         { next: { revalidate: 10 } }
       );
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok)
+      {
         setMessage("message sent!");
         return data;
-      } else {
+      } else
+      {
         throw new Error(data);
       }
-    } catch (error) {
+    } catch (error)
+    {
       setMessage(error.message);
       throw error;
     }
   };
 
+  const createNewPassword = async (token, password) => {
+    try
+    {
+      const url = `${baseUrl}/api/auth/reset-password`;
+      const response = await fetch(
+        url,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            token: token,
+            password: password
+          }),
+        },
+        { next: { revalidate: 10 } }
+      );
+      const data = await response.json();
+      if (response.ok)
+      {
+        setMessage("password updated!");
+        return data;
+      } else
+      {
+        throw new Error(data);
+      }
+    } catch (error)
+    {
+      setMessage(error.message);
+      throw error;
+    }
+  }
+
   return {
     getNewPassword,
+    createNewPassword,
     message,
   };
 }

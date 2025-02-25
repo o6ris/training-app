@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 import connectDb from "lib/mongodb";
 import User from "@modules/server/models/user";
 import { NextResponse } from "next/server";
-import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
 export async function POST(request) {
@@ -10,9 +9,7 @@ export async function POST(request) {
   {
     const email = await request.json();
     await connectDb();
-    console.log("email", email)
     const emailExist = await User.findOne({ email });
-    console.log("emailExist", emailExist)
 
     if (!emailExist)
     {
@@ -20,7 +17,7 @@ export async function POST(request) {
     }
     const token = jwt.sign(
       { email: email },
-      process.env.JWT_SECRET, // Use a strong secret key
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
