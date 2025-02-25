@@ -31,8 +31,9 @@ export async function PATCH(request) {
   } catch (error)
   {
     const { message, status } = error;
-    return NextResponse.json(message ?? 'Unknown Error', {
-      status: status ?? 500,
-    });
+    return NextResponse.json(
+      { message: message ?? "Unknown Error", status: status ?? 500 },
+      { status: status ?? 500 }
+    );
   }
 }

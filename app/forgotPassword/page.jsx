@@ -37,7 +37,12 @@ function ForgotPassword() {
       <h1>Forgot your password?</h1>
       <p>Enter your email to get a new password</p>
       <form className={classes.form}>
-        {message && <p>{message}</p>}
+        {message &&
+          (String(message?.status).startsWith("40") ? (
+            <div className={classes.error_message}>{message.message}</div>
+          ) : (
+            <div className={classes.ok_message}>{message.message}</div>
+          ))}
         <InputField
           placeholder="eg: jonh@mail.com"
           value={email}

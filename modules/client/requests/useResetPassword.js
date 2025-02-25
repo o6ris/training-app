@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function useRequestReset() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState();
+  const router = useRouter();
 
   const getNewPassword = async (email) => {
     try
@@ -19,15 +21,18 @@ export default function useRequestReset() {
       const data = await response.json();
       if (response.ok)
       {
-        setMessage("message sent!");
+        console.log("response", response)
+        setMessage({ message: "Request sent, check your email (or Spam)!", status: response.status });
         return data;
       } else
       {
-        throw new Error(data);
+        const error = new Error(data.message || "Something went wrong");
+        error.status = data.status || response.status;
+        throw error;
       }
     } catch (error)
     {
-      setMessage(error.message);
+      setMessage(error);
       throw error;
     }
   };
@@ -50,15 +55,18 @@ export default function useRequestReset() {
       const data = await response.json();
       if (response.ok)
       {
-        setMessage("password updated!");
+        setMessage({ message: "Password updated", status: response.status });
+        router.push("/login")
         return data;
       } else
       {
-        throw new Error(data);
+        const error = new Error(data.message || "Something went wrong");
+        error.status = data.status || response.status;
+        throw error;
       }
     } catch (error)
     {
-      setMessage(error.message);
+      setMessage(error);
       throw error;
     }
   }

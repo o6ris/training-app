@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 import classes from "./resetPassword.module.css";
 import useResetPassword from "@modules/client/requests/useResetPassword";
 import InputField from "@core/ui/Fields/InputField/InputField";
@@ -22,9 +21,8 @@ function ResetPassword() {
   const isPasswordSame =
     credentials?.password === credentials?.confirmedPassword &&
     (credentials?.password !== "" || credentials?.confirmedPassword !== "");
-  const router = useRouter();
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   const handleOnChange = (name, value) => {
     const t = { ...credentials };
@@ -53,7 +51,12 @@ function ResetPassword() {
   return (
     <div className={classes.container}>
       <h1>Reset Password</h1>
-      {message && <p>{message}</p>}
+      {message &&
+        (String(message?.status).startsWith("40") ? (
+          <div className={classes.error_message}>{message.message}</div>
+        ) : (
+          <div className={classes.ok_message}>{message.message}</div>
+        ))}
       <InputField
         label="Password"
         variant="bordered"
@@ -132,4 +135,3 @@ function ResetPassword() {
 }
 
 export default ResetPassword;
-
