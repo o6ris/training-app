@@ -101,6 +101,9 @@ function Login() {
           />
         }
       />
+      <Link className={classes.forgot_paswword} href="/forgotPassword">
+        Forgot your password?
+      </Link>
       <BasicButton
         onAction={() => handleLogin()}
         buttonContent={"Login"}
