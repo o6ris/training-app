@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import classes from "./forgotPassword.module.css";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
+import useRequestReset from "@modules/client/requests/useResetPassword";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ function ForgotPassword() {
   const [disabledButton, setDisabledButton] = useState(true);
   const validateEmail = /^[a-z0-9._-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
   const isEmailValid = validateEmail.test(email);
+  const { getNewPassword, message } = useRequestReset();
 
   useEffect(() => {
     if (isEmailValid) {
@@ -35,6 +37,7 @@ function ForgotPassword() {
       <h1>Forgot your password?</h1>
       <p>Enter your email to get a new password</p>
       <form className={classes.form}>
+        {message && <p>{message}</p>}
         <InputField
           placeholder="eg: jonh@mail.com"
           value={email}
@@ -52,6 +55,7 @@ function ForgotPassword() {
           buttonStyle={classes.button}
           buttonContent={"Reset my password"}
           isDisabled={disabledButton}
+          onAction={() => getNewPassword(email)}
         />
       </form>
     </div>

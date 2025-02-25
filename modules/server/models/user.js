@@ -6,6 +6,7 @@ const userSchema = new Schema({
     required: [true, "email is required"],
     trim: true,
     maxLength: [50, "Name must be lesser than 50 characters"],
+    unique: true,
   },
   password: {
     type: String,
