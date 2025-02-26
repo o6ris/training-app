@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <div className={classes.main_container}>
-      <h1>Create Workout Session</h1>
+      <h1>Setup your Session</h1>
       <CreateSession muscles={muscles} />
     </div>
   );

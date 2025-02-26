@@ -26,6 +26,23 @@
   background-color: var(--primary-accent-color);
 }
 
+.save_session_button {
+  background-color: transparent;
+  border: 2px solid var(--primary-accent-color);
+  color: var(--primary-accent-color);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  height: 60px;
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  text-transform: uppercase;
+  font-style: italic;
+}
+
 .exercise_desc {
   width: 100%;
 }
@@ -62,4 +79,30 @@
 
 .remove_button {
   background-color: transparent;
+}
+
+.footer_button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.save_session_modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.save_session_info {
+  color: var(--primary-color);
+}
+
+.session_name_label {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-weight: var(--font-black);
+  font-size: var(--font-s);
+  margin-left: 5px;
 }

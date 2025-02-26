@@ -1,6 +1,6 @@
 import { Input } from "@heroui/react";
 import baseStyle from "../field.module.css";
-import classes from "./inputField.module.css"
+import classes from "./inputField.module.css";
 
 function InputField({
   label,
@@ -17,10 +17,11 @@ function InputField({
   type,
   isInvalid,
   errorMessage,
+  labelStyle,
 }) {
   return (
     <div className={baseStyle.input_container}>
-      <p className={baseStyle.label}>{label}</p>
+      <p className={`${labelStyle} ${baseStyle.label}`}>{label}</p>
       <Input
         aria-label={label}
         variant={variant}

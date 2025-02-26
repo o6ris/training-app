@@ -4,17 +4,22 @@ import { useState, useContext, useTransition } from "react";
 import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import SessionContext from "@modules/client/contexts/sessionProvider";
+import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
+import { useSession } from "next-auth/react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ExerciseList from "@components/ExercisesList/ExerciseList";
 import ButtonLink from "@core/ui/Button/ButtonLink";
+import PopupButton from "@core/ui/Button/PopupButton";
+import InputField from "@core/ui/Fields/InputField/InputField";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import Icon from "@core/ui/Icons/Icon";
-import PopupButton from "@core/ui/Button/PopupButton";
 
 function CreateSession({ muscles }) {
+  const { data: session } = useSession();
   const { createSession } = useContext(SessionContext);
   const [muscleIds, setMusculeIds] = useState([]);
+  const [sessionName, setSessionName] = useState("");
   const [isPending, startTransition] = useTransition();
   const {
     exerciseIds,
@@ -24,8 +29,9 @@ function CreateSession({ muscles }) {
     addExercise,
     removeExercise,
   } = useExercises(muscleIds, "muscle");
+  const { saveSession } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  
+
   const selectedExercises = exercises.filter((exercise) => {
     return exerciseIds.includes(exercise._id);
   });
@@ -176,27 +182,57 @@ function CreateSession({ muscles }) {
           );
         })}
       {exerciseIds.length > 0 && (
-        <ButtonLink
-          url={"/session"}
-          onAction={() =>
-            startTransition(() => {
-              createSession(exerciseIds, latestExercises);
-            })
-          }
-          buttonContent={
-            isPending ? (
-              <ClipLoader
-                color={"#EDF1FF"}
-                loading={isPending}
-                size={20}
-                aria-label="Loading Spinner"
-              />
-            ) : (
-              "Create session"
-            )
-          }
-          buttonStyle={classes.add_session_button}
-        />
+        <div className={classes.footer_button}>
+          <PopupButton
+            disableConfirm={sessionName.length < 2}
+            triggerButtonContent="Save session"
+            buttonStyle={classes.save_session_button}
+            startContent={
+              <Icon name="Save" size={16} color="#2694f9" strokeWidth={2} />
+            }
+            title="Save your session"
+            content={
+              <div className={classes.save_session_modal}>
+                <p className={classes.save_session_info}>
+                  Next time you train, you won&nbsp;t have to select all your
+                  exercises again, your session will be ready to go
+                </p>
+                <InputField
+                  value={sessionName}
+                  onChange={(value) => setSessionName(value)}
+                  labelPlacement="outside"
+                  label="Session name"
+                  labelStyle={classes.session_name_label}
+                />
+              </div>
+            }
+            onConfirm={() =>
+              saveSession(session.user.email, sessionName, exerciseIds)
+            }
+            confirmButton="Save"
+          />
+          <ButtonLink
+            url={"/session"}
+            onAction={() =>
+              startTransition(() => {
+                createSession(exerciseIds, latestExercises);
+              })
+            }
+            buttonContent={
+              isPending ? (
+                <ClipLoader
+                  color={"#EDF1FF"}
+                  loading={isPending}
+                  size={20}
+                  aria-label="Loading Spinner"
+                />
+              ) : (
+                "Start session"
+              )
+            }
+            buttonStyle={classes.add_session_button}
+          />
+        </div>
       )}
     </>
   );
