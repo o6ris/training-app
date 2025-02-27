@@ -49,11 +49,10 @@ export async function GET(request) {
     if (!checkId(user._id)) {
       throw { message: "User dosen't exist", status: 500 };
     }
-    const session = await Session.findOne({ user: user._id }).populate({
+    const session = await Session.find({ user: user._id }).populate({
       path: "exercises",
       model: Exercise,
     });
-    console.log("session", session);
 
     return NextResponse.json(session, { status: 200 });
   } catch (err) {
