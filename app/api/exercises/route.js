@@ -6,19 +6,16 @@ import { models } from "mongoose";
 import checkId from "modules/server/utils/checkId";
 
 export async function POST(request) {
-  try
-  {
+  try {
     // TODO: validate body data before POST
     const body = await request.json();
     await connectDb();
     const exercises = Array.isArray(body) ? body : [body];
     const createdExercises = [];
-    for (const item of exercises)
-    {
+    for (const item of exercises) {
       // Validate the muscle ID
       const muscle = await Muscle.findById(item.muscle);
-      if (!muscle)
-      {
+      if (!muscle) {
         throw { message: `Muscle ID ${item.muscle} not found`, status: 400 };
       }
 
@@ -37,28 +34,23 @@ export async function POST(request) {
       { message: "Exercises Created", exercises: createdExercises },
       { status: 201 }
     );
-  } catch (err)
-  {
+  } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
 export async function GET(request, { params }) {
-  try
-  {
+  try {
     await connectDb();
     const muscles = request.nextUrl.searchParams.getAll("muscle");
     const exercisesId = request.nextUrl.searchParams.getAll("exercise");
 
     const findExercises = async () => {
       let allExercises = [];
-      if (muscles.length > 0)
-      {
-        for (const muscle of muscles)
-        {
-          if (!checkId(muscle))
-          {
+      if (muscles.length > 0) {
+        for (const muscle of muscles) {
+          if (!checkId(muscle)) {
             throw { message: "Wrong id", status: 500 };
           }
           const exercises = await Exercise.find({ muscle: { $in: [muscle] } });
@@ -75,12 +67,9 @@ export async function GET(request, { params }) {
           allExercises = Array.from(exerciseMap.values());
         }
         return allExercises;
-      } else if (exercisesId.length > 0)
-      {
-        for (const id of exercisesId)
-        {
-          if (!checkId(id))
-          {
+      } else if (exercisesId.length > 0) {
+        for (const id of exercisesId) {
+          if (!checkId(id)) {
             throw { message: "Wrong id", status: 500 };
           }
           const exercises = await Exercise.find({ _id: id });
@@ -101,8 +90,7 @@ export async function GET(request, { params }) {
       return Exercise.find();
     };
     const exercises = await findExercises();
-    if (!exercises)
-    {
+    if (!exercises) {
       throw { message: "Not found", status: 400 };
     }
     const populatedExercises = await Promise.all(
@@ -115,8 +103,7 @@ export async function GET(request, { params }) {
       })
     );
     return NextResponse.json(populatedExercises, { status: 200 });
-  } catch (err)
-  {
+  } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
   }

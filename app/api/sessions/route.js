@@ -6,26 +6,23 @@ import { NextResponse } from "next/server";
 import checkId from "@modules/server/utils/checkId";
 
 export async function POST(request) {
-  try
-  {
+  try {
     const { email, name, exercises } = await request.json();
     await connectDb();
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email: email });
     const findExercises = async () => {
       let allExercises = [];
-      for (const id of exercises)
-      {
-        if (!checkId(id))
-        {
+      for (const id of exercises) {
+        if (!checkId(id)) {
           throw { message: "Wrong id", status: 500 };
         }
         const exercise = await Exercise.findOne({ _id: id });
-        allExercises.push(exercise._id)
+        allExercises.push(exercise._id);
       }
       return allExercises;
-    }
+    };
 
-    const exercisesList = await findExercises()
+    const exercisesList = await findExercises();
     const newSession = new Session({
       user: user._id,
       exercises: exercisesList,
@@ -38,33 +35,28 @@ export async function POST(request) {
       { message: "Exercises saved" },
       { status: 201 }
     );
-  } catch (err)
-  {
+  } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
   }
 }
 
-export async function GET() {
-  try
-  {
+export async function GET(request) {
+  const email = request.nextUrl.searchParams.get("email");
+  try {
     await connectDb();
-    const sessions = await Session.find();
-    // Wait all promises
-    // const populatedSessions = await Promise.all(
-    //   sessions.map(async (session) => {
-    //     // For each session go to each exercise and add its name
-    //     const populatedSession = await Session.populate(session, {
-    //       path: "exercises",
-    //       model: Exercise,
-    //       select: "name",
-    //     });
-    //     return populatedSession;
-    //   })
-    // );
-    return NextResponse.json(sessions, { status: 200 });
-  } catch (err)
-  {
+    const user = await User.findOne({ email: email });
+    if (!checkId(user._id)) {
+      throw { message: "User dosen't exist", status: 500 };
+    }
+    const session = await Session.findOne({ user: user._id }).populate({
+      path: "exercises",
+      model: Exercise,
+    });
+    console.log("session", session);
+
+    return NextResponse.json(session, { status: 200 });
+  } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });
   }
