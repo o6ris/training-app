@@ -80,7 +80,7 @@ export default function useExercises(list, queryName) {
   }, [list]);
 
   useEffect(() => {
-    if (exerciseIds.length > 0) getStatsByExercises(exerciseIds);
+    if (exerciseIds?.length > 0) getStatsByExercises(exerciseIds);
   }, [exerciseIds]);
 
   return {
@@ -91,5 +91,6 @@ export default function useExercises(list, queryName) {
     addExercise,
     removeExercise,
     latestExercises,
+    setLatestExercises,
   };
 }

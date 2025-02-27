@@ -1,17 +1,45 @@
 "use client";
 
+import { useContext, useTransition, useState } from "react";
 import classes from "./savedSessions.module.css";
-import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import SessionContext from "@modules/client/contexts/sessionProvider";
+import useExercises from "@modules/client/requests/useExercises";
+import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import ButtonLink from "@core/ui/Button/ButtonLink";
+import ClipLoader from "react-spinners/ClipLoader";
+
 function SavedSession({ workouts }) {
+  const [isPending, startTransition] = useTransition();
+  const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
+  const { createSession } = useContext(SessionContext);
+  const { latestExercises, setLatestExercises, setExerciseIds } =
+    useExercises();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  console.log("workouts", workouts);
+
+  const accordionOnChange = (key) => {
+    if (Array.from(key).join("").length > 0) {
+      const workout = workouts?.find(
+        (workout) => workout._id === Array.from(key).join("")
+      );
+      const exerciseIds = workout?.exercises.map((exercise) => exercise._id);
+      setExerciseIds(exerciseIds);
+    } else {
+      setExerciseIds([]);
+      setLatestExercises([]);
+    }
+    setAccordionKey(key);
+  };
 
   return (
-    <Accordion variant="splitted">
+    <Accordion
+      variant="splitted"
+      selectedKeys={accordionKey}
+      onSelectionChange={(key) => accordionOnChange(key)}
+    >
       {workouts.map((workout, i) => {
         return (
           <AccordionItem
-            key={i + 1}
+            key={workout._id}
             aria-label={workout.name}
             title={workout.name}
             subtitle={`${workout.exercises.length} exercises`}
@@ -50,6 +78,30 @@ function SavedSession({ workouts }) {
                 </div>
               );
             })}
+            <ButtonLink
+              url={"/session"}
+              onAction={() =>
+                startTransition(() => {
+                  createSession(
+                    workout.exercises.map((exercise) => exercise._id),
+                    latestExercises
+                  );
+                })
+              }
+              buttonContent={
+                isPending ? (
+                  <ClipLoader
+                    color={"#EDF1FF"}
+                    loading={isPending}
+                    size={20}
+                    aria-label="Loading Spinner"
+                  />
+                ) : (
+                  "Start session"
+                )
+              }
+              buttonStyle={classes.start_button}
+            />
           </AccordionItem>
         );
       })}

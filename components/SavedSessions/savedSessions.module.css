@@ -23,3 +23,19 @@
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
+
+.start_button {
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  height: 60px;
+  font-size: var(--font-xl);
+  font-weight: var(--font-black);
+  text-transform: uppercase;
+  font-style: italic;
+  color: var(--primary-light-color);
+  background-color: var(--primary-accent-color);
+}
