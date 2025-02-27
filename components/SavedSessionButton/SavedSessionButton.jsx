@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import React from "react";
 import PopupButton from "@core/ui/Button/PopupButton";
 import ClipLoader from "react-spinners/ClipLoader";
-import SavedSession from "@components/SavedSessions/SavedSession";
+import SavedSession from "@components/SavedSessions/SavedSessions";
 
 function SavedSessionButton() {
   return (

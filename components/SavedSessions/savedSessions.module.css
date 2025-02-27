@@ -1,0 +1,25 @@
+.accordion_item {
+  background-color: var(--secondary-color) !important;
+}
+
+.accordion_title {
+  color: var(--primary-light-color);
+}
+
+.exercise_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.exercise_desc {
+  width: 100%;
+}
+
+.exercise_desc_content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
