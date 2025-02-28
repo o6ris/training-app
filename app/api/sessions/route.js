@@ -55,8 +55,11 @@ export async function GET(request) {
     });
 
     return NextResponse.json(session, { status: 200 });
-  } catch (err) {
-    const { message, status } = err;
-    return NextResponse.json({ message, status }, { status: status || 404 });
+  } catch (error) {
+    const { message, status } = error;
+    return NextResponse.json(
+      { message: message ?? "Unknown Error", status: status ?? 500 },
+      { status: status ?? 500 }
+    );
   }
 }

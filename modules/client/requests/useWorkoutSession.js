@@ -12,20 +12,20 @@ export default function useWorkoutSession() {
     try {
       const response = await fetch(url, {
         method: "GET",
-        next: { revalidate: 1 },
       });
-      const workouts = await response.json();
-      console.log("workouts", workouts);
       if (response.ok) {
-        setMessage({ message: "Get session failed", status: response.status });
+        const workouts = await response.json();
+        setMessage({ message: "Get session succed", status: response.status });
         setWorkouts(workouts);
-        return data;
       } else {
         const error = new Error(data.message || "Something went wrong");
         error.status = data.status || response.status;
         throw error;
       }
-    } catch (error) {}
+    } catch (error) {
+      setMessage(error);
+      throw error;
+    }
   };
 
   const saveSession = async (email, name, exercises) => {

@@ -8,6 +8,7 @@ import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import { Accordion, AccordionItem, Avatar } from "@heroui/react";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
+import Skeleton from "@core/ui/Skeleton/Skeleton";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function SavedSession() {
@@ -33,6 +34,22 @@ function SavedSession() {
     setAccordionKey(key);
   };
 
+  console.log("workouts", workouts);
+
+  if (!workouts) {
+    return (
+      <div className={classes.skeleton_container}>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton
+            key={index} // Assign a unique key for each Skeleton
+            height={"5rem"}
+            width={"100%"}
+            className={`${classes.accordion_item}`}
+          />
+        ))}
+      </div>
+    );
+  }
   return (
     <Accordion
       variant="splitted"
@@ -47,8 +64,8 @@ function SavedSession() {
             title={
               <div className={classes.title_wrapper}>
                 <div className={classes.title}>
-                {workout.name}
-                <span>{workout.exercises.length} exercises</span>
+                  {workout.name}
+                  <span>{workout.exercises.length} exercises</span>
                 </div>
                 <DeleteButton
                   content={"Do you really want to delete this session?"}
