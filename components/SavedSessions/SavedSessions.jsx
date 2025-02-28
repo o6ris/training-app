@@ -10,13 +10,13 @@ import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import ClipLoader from "react-spinners/ClipLoader";
 
-function SavedSession({ workouts }) {
+function SavedSession() {
   const [isPending, startTransition] = useTransition();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const { createSession } = useContext(SessionContext);
   const { latestExercises, setLatestExercises, setExerciseIds } =
     useExercises();
-  const { deleteSession } = useWorkoutSession();
+  const { workouts, deleteSession } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const accordionOnChange = (key) => {
@@ -39,7 +39,7 @@ function SavedSession({ workouts }) {
       selectedKeys={accordionKey}
       onSelectionChange={(key) => accordionOnChange(key)}
     >
-      {workouts.map((workout, i) => {
+      {workouts?.map((workout, i) => {
         return (
           <AccordionItem
             key={workout._id}
