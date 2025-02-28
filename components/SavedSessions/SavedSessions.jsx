@@ -4,8 +4,10 @@ import { useContext, useTransition, useState } from "react";
 import classes from "./savedSessions.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import useExercises from "@modules/client/requests/useExercises";
+import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import { Accordion, AccordionItem, Avatar } from "@heroui/react";
 import ButtonLink from "@core/ui/Button/ButtonLink";
+import DeleteButton from "@components/DeleteButton/DeleteButton";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function SavedSession({ workouts }) {
@@ -14,6 +16,7 @@ function SavedSession({ workouts }) {
   const { createSession } = useContext(SessionContext);
   const { latestExercises, setLatestExercises, setExerciseIds } =
     useExercises();
+  const { deleteSession } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const accordionOnChange = (key) => {
@@ -41,8 +44,18 @@ function SavedSession({ workouts }) {
           <AccordionItem
             key={workout._id}
             aria-label={workout.name}
-            title={workout.name}
-            subtitle={`${workout.exercises.length} exercises`}
+            title={
+              <div className={classes.title_wrapper}>
+                <div className={classes.title}>
+                {workout.name}
+                <span>{workout.exercises.length} exercises</span>
+                </div>
+                <DeleteButton
+                  content={"Do you really want to delete this session?"}
+                  onConfirm={() => deleteSession(workout._id)}
+                />
+              </div>
+            }
             classNames={{
               base: classes.accordion_item,
               title: classes.accordion_title,

@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import ExerciseList from "@components/ExercisesList/ExerciseList";
 import ButtonLink from "@core/ui/Button/ButtonLink";
+import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
@@ -139,17 +140,7 @@ function CreateSession({ muscles }) {
                   title={
                     <div className={classes.accordion_title}>
                       {exercise.name}
-                      <PopupButton
-                        isIconOnly={true}
-                        buttonStyle={classes.remove_button}
-                        startContent={
-                          <Icon
-                            name="Trash"
-                            size={16}
-                            color="#ba0505"
-                            strokeWidth={2}
-                          />
-                        }
+                      <DeleteButton
                         content={"Do you really want to remove this exercise?"}
                         onConfirm={() => removeExercise(exercise._id)}
                       />

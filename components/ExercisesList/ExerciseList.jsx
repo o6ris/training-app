@@ -1,6 +1,6 @@
-import { useState } from "react";
 import classes from "./exercisesList.module.css";
 import { Avatar, Image } from "@heroui/react";
+import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
@@ -67,17 +67,7 @@ function ExerciseList({ exercises, addExercise, removeExercise, exerciseIds }) {
                   }
                 />
                 {exerciseIds?.includes(exercise._id) && (
-                  <PopupButton
-                    isIconOnly={true}
-                    buttonStyle={classes.remove_button}
-                    startContent={
-                      <Icon
-                        name="Trash"
-                        size={16}
-                        color="#ba0505"
-                        strokeWidth={2}
-                      />
-                    }
+                  <DeleteButton
                     content={"Do you really want to remove this exercise?"}
                     onConfirm={() => removeExercise(exercise._id)}
                   />
