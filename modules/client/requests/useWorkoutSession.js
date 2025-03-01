@@ -52,7 +52,17 @@ export default function useWorkoutSession() {
       } else {
         const error = new Error(data.message || "Something went wrong");
         error.status = data.status || response.status;
-        handleNotification(data.message || "Something went wrong", false);
+        if (data.message.includes("duplicate key")) {
+          const match = data.message.match(/"([^"]+)"/);
+          if (match) {
+            handleNotification(
+              `Name ${match[1]} already exist. Choose another one.`,
+              false
+            );
+          } else {
+            handleNotification(data.message || "Something went wrong", false);
+          }
+        }
         throw error;
       }
     } catch (error) {
