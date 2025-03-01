@@ -1,0 +1,38 @@
+.container_fail, .container_success {
+	position: absolute;
+	color: var(--primary-light-color);
+	left: -16px;
+	top: -16px;
+	width: 100dvw;
+	height: 60px;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	z-index: 20;
+	transition: 0.3s;
+}
+
+.container_fail {
+	background-color: var(--danger-color);
+}
+
+.container_success {
+	background-color: var(--success-color);
+}
+
+.text_container {
+	display: flex;
+	align-items: flex-end;
+	gap: 16px;
+}
+
+.text_container p {
+  font-weight: var(--font-bold);
+	font-size: var(--font-l);
+  /* width: 100%; */
+}
+
+.close_icon {
+	align-self: flex-start;
+}

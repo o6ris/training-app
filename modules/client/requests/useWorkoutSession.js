@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
+import NotificationContext from "@modules/client/contexts/toastNotificationProvider";
 
 export default function useWorkoutSession() {
   const [message, setMessage] = useState();
   const [workouts, setWorkouts] = useState();
   const { data: session } = useSession();
+  const { handleNotification } = useContext(NotificationContext);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const getSessions = async () => {
@@ -45,11 +47,12 @@ export default function useWorkoutSession() {
       );
       const data = await response.json();
       if (response.ok) {
-        setMessage({ message: "Session saved!", status: response.status });
+        handleNotification("Session saved", true);
         return data;
       } else {
         const error = new Error(data.message || "Something went wrong");
         error.status = data.status || response.status;
+        handleNotification(data.message || "Something went wrong", false);
         throw error;
       }
     } catch (error) {
