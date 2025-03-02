@@ -123,9 +123,8 @@ export default function useWorkoutSession() {
       if (response.ok) {
         setMessage({ message: "Session deleted!", status: response.status });
         setWorkouts((prevWorkouts) => {
-          const updatedSession = workouts.find((el) => el._id === id);
           const updatedWorkouts = prevWorkouts.map((workout) =>
-            workout._id === id ? { ...workout, ...updatedSession } : workout
+            workout._id === id ? { ...workout, ...body } : workout
           );
           setTempWorkouts(updatedWorkouts);
           return updatedWorkouts;
