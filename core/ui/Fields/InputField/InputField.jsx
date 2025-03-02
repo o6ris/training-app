@@ -4,6 +4,7 @@ import classes from "./inputField.module.css";
 
 function InputField({
   label,
+  ariaLabel,
   variant,
   placeholder,
   labelPlacement,
@@ -23,7 +24,7 @@ function InputField({
     <div className={baseStyle.input_container}>
       <p className={`${labelStyle} ${baseStyle.label}`}>{label}</p>
       <Input
-        aria-label={label}
+        aria-label={label || ariaLabel}
         variant={variant}
         placeholder={placeholder}
         labelPlacement={labelPlacement}

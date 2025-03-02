@@ -17,7 +17,7 @@ function SavedSession() {
   const [isPending, startTransition] = useTransition();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const { createSession } = useContext(SessionContext);
-  const { latestExercises, setLatestExercises, setExerciseIds } =
+  const { latestExercises, setLatestExercises, setsetSelectedExercises } =
     useExercises();
   const {
     workouts,
@@ -35,9 +35,9 @@ function SavedSession() {
         (workout) => workout._id === Array.from(key).join("")
       );
       const exerciseIds = workout?.exercises.map((exercise) => exercise._id);
-      setExerciseIds(exerciseIds);
+      setsetSelectedExercises(exerciseIds);
     } else {
-      setExerciseIds([]);
+      setsetSelectedExercises([]);
       setLatestExercises([]);
     }
     setAccordionKey(key);

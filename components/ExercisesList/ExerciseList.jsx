@@ -4,18 +4,10 @@ import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
-function ExerciseList({ exercises, addExercise, removeExercise, exerciseIds }) {
+function ExerciseList({ exercises, addExercise, removeExercise, selectedExercises }) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  console.log("exercises", exercises);
-  const exercisesByMuscle = Object.groupBy(
-    exercises,
-    ({ muscle }) =>
-      `${
-        muscle.length < 2
-          ? muscle[0].name
-          : `${muscle[0].name} & ${muscle[1].name}`
-      }`
-  );
+
+  const exerciseIds = selectedExercises.map((exercise) => exercise._id);
 
   return (
     <div className={classes.list_wrapper}>
@@ -36,7 +28,7 @@ function ExerciseList({ exercises, addExercise, removeExercise, exerciseIds }) {
               }
               closebutton={"Close"}
               confirmButton={"Add"}
-              onConfirm={() => addExercise(exercise._id)}
+              onConfirm={() => addExercise(exercise)}
               isDisabled={exerciseIds?.includes(exercise._id)}
               content={
                 <div className={classes.exercise_desc_content}>
