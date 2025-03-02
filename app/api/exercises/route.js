@@ -63,7 +63,6 @@ export async function GET(request, { params }) {
       let allExercises = [];
       if (muscles.length > 0) {
         for (const muscle of muscles) {
-          console.log("muscle", muscle);
           if (!checkId(muscle) && muscle !== "all") {
             throw { message: "Wrong id", status: 500 };
           } else if (checkId(muscle) && muscle !== "all") {

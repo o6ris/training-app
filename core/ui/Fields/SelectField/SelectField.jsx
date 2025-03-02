@@ -63,17 +63,14 @@ export default function SelectField({
           )
         }
         disallowEmptySelection={disallowEmptySelection}
-        classNames={
-          classNames
-            ? classNames
-            : {
-                label: baseStyle.label,
-                value: baseStyle.value,
-                trigger: baseStyle.main_wrapper,
-                popoverContent: classes.listbox_container,
-                listbox: classes.listbox,
-              }
-        }
+        classNames={{
+          label: baseStyle.label,
+          value: baseStyle.value,
+          trigger: baseStyle.main_wrapper,
+          popoverContent: classes.listbox_container,
+          listbox: classes.listbox,
+          ...(classNames || {}),
+        }}
         onSelectionChange={selectOnChange}
         renderValue={(items) => {
           return (

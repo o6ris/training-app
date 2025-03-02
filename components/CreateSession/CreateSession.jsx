@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext, useTransition } from "react";
+import { useState, useContext, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./createSession.module.css";
 import useExercises from "@modules/client/requests/useExercises";
@@ -21,7 +21,9 @@ function CreateSession({ muscles }) {
     removeExercise,
   } = useExercises(muscleId, "muscle");
 
-  console.log("selectedExercises", selectedExercises);
+  useEffect(() => {
+    if (muscleId.length === 0) setMuscleId(["all"]);
+  }, [muscleId]);
 
   return (
     <>
@@ -42,6 +44,7 @@ function CreateSession({ muscles }) {
             muscleId={muscleId}
             setMuscleId={setMuscleId}
             setDisplayAddExercise={setDisplayAddExercise}
+            isLoading={isLoading}
           />
         )}
       </div>

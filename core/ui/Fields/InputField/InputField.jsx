@@ -19,6 +19,8 @@ function InputField({
   isInvalid,
   errorMessage,
   labelStyle,
+  startContent,
+  isClearable,
 }) {
   return (
     <div className={baseStyle.input_container}>
@@ -31,21 +33,20 @@ function InputField({
         isDisabled={isDisabled}
         value={value}
         onValueChange={onChange}
-        classNames={
-          classNames
-            ? classNames
-            : {
-                label: baseStyle.label,
-                inputWrapper: baseStyle.main_wrapper,
-                input: classes.value,
-              }
-        }
+        classNames={{
+          label: baseStyle.label,
+          inputWrapper: baseStyle.main_wrapper,
+          input: classes.value,
+          ...(classNames || {}),
+        }}
         min={min}
         max={max}
         type={type}
         endContent={endContent}
         isInvalid={isInvalid}
         errorMessage={errorMessage}
+        startContent={startContent}
+        isClearable={isClearable}
       />
     </div>
   );

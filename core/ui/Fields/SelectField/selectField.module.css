@@ -20,7 +20,7 @@
 }
 
 .select_item > p {
-  font-size: var(--font-xl) !important;
+  font-size: var(--font-r) !important;
   font-weight: var(--font-bold) !important;
 }
 

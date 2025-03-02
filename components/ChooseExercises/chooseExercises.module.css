@@ -1,3 +1,35 @@
+.main_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 60px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  backdrop-filter: blur(10px);
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  z-index: 100;
+}
+
+.field_value {
+  font-size: var(--font-r);
+  color: var(--primary-light-color);
+}
+
+.field_wrapper {
+  width: 100%;
+  min-height: 50px !important;
+  padding: 5px;
+  border: 2px solid var(--secondary-color);
+}
+
 .footer_button {
   display: flex;
   flex-direction: row;

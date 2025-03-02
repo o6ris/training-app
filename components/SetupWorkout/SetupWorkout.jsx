@@ -23,8 +23,6 @@ function SetupWorkout({
   const router = useRouter();
   
   const exerciseIds = selectedExercises.map((exercise) => exercise._id);
-  console.log("sessionName", sessionName)
-  console.log("exerciseIds", exerciseIds)
   return (
     <div className={classes.main_wrapper}>
       <InputField
