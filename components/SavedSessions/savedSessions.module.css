@@ -62,3 +62,17 @@
   color: var(--primary-light-color);
   background-color: var(--primary-accent-color);
 }
+
+.action_buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.session_name_label {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-weight: var(--font-black);
+  font-size: var(--font-s);
+  margin-left: 5px;
+}

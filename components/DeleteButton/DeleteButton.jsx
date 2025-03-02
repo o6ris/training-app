@@ -8,10 +8,12 @@ function DeleteButton({ content, onConfirm }) {
       isIconOnly={true}
       buttonStyle={classes.remove_button}
       startContent={
-        <Icon name="Trash" size={16} color="#ba0505" strokeWidth={2} />
+        <Icon name="Trash" size={16} color="#edf1ff" strokeWidth={2} />
       }
       content={content}
       onConfirm={onConfirm}
+      confirmButton="Delete"
+      confirmButtonStyle={classes.remove_button}
     />
   );
 }

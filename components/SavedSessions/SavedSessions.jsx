@@ -6,8 +6,10 @@ import SessionContext from "@modules/client/contexts/sessionProvider";
 import useExercises from "@modules/client/requests/useExercises";
 import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import InputField from "@core/ui/Fields/InputField/InputField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
+import EditButton from "@components/EditButton/EditButton";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -17,7 +19,14 @@ function SavedSession() {
   const { createSession } = useContext(SessionContext);
   const { latestExercises, setLatestExercises, setExerciseIds } =
     useExercises();
-  const { workouts, deleteSession } = useWorkoutSession();
+  const {
+    workouts,
+    deleteSession,
+    updateSession,
+    changeWorkoutName,
+    setWorkouts,
+    tempWorkouts,
+  } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const accordionOnChange = (key) => {
@@ -33,8 +42,6 @@ function SavedSession() {
     }
     setAccordionKey(key);
   };
-
-  console.log("workouts", workouts);
 
   if (!workouts) {
     return (
@@ -67,10 +74,39 @@ function SavedSession() {
                   {workout.name}
                   <span>{workout.exercises.length} exercises</span>
                 </div>
-                <DeleteButton
-                  content={"Do you really want to delete this session?"}
-                  onConfirm={() => deleteSession(workout._id)}
-                />
+                <div className={classes.action_buttons}>
+                  <EditButton
+                    content={
+                      <div className={classes.save_session_modal}>
+                        <InputField
+                          value={workout.name}
+                          onChange={(value) => {
+                            return changeWorkoutName(
+                              "name",
+                              value,
+                              workout._id
+                            );
+                          }}
+                          labelPlacement="outside"
+                          label="Session name"
+                          labelStyle={classes.session_name_label}
+                        />
+                      </div>
+                    }
+                    disableConfirm={
+                      workout.name ===
+                      tempWorkouts.find(
+                        (tempWorkout) => tempWorkout._id === workout._id
+                      ).name
+                    }
+                    onConfirm={() => updateSession(workout._id, workout)}
+                    onCancel={() => setWorkouts(tempWorkouts)}
+                  />
+                  <DeleteButton
+                    content={"Do you really want to delete this session?"}
+                    onConfirm={() => deleteSession(workout._id)}
+                  />
+                </div>
               </div>
             }
             classNames={{

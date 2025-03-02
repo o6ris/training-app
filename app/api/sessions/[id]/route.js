@@ -39,7 +39,7 @@ export async function DELETE(request, { params }) {
     );
   } catch (err) {
     const { message, status } = err;
-    return NextResponse.json({ message, status }, { status: status || 404 });
+    return NextResponse.json({ message, status }, { status: status || 500 });
   }
 }
 
@@ -51,12 +51,10 @@ export async function PATCH(request, { params }) {
     }
     const session = await request.json();
     await connectDb();
-    const updtatedSession = await Session.findByIdAndUpdate(
-      id,
-      session,
-      { new: true },
-      { runValidators: true }
-    );
+    const updtatedSession = await Session.findByIdAndUpdate(id, session, {
+      new: true,
+      runValidators: true,
+    });
     return NextResponse.json(
       updtatedSession,
       { message: "Session deleted" },
@@ -64,6 +62,6 @@ export async function PATCH(request, { params }) {
     );
   } catch (err) {
     const { message, status } = err;
-    return NextResponse.json({ message, status }, { status: status || 404 });
+    return NextResponse.json({ message, status }, { status: status || 500 });
   }
 }
