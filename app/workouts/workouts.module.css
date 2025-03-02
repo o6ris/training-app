@@ -23,3 +23,8 @@
   background-color: var(--primary-accent-color);
   height: 60px;
 }
+
+.hr{
+  width: 50%;
+  border: 1px solid var(--secondary-color);
+}

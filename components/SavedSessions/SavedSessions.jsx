@@ -62,6 +62,7 @@ function SavedSession() {
       variant="splitted"
       selectedKeys={accordionKey}
       onSelectionChange={(key) => accordionOnChange(key)}
+      style={{ padding: 0 }}
     >
       {workouts?.map((workout, i) => {
         return (
