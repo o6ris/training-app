@@ -46,25 +46,35 @@ export async function GET(request, { params }) {
     const muscles = request.nextUrl.searchParams.getAll("muscle");
     const exercisesId = request.nextUrl.searchParams.getAll("exercise");
 
+    const storeUniqueId = (allExercises, exercises) => {
+      // Create a Map to store unique exercises by their _id
+      const exerciseMap = new Map();
+      // Merge allExercises and exercises and iterate ofdver them
+      [...allExercises, ...exercises].forEach((exercise) => {
+        // Store each exercise in the Map using _id as the key
+        // If an exercise with the same _id already exists, it will be replaced
+        exerciseMap.set(exercise._id.toString(), exercise);
+      });
+      // Convert the Map values (unique exercises) back into an array
+      return Array.from(exerciseMap.values());
+    };
+
     const findExercises = async () => {
       let allExercises = [];
       if (muscles.length > 0) {
         for (const muscle of muscles) {
-          if (!checkId(muscle)) {
+          console.log("muscle", muscle);
+          if (!checkId(muscle) && muscle !== "all") {
             throw { message: "Wrong id", status: 500 };
+          } else if (checkId(muscle) && muscle !== "all") {
+            const exercises = await Exercise.find({
+              muscle: { $in: [muscle] },
+            });
+            allExercises = storeUniqueId(allExercises, exercises);
+          } else if (!checkId(muscle) && muscle === "all") {
+            const exercises = await Exercise.find();
+            allExercises = storeUniqueId(allExercises, exercises);
           }
-          const exercises = await Exercise.find({ muscle: { $in: [muscle] } });
-
-          // Create a Map to store unique exercises by their _id
-          const exerciseMap = new Map();
-          // Merge allExercises and exercises and iterate over them
-          [...allExercises, ...exercises].forEach((exercise) => {
-            // Store each exercise in the Map using _id as the key
-            // If an exercise with the same _id already exists, it will be replaced
-            exerciseMap.set(exercise._id.toString(), exercise);
-          });
-          // Convert the Map values (unique exercises) back into an array
-          allExercises = Array.from(exerciseMap.values());
         }
         return allExercises;
       } else if (exercisesId.length > 0) {
@@ -87,7 +97,6 @@ export async function GET(request, { params }) {
         }
         return allExercises;
       }
-      return Exercise.find();
     };
     const exercises = await findExercises();
     if (!exercises) {

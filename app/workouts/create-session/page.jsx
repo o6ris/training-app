@@ -10,10 +10,6 @@ async function CreateSessionPage() {
   const muscles = await muscleResponse.json();
   return (
     <div className={classes.main_container}>
-      <div className={classes.header}>
-        <GoBackButton url="/workouts" />
-        <h1>Create your Session</h1>
-      </div>
       <CreateSession muscles={muscles} />
     </div>
   );
