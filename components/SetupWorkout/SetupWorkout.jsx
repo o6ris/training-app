@@ -106,9 +106,10 @@ function SetupWorkout({
           startContent={
             <Icon name="Save" size={16} color="#edf1ff" strokeWidth={2} />
           }
-          onAction={() =>
-            saveSession(session.user.email, sessionName, exerciseIds)
-          }
+          onAction={() => {
+            saveSession(session.user.email, sessionName, exerciseIds);
+            router.push("/workouts");
+          }}
         />
       </div>
     </div>

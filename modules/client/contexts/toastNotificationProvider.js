@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-const NOTIF_TIME = 6000;
+const NOTIF_TIME = 4000;
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
