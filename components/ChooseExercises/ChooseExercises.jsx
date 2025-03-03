@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import classes from "./chooseExercises.module.css";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import InputField from "@core/ui/Fields/InputField/InputField";
@@ -20,6 +20,28 @@ function ChooseExercises({
   setDisplayAddExercise,
   isLoading,
 }) {
+  const [filteredExercises, setFilteredExercises] = useState(exercises);
+
+  const debounce = (onChange) => {
+    let timeout;
+    return (value) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        onChange(value);
+      }, 500);
+    };
+  };
+  const handleSearch = (value) => {
+    const filteredExercises = exercises.filter((exercise) =>
+      exercise.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredExercises([...filteredExercises]);
+  };
+
+  useEffect(() => {
+    if (exercises.length > 0) setFilteredExercises(exercises);
+  }, [exercises]);
+
   return (
     <div className={classes.main_wrapper}>
       {/* Choose muscles */}
@@ -32,6 +54,10 @@ function ChooseExercises({
           }}
           startContent={<Icon name="Search" strokeWidth={2} size={16} />}
           isClearable={true}
+          placeholder="Search..."
+          onChange={debounce((value) => {
+            handleSearch(value);
+          })}
         />
         <SelectField
           items={[
@@ -60,7 +86,7 @@ function ChooseExercises({
       {/* Choose Exercises */}
       {muscleId.length > 0 && !isLoading ? (
         <ExerciseList
-          exercises={exercises}
+          exercises={filteredExercises}
           addExercise={addExercise}
           removeExercise={removeExercise}
           selectedExercises={selectedExercises}
