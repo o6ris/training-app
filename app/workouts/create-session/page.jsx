@@ -1,6 +1,5 @@
 import classes from "./createSessionPage.module.css";
 import CreateSession from "@components/CreateSession/CreateSession";
-import GoBackButton from "@components/GoBackButton/GoBackButton";
 
 async function CreateSessionPage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;

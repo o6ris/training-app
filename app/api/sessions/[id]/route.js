@@ -12,9 +12,8 @@ export async function GET(request, { params }) {
     }
     await connectDb();
     const session = await Session.findById(id).populate({
-      path: "exerices",
+      path: "exercises",
       model: Exercise,
-      select: "name",
     });
 
     return NextResponse.json(session, { status: 200 });

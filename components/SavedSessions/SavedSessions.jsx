@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useTransition, useState } from "react";
+import { useRouter } from "next/navigation";
 import classes from "./savedSessions.module.css";
 import SessionContext from "@modules/client/contexts/sessionProvider";
 import useExercises from "@modules/client/requests/useExercises";
@@ -9,8 +10,10 @@ import { Accordion, AccordionItem, Avatar } from "@heroui/react";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
+import BasicButton from "@core/ui/Button/BasicButton";
 import EditButton from "@components/EditButton/EditButton";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
+import Icon from "@core/ui/Icons/Icon";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function SavedSession() {
@@ -28,6 +31,8 @@ function SavedSession() {
     tempWorkouts,
   } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+
+  const router = useRouter();
 
   const accordionOnChange = (key) => {
     if (Array.from(key).join("").length > 0) {
@@ -76,36 +81,19 @@ function SavedSession() {
                   <span>{workout.exercises.length} exercises</span>
                 </div>
                 <div className={classes.action_buttons}>
-                  <EditButton
-                    content={
-                      <div className={classes.save_session_modal}>
-                        <InputField
-                          value={workout.name}
-                          onChange={(value) => {
-                            return changeWorkoutName(
-                              "name",
-                              value,
-                              workout._id
-                            );
-                          }}
-                          labelPlacement="outside"
-                          label="Session name"
-                          labelStyle={classes.session_name_label}
-                        />
-                      </div>
+                  <BasicButton
+                    isIconOnly={true}
+                    startContent={
+                      <Icon
+                        name="Pencil"
+                        size={16}
+                        color="#1c2647"
+                        strokeWidth={2}
+                      />
                     }
-                    disableConfirm={
-                      workout.name ===
-                      tempWorkouts.find(
-                        (tempWorkout) => tempWorkout._id === workout._id
-                      ).name
+                    onAction={() =>
+                      router.push(`/workouts/create-session?id=${workout._id}`)
                     }
-                    onConfirm={() => updateSession(workout._id, workout)}
-                    onCancel={() => setWorkouts(tempWorkouts)}
-                  />
-                  <DeleteButton
-                    content={"Do you really want to delete this session?"}
-                    onConfirm={() => deleteSession(workout._id)}
                   />
                 </div>
               </div>
@@ -145,30 +133,36 @@ function SavedSession() {
                 </div>
               );
             })}
-            <ButtonLink
-              url={"/session"}
-              onAction={() =>
-                startTransition(() => {
-                  createSession(
-                    workout.exercises.map((exercise) => exercise._id),
-                    latestExercises
-                  );
-                })
-              }
-              buttonContent={
-                isPending ? (
-                  <ClipLoader
-                    color={"#EDF1FF"}
-                    loading={isPending}
-                    size={20}
-                    aria-label="Loading Spinner"
-                  />
-                ) : (
-                  "Start session"
-                )
-              }
-              buttonStyle={classes.start_button}
-            />
+            <div className={classes.footer_button}>
+              <ButtonLink
+                url={"/session"}
+                onAction={() =>
+                  startTransition(() => {
+                    createSession(
+                      workout.exercises.map((exercise) => exercise._id),
+                      latestExercises
+                    );
+                  })
+                }
+                buttonContent={
+                  isPending ? (
+                    <ClipLoader
+                      color={"#EDF1FF"}
+                      loading={isPending}
+                      size={20}
+                      aria-label="Loading Spinner"
+                    />
+                  ) : (
+                    "Start"
+                  )
+                }
+                buttonStyle={classes.start_button}
+              />
+              <DeleteButton
+                content={"Do you really want to delete this session?"}
+                onConfirm={() => deleteSession(workout._id)}
+              />
+            </div>
           </AccordionItem>
         );
       })}

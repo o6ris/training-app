@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import classes from "./setupWorkout.module.css";
 import { useSession } from "next-auth/react";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
-import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
@@ -15,14 +14,25 @@ function SetupWorkout({
   selectedExercises,
   setDisplayAddExercise,
   removeExercise,
+  workoutId,
+  saveSession,
+  updateSession,
+  oneWorkout,
+  changeOneWorkoutName,
+  deleteWorkoutExercise,
 }) {
   const { data: session } = useSession();
   const [sessionName, setSessionName] = useState("");
-  const { saveSession } = useWorkoutSession();
+
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
-  
-  const exerciseIds = selectedExercises.map((exercise) => exercise._id);
+  const exerciseIds = workoutId
+    ? oneWorkout?.exercises.map((exercise) => exercise._id)
+    : selectedExercises.map((exercise) => exercise._id);
+  const exercisesToDisplay = workoutId
+    ? oneWorkout?.exercises
+    : selectedExercises;
+
   return (
     <div className={classes.main_wrapper}>
       <InputField
@@ -33,11 +43,15 @@ function SetupWorkout({
           inputWrapper: classes.workout_name_input,
           input: classes.workout_name_value,
         }}
-        value={sessionName}
-        onChange={(value) => setSessionName(value)}
+        value={workoutId ? oneWorkout?.name : sessionName}
+        onChange={
+          workoutId
+            ? (value) => changeOneWorkoutName(value)
+            : (value) => setSessionName(value)
+        }
       />
-      {selectedExercises.length > 0 &&
-        selectedExercises.map((exercise, i) => {
+      {exercisesToDisplay?.length > 0 &&
+        exercisesToDisplay.map((exercise, i) => {
           return (
             <div className={classes.exercise_desc} key={i}>
               <Accordion>
@@ -57,7 +71,11 @@ function SetupWorkout({
                       {exercise.name}
                       <DeleteButton
                         content={"Do you really want to remove this exercise?"}
-                        onConfirm={() => removeExercise(exercise)}
+                        onConfirm={
+                          workoutId
+                            ? () => deleteWorkoutExercise(exercise._id)
+                            : () => removeExercise(exercise)
+                        }
                       />
                     </div>
                   }
@@ -100,14 +118,22 @@ function SetupWorkout({
           onAction={() => router.push("/workouts")}
         />
         <BasicButton
-          isDisabled={sessionName.length < 1 || exerciseIds.length === 0}
+          isDisabled={
+            workoutId
+              ? oneWorkout?.name.length < 1 || exercisesToDisplay?.length === 0
+              : sessionName.length < 1 || exercisesToDisplay?.length === 0
+          }
           buttonContent="Save"
           buttonStyle={classes.save_session_button}
           startContent={
             <Icon name="Save" size={16} color="#edf1ff" strokeWidth={2} />
           }
           onAction={() => {
-            saveSession(session.user.email, sessionName, exerciseIds);
+            if (workoutId) {
+              updateSession(oneWorkout._id, oneWorkout);
+            } else {
+              saveSession(session.user.email, sessionName, exerciseIds);
+            }
             router.push("/workouts");
           }}
         />

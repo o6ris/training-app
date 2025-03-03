@@ -6,6 +6,7 @@ export default function useWorkoutSession() {
   const [message, setMessage] = useState();
   const [workouts, setWorkouts] = useState();
   const [tempWorkouts, setTempWorkouts] = useState();
+  const [oneWorkout, setOneWorkout] = useState();
   const { data: session } = useSession();
   const { handleNotification } = useContext(NotificationContext);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -16,6 +17,27 @@ export default function useWorkoutSession() {
         workout._id === id ? { ...workout, [name]: value } : workout
       )
     );
+  };
+
+  const changeOneWorkoutName = (value) => {
+    setOneWorkout((prevOneWorkout) => ({
+      ...prevOneWorkout,
+      name: value,
+    }));
+  };
+
+  const addWorkoutExercise = (exercise) => {
+    setOneWorkout((prevOneWorkout) => ({
+      ...prevOneWorkout,
+      exercises: [...prevOneWorkout.exercises, exercise],
+    }));
+  };
+
+  const deleteWorkoutExercise = (id) => {
+    setOneWorkout((prevOneWorkout) => ({
+      ...prevOneWorkout,
+      exercises: prevOneWorkout.exercises.filter((el) => el._id !== id),
+    }));
   };
 
   const getSessions = async () => {
@@ -29,6 +51,28 @@ export default function useWorkoutSession() {
         setMessage({ message: "Get session succed", status: response.status });
         setWorkouts(workouts);
         setTempWorkouts(workouts);
+      } else {
+        const error = new Error(data.message || "Something went wrong");
+        error.status = data.status || response.status;
+        throw error;
+      }
+    } catch (error) {
+      setMessage(error);
+      throw error;
+    }
+  };
+
+  const getOneSession = async (id) => {
+    const url = `${baseUrl}/api/sessions/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (response.ok) {
+        const workout = await response.json();
+        setMessage({ message: "Get session succed", status: response.status });
+        setOneWorkout(workout);
+        // setTempWorkouts(workouts);
       } else {
         const error = new Error(data.message || "Something went wrong");
         error.status = data.status || response.status;
@@ -121,7 +165,7 @@ export default function useWorkoutSession() {
       });
       const data = await response.json();
       if (response.ok) {
-        setMessage({ message: "Session deleted!", status: response.status });
+        handleNotification("Session updated", true);
         setWorkouts((prevWorkouts) => {
           const updatedWorkouts = prevWorkouts.map((workout) =>
             workout._id === id ? { ...workout, ...body } : workout
@@ -146,13 +190,18 @@ export default function useWorkoutSession() {
   }, [session]);
 
   return {
+    getOneSession,
     saveSession,
     deleteSession,
     updateSession,
     changeWorkoutName,
+    changeOneWorkoutName,
     setWorkouts,
+    addWorkoutExercise,
+    deleteWorkoutExercise,
     workouts,
     tempWorkouts,
+    oneWorkout,
     message,
   };
 }

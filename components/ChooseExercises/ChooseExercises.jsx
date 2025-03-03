@@ -19,8 +19,16 @@ function ChooseExercises({
   muscles,
   setDisplayAddExercise,
   isLoading,
+  workoutId,
+  addWorkoutExercise,
+  deleteWorkoutExercise,
+  oneWorkout,
 }) {
   const [filteredExercises, setFilteredExercises] = useState(exercises);
+
+  const exercisesToDisplay = workoutId
+  ? oneWorkout?.exercises
+  : selectedExercises;
 
   const debounce = (onChange) => {
     let timeout;
@@ -89,7 +97,11 @@ function ChooseExercises({
           exercises={filteredExercises}
           addExercise={addExercise}
           removeExercise={removeExercise}
-          selectedExercises={selectedExercises}
+          exercisesToDisplay={exercisesToDisplay}
+          workoutId={workoutId}
+          addWorkoutExercise={addWorkoutExercise}
+          deleteWorkoutExercise={deleteWorkoutExercise}
+          oneWorkout={oneWorkout}
         />
       ) : (
         <>
@@ -105,8 +117,8 @@ function ChooseExercises({
           onAction={() => setDisplayAddExercise(false)}
         />
         <BasicButton
-          isDisabled={selectedExercises.length === 0}
-          buttonContent={`Add (${selectedExercises.length})`}
+          isDisabled={exercisesToDisplay.length === 0}
+          buttonContent={`Add (${exercisesToDisplay.length})`}
           buttonStyle={classes.save_session_button}
           startContent={
             <Icon name="Plus" size={16} color="#edf1ff" strokeWidth={2} />

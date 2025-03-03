@@ -2,12 +2,22 @@ import classes from "./exercisesList.module.css";
 import { Avatar, Image } from "@heroui/react";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
-import Icon from "@core/ui/Icons/Icon";
 
-function ExerciseList({ exercises, addExercise, removeExercise, selectedExercises }) {
+function ExerciseList({
+  exercises,
+  addExercise,
+  removeExercise,
+  exercisesToDisplay,
+  workoutId,
+  addWorkoutExercise,
+  deleteWorkoutExercise,
+  oneWorkout,
+}) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
-  const exerciseIds = selectedExercises.map((exercise) => exercise._id);
+  console.log("oneWorkout", oneWorkout);
+
+  const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
   return (
     <div className={classes.list_wrapper}>
@@ -28,7 +38,11 @@ function ExerciseList({ exercises, addExercise, removeExercise, selectedExercise
               }
               closebutton={"Close"}
               confirmButton={"Add"}
-              onConfirm={() => addExercise(exercise)}
+              onConfirm={
+                workoutId
+                  ? () => addWorkoutExercise(exercise)
+                  : () => addExercise(exercise)
+              }
               isDisabled={exerciseIds?.includes(exercise._id)}
               content={
                 <div className={classes.exercise_desc_content}>
@@ -56,7 +70,11 @@ function ExerciseList({ exercises, addExercise, removeExercise, selectedExercise
             {exerciseIds?.includes(exercise._id) && (
               <DeleteButton
                 content={"Do you really want to remove this exercise?"}
-                onConfirm={() => removeExercise(exercise._id)}
+                onConfirm={
+                  workoutId
+                    ? () => deleteWorkoutExercise(exercise._id)
+                    : () => removeExercise(exercise._id)
+                }
               />
             )}
           </div>
