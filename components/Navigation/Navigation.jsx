@@ -8,6 +8,10 @@ import { usePathname } from "next/navigation";
 function Navigation() {
   const pathname = usePathname();
 
+  const hiddenRoutes = ["/workouts/create-session"];
+  if (hiddenRoutes.includes(pathname)) {
+    return null;
+  }
   return (
     <nav className={classes.nav}>
       <Link className={classes.link} href="/home">
@@ -28,9 +32,7 @@ function Navigation() {
           color={pathname === "/workouts" ? "#2694F9" : "#02091C"}
           strokeWidth={pathname === "/workouts" ? 3 : 2}
         />
-        <span
-          className={pathname === "/workouts" ? classes.active_link : ""}
-        >
+        <span className={pathname === "/workouts" ? classes.active_link : ""}>
           Workouts
         </span>
       </Link>

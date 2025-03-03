@@ -1,13 +1,13 @@
 # Changelog
 
-## [0.1.2] - 2025-02-24
+## [0.1.3] - 2025-02-21  
 
 ### 🚀 Features  
-- **Forgot Password Page**: Added UI and logic for request new password.  
-- **Password Reset Flow**: Implemented API route and request handling for password reset.  
-- **Reset Password Page**: Added UI and logic for setting a new password after a reset request.  
+- **Choose Exercises**: Added a search bar to find exercises by name and filter by one muscle at a time.  
+- **Setup Workout Flow**: After saving a workout, users are now redirected to the workouts page.  
 
-### 🐛 Bug Fixes & 🎨 UI/UX Improvements  
+### ♻️ Refactoring  
+- **CreateSession & ExercisesList**: Improved component structure and logic for better maintainability.  
+- **Component Separation**: Extracted `SetupWorkout` and `ChooseExercises` into standalone components.  
 
-### 🔄 Merged Pull Requests  
 
