@@ -1,40 +1,23 @@
 import mongoose, { Schema } from "mongoose";
 
-// const exerciseSchema = new Schema(
-//   {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Exercise",
-//     required: true,
-//   },
-//   { _id: false }
-// );
-
-// const muscleSchema = new Schema(
-//   {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Muscle",
-//     required: true,
-//   },
-//   { _id: false }
-// );
-
 const sessionSchema = new Schema({
-  muscles: {
-    type: [String],
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
-  exercises: {
-    type: [String],
-    required: true,
-  },
+  exercises: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Exercise",
+      required: [true, "At least, select one exercise"],
+    },
+  ],
   name: {
     type: String,
-    maxlength: [60, "Session name cannot be more than 60 characters"],
-    required: true,
-  },
-  color: {
-    type: String,
-  },
+    required: [true, "Name must contain more than 2 characters"],
+    unique: true
+  }
 });
 
 const Session =

@@ -3,23 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.add_exercises_button {
-  background-color: transparent;
-  border: 2px solid var(--primary-accent-color);
-  color: var(--primary-accent-color);
-  padding: 10px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  height: 60px;
-  font-size: var(--font-xl);
-  font-weight: var(--font-black);
-  text-transform: uppercase;
-  font-style: italic;
+  position: relative;
 }
 
 .add_session_button {
@@ -36,7 +20,7 @@
   gap: 10px;
 }
 
-.accordion_title{
+.accordion_title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -62,4 +46,22 @@
 
 .remove_button {
   background-color: transparent;
+}
+
+.save_session_modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.save_session_info {
+  color: var(--primary-color);
+}
+
+.session_name_label {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-weight: var(--font-black);
+  font-size: var(--font-s);
+  margin-left: 5px;
 }

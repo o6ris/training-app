@@ -28,6 +28,7 @@ export default function PopupButton({
   confirmButtonStyle,
   autoOpen,
   isTransparent,
+  disableConfirm,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
@@ -91,6 +92,7 @@ export default function PopupButton({
                 </Button>
                 {onConfirm && (
                   <Button
+                    isDisabled={disableConfirm}
                     className={`${confirmButtonStyle} ${classes.confirm_button}`}
                     onPress={() => {
                       onClose();

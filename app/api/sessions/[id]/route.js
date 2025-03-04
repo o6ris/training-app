@@ -12,9 +12,8 @@ export async function GET(request, { params }) {
     }
     await connectDb();
     const session = await Session.findById(id).populate({
-      path: "exerices",
+      path: "exercises",
       model: Exercise,
-      select: "name",
     });
 
     return NextResponse.json(session, { status: 200 });
@@ -39,7 +38,7 @@ export async function DELETE(request, { params }) {
     );
   } catch (err) {
     const { message, status } = err;
-    return NextResponse.json({ message, status }, { status: status || 404 });
+    return NextResponse.json({ message, status }, { status: status || 500 });
   }
 }
 
@@ -51,12 +50,10 @@ export async function PATCH(request, { params }) {
     }
     const session = await request.json();
     await connectDb();
-    const updtatedSession = await Session.findByIdAndUpdate(
-      id,
-      session,
-      { new: true },
-      { runValidators: true }
-    );
+    const updtatedSession = await Session.findByIdAndUpdate(id, session, {
+      new: true,
+      runValidators: true,
+    });
     return NextResponse.json(
       updtatedSession,
       { message: "Session deleted" },
@@ -64,6 +61,6 @@ export async function PATCH(request, { params }) {
     );
   } catch (err) {
     const { message, status } = err;
-    return NextResponse.json({ message, status }, { status: status || 404 });
+    return NextResponse.json({ message, status }, { status: status || 500 });
   }
 }
