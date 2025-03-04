@@ -1,12 +1,12 @@
 import { createContext, useState } from "react";
 
-export const SessionContext = createContext();
+export const WorkoutContext = createContext();
 
-export const SessionProvider = ({ children }) => {
+export const WorkoutProvider = ({ children }) => {
   const [session, setSession] = useState([]);
   const [exercisesId, setExercisesId] = useState([]);
 
-  const createSession = (exercises, latestExercises) => {
+  const initAndCacheWorkout = (exercises, latestExercises) => {
     const exercisesList = [];
     const exercisesId = [];
     exercises.forEach((exercise) => {
@@ -105,11 +105,11 @@ export const SessionProvider = ({ children }) => {
   };
 
   return (
-    <SessionContext.Provider
+    <WorkoutContext.Provider
       value={{
         session,
         setSession,
-        createSession,
+        initAndCacheWorkout,
         handleOnChangeSession,
         handleAddSets,
         handleOnchangeSets,
@@ -119,8 +119,8 @@ export const SessionProvider = ({ children }) => {
       }}
     >
       {children}
-    </SessionContext.Provider>
+    </WorkoutContext.Provider>
   );
 };
 
-export default SessionContext;
+export default WorkoutContext;

@@ -2,14 +2,14 @@
 
 import { useState, useTransition, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import classes from "./createSession.module.css";
+import classes from "./createWorkout.module.css";
 import useExercises from "@modules/client/requests/useExercises";
 import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import SetupWorkout from "@components/SetupWorkout/SetupWorkout";
 import ChooseExercises from "@components/ChooseExercises/ChooseExercises";
 import checkId from "@modules/server/utils/checkId";
 
-function CreateSession({ muscles }) {
+function CreateWorkout({ muscles }) {
   const [displayAddExercise, setDisplayAddExercise] = useState(false);
   const [muscleId, setMuscleId] = useState([]);
   const [isPending, startTransition] = useTransition();
@@ -23,9 +23,9 @@ function CreateSession({ muscles }) {
   } = useExercises(muscleId, "muscle");
 
   const {
-    saveSession,
-    getOneSession,
-    updateSession,
+    saveWorkoutSession,
+    getOneWorkoutSession,
+    updateWorkoutSession,
     changeOneWorkoutName,
     addWorkoutExercise,
     deleteWorkoutExercise,
@@ -37,7 +37,7 @@ function CreateSession({ muscles }) {
 
   useEffect(() => {
     if (workoutId && checkId(workoutId)) {
-      getOneSession(workoutId);
+      getOneWorkoutSession(workoutId);
     }
   }, []);
 
@@ -54,8 +54,8 @@ function CreateSession({ muscles }) {
             setDisplayAddExercise={setDisplayAddExercise}
             removeExercise={removeExercise}
             workoutId={workoutId}
-            saveSession={saveSession}
-            updateSession={updateSession}
+            saveWorkoutSession={saveWorkoutSession}
+            updateWorkoutSession={updateWorkoutSession}
             oneWorkout={oneWorkout}
             changeOneWorkoutName={changeOneWorkoutName}
             deleteWorkoutExercise={deleteWorkoutExercise}
@@ -82,4 +82,4 @@ function CreateSession({ muscles }) {
   );
 }
 
-export default CreateSession;
+export default CreateWorkout;

@@ -11,14 +11,6 @@ export default function useWorkoutSession() {
   const { handleNotification } = useContext(NotificationContext);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const changeWorkoutName = (name, value, id) => {
-    setWorkouts((prevWorkouts) =>
-      prevWorkouts.map((workout) =>
-        workout._id === id ? { ...workout, [name]: value } : workout
-      )
-    );
-  };
-
   const changeOneWorkoutName = (value) => {
     setOneWorkout((prevOneWorkout) => ({
       ...prevOneWorkout,
@@ -40,7 +32,7 @@ export default function useWorkoutSession() {
     }));
   };
 
-  const getSessions = async () => {
+  const getWorkoutSessions = async () => {
     const url = `${baseUrl}/api/sessions?email=${session?.user.email}`;
     try {
       const response = await fetch(url, {
@@ -62,7 +54,7 @@ export default function useWorkoutSession() {
     }
   };
 
-  const getOneSession = async (id) => {
+  const getOneWorkoutSession = async (id) => {
     const url = `${baseUrl}/api/sessions/${id}`;
     try {
       const response = await fetch(url, {
@@ -84,7 +76,7 @@ export default function useWorkoutSession() {
     }
   };
 
-  const saveSession = async (email, name, exercises) => {
+  const saveWorkoutSession = async (email, name, exercises) => {
     try {
       const url = `${baseUrl}/api/sessions`;
       const response = await fetch(
@@ -125,7 +117,7 @@ export default function useWorkoutSession() {
     }
   };
 
-  const deleteSession = async (id) => {
+  const deleteWorkoutSession = async (id) => {
     try {
       const url = `${baseUrl}/api/sessions/${id}`;
       const response = await fetch(url, {
@@ -154,7 +146,7 @@ export default function useWorkoutSession() {
     }
   };
 
-  const updateSession = async (id, body) => {
+  const updateWorkoutSession = async (id, body) => {
     try {
       const url = `${baseUrl}/api/sessions/${id}`;
       const response = await fetch(url, {
@@ -186,15 +178,14 @@ export default function useWorkoutSession() {
   };
 
   useEffect(() => {
-    getSessions();
+    getWorkoutSessions();
   }, [session]);
 
   return {
-    getOneSession,
-    saveSession,
-    deleteSession,
-    updateSession,
-    changeWorkoutName,
+    getOneWorkoutSession,
+    saveWorkoutSession,
+    deleteWorkoutSession,
+    updateWorkoutSession,
     changeOneWorkoutName,
     setWorkouts,
     addWorkoutExercise,

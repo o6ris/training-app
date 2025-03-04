@@ -1,9 +1,8 @@
 import classes from "./workouts.module.css";
 import ButtonLink from "@core/ui/Button/ButtonLink";
-import SavedSession from "@components/SavedSessions/SavedSessions";
+import SavedWorkouts from "@components/SavedWorkouts/SavedWorkouts";
 
 export default async function Workouts() {
-
   return (
     <div className={classes.main_container}>
       <h1>Workouts</h1>
@@ -16,7 +15,7 @@ export default async function Workouts() {
       </div>
       <hr className={classes.hr} />
       <h2>Saved workouts</h2>
-      <SavedSession />
+      <SavedWorkouts />
     </div>
   );
 }

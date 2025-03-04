@@ -16,5 +16,10 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/createSession/:path*", "/session/:path*", "/stats/:path*"], // Protect these routes
+  matcher: [
+    "/profile/:path*",
+    "/createWorkout/:path*",
+    "/session/:path*",
+    "/stats/:path*",
+  ], // Protect these routes
 };

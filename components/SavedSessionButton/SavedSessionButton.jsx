@@ -3,9 +3,9 @@
 import React from "react";
 import PopupButton from "@core/ui/Button/PopupButton";
 import ClipLoader from "react-spinners/ClipLoader";
-import SavedSession from "@components/SavedSessions/SavedSessions";
+import SavedWorkouts from "@components/SavedWorkoutss/SavedWorkoutss";
 
-function SavedSessionButton() {
+function SavedWorkoutsButton() {
   return (
     <PopupButton
       isDisabled={isLoading}
@@ -39,4 +39,4 @@ function SavedSessionButton() {
   );
 }
 
-export default SavedSessionButton;
+export default SavedWorkoutsButton;

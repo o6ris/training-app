@@ -1,7 +1,7 @@
-import classes from "./createSessionPage.module.css";
-import CreateSession from "@components/CreateSession/CreateSession";
+import classes from "./createWorkoutPage.module.css";
+import CreateWorkout from "@components/CreateWorkout/CreateWorkout";
 
-async function CreateSessionPage() {
+async function CreateWorkoutPage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const muscleResponse = await fetch(`${baseUrl}/api/muscles`, {
     method: "GET",
@@ -9,9 +9,9 @@ async function CreateSessionPage() {
   const muscles = await muscleResponse.json();
   return (
     <div className={classes.main_container}>
-      <CreateSession muscles={muscles} />
+      <CreateWorkout muscles={muscles} />
     </div>
   );
 }
 
-export default CreateSessionPage;
+export default CreateWorkoutPage;

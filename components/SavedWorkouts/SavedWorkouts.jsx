@@ -2,34 +2,25 @@
 
 import { useContext, useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import classes from "./savedSessions.module.css";
-import SessionContext from "@modules/client/contexts/sessionProvider";
+import classes from "./savedWorkouts.module.css";
+import WorkoutContext from "@modules/client/contexts/workoutProvider";
 import useExercises from "@modules/client/requests/useExercises";
 import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
 import { Accordion, AccordionItem, Avatar } from "@heroui/react";
-import InputField from "@core/ui/Fields/InputField/InputField";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import BasicButton from "@core/ui/Button/BasicButton";
-import EditButton from "@components/EditButton/EditButton";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import Icon from "@core/ui/Icons/Icon";
 import ClipLoader from "react-spinners/ClipLoader";
 
-function SavedSession() {
+function SavedWorkouts() {
   const [isPending, startTransition] = useTransition();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
-  const { createSession } = useContext(SessionContext);
+  const { initAndCacheWorkout } = useContext(WorkoutContext);
   const { latestExercises, setLatestExercises, setsetSelectedExercises } =
     useExercises();
-  const {
-    workouts,
-    deleteSession,
-    updateSession,
-    changeWorkoutName,
-    setWorkouts,
-    tempWorkouts,
-  } = useWorkoutSession();
+  const { workouts, deleteWorkoutSession } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
   const router = useRouter();
@@ -138,7 +129,7 @@ function SavedSession() {
                 url={"/session"}
                 onAction={() =>
                   startTransition(() => {
-                    createSession(
+                    initAndCacheWorkout(
                       workout.exercises.map((exercise) => exercise._id),
                       latestExercises
                     );
@@ -160,7 +151,7 @@ function SavedSession() {
               />
               <DeleteButton
                 content={"Do you really want to delete this session?"}
-                onConfirm={() => deleteSession(workout._id)}
+                onConfirm={() => deleteWorkoutSession(workout._id)}
               />
             </div>
           </AccordionItem>
@@ -170,4 +161,4 @@ function SavedSession() {
   );
 }
 
-export default SavedSession;
+export default SavedWorkouts;

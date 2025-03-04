@@ -15,14 +15,14 @@ function SetupWorkout({
   setDisplayAddExercise,
   removeExercise,
   workoutId,
-  saveSession,
-  updateSession,
+  saveWorkoutSession,
+  updateWorkoutSession,
   oneWorkout,
   changeOneWorkoutName,
   deleteWorkoutExercise,
 }) {
   const { data: session } = useSession();
-  const [sessionName, setSessionName] = useState("");
+  const [workoutName, setWorkoutName] = useState("");
 
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const router = useRouter();
@@ -43,11 +43,11 @@ function SetupWorkout({
           inputWrapper: classes.workout_name_input,
           input: classes.workout_name_value,
         }}
-        value={workoutId ? oneWorkout?.name : sessionName}
+        value={workoutId ? oneWorkout?.name : workoutName}
         onChange={
           workoutId
             ? (value) => changeOneWorkoutName(value)
-            : (value) => setSessionName(value)
+            : (value) => setWorkoutName(value)
         }
       />
       {exercisesToDisplay?.length > 0 &&
@@ -121,7 +121,7 @@ function SetupWorkout({
           isDisabled={
             workoutId
               ? oneWorkout?.name.length < 1 || exercisesToDisplay?.length === 0
-              : sessionName.length < 1 || exercisesToDisplay?.length === 0
+              : workoutName.length < 1 || exercisesToDisplay?.length === 0
           }
           buttonContent="Save"
           buttonStyle={classes.save_session_button}
@@ -130,9 +130,9 @@ function SetupWorkout({
           }
           onAction={() => {
             if (workoutId) {
-              updateSession(oneWorkout._id, oneWorkout);
+              updateWorkoutSession(oneWorkout._id, oneWorkout);
             } else {
-              saveSession(session.user.email, sessionName, exerciseIds);
+              saveWorkoutSession(session.user.email, workoutName, exerciseIds);
             }
             router.push("/workouts");
           }}
