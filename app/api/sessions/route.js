@@ -10,6 +10,12 @@ export async function POST(request) {
     const { email, name, exercises } = await request.json();
     await connectDb();
     const user = await User.findOne({ email: email });
+    const sessions = await Session.find({ user: user._id });
+    for (const session of sessions) {
+      if (name.toLowerCase() === session.name.toLowerCase()) {
+        throw { message: `Name ${name} already exist`, status: 500 };
+      }
+    }
     const findExercises = async () => {
       let allExercises = [];
       for (const id of exercises) {

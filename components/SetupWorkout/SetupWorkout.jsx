@@ -134,7 +134,6 @@ function SetupWorkout({
             } else {
               saveWorkoutSession(session.user.email, workoutName, exerciseIds);
             }
-            router.push("/workouts");
           }}
         />
       </div>

@@ -15,8 +15,6 @@ function ExerciseList({
 }) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
 
-  console.log("oneWorkout", oneWorkout);
-
   const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
   return (

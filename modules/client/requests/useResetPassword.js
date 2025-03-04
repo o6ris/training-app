@@ -21,7 +21,6 @@ export default function useRequestReset() {
       const data = await response.json();
       if (response.ok)
       {
-        console.log("response", response)
         setMessage({ message: "Request sent, check your email (or Spam)!", status: response.status });
         return data;
       } else
