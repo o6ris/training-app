@@ -23,3 +23,4 @@
 - **Workouts Fetching**: Fixed the route to correctly GET all workouts by user.  
 - **Error Handling**: Improved error handling during workout save process.
 - **Skeleton Loading**: Added skeleton screens during loading of saved workouts.
+- **Middleware**: Add workouts as a protected route
