@@ -1,0 +1,30 @@
+.main_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.header_button {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.create_link {
+  color: var(--primary-accent-color);
+  border: 2px solid var(--primary-accent-color);
+  height: 60px;
+}
+
+.sessions_link {
+  background-color: var(--primary-accent-color);
+  height: 60px;
+}
+
+.hr{
+  width: 50%;
+  border: 1px solid var(--secondary-color);
+}

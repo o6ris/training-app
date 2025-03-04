@@ -33,7 +33,7 @@ function Hero({ session }) {
         </motion.i>
         <ButtonLink
           animated={true}
-          url={session === null ? "/login" : "/createSession"}
+          url={session === null ? "/login" : "/workouts"}
           buttonContent={"Get Started"}
           buttonStyle={classes.cta}
         />

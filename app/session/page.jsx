@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
-import SessionContext from "@modules/client/contexts/sessionProvider";
+import WorkoutContext from "@modules/client/contexts/workoutProvider";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
@@ -29,7 +29,7 @@ function Session() {
     resetExercise,
     exercisesId,
     setExercisesId,
-  } = useContext(SessionContext);
+  } = useContext(WorkoutContext);
   const { exercises, isLoading } = useExercises(exercisesId, "exercise");
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
   const [isPending, startTransition] = useTransition();

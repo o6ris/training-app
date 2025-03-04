@@ -1,17 +1,17 @@
-import CreateSession from "@components/CreateSession/CreateSession";
-import classes from "./main.module.css";
+import classes from "./createWorkoutPage.module.css";
+import CreateWorkout from "@components/CreateWorkout/CreateWorkout";
 
-export default async function Home() {
+async function CreateWorkoutPage() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const muscleResponse = await fetch(`${baseUrl}/api/muscles`, {
     method: "GET",
   });
   const muscles = await muscleResponse.json();
-
   return (
     <div className={classes.main_container}>
-      <h1>Create Workout Session</h1>
-      <CreateSession muscles={muscles} />
+      <CreateWorkout muscles={muscles} />
     </div>
   );
 }
+
+export default CreateWorkoutPage;

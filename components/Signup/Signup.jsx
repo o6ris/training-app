@@ -38,7 +38,6 @@ function Signup() {
   }, [isPasswordSame, validateEmail]);
 
   useEffect(() => {
-    console.log("isError", isError)
     if (isError) {
       const timer = setTimeout(() => {
         setIsError(false);

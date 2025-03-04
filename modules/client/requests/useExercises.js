@@ -8,7 +8,7 @@ export default function useExercises(list, queryName) {
   const { userId } = useUser(userSession);
   const [latestExercises, setLatestExercises] = useState([]);
   const [exercises, setExercises] = useState([]);
-  const [exerciseIds, setExerciseIds] = useState([]);
+  const [selectedExercises, setsetSelectedExercises] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -35,7 +35,7 @@ export default function useExercises(list, queryName) {
 
   const getStatsByExercises = async () => {
     try {
-      const queryString = exerciseIds
+      const queryString = selectedExercises
         .map((exerciseId) => `exercise=${exerciseId}`)
         .join("&");
       const url = `${baseUrl}/api/stats/lastStatByExercise?user=${userId}&${queryString}`;
@@ -63,10 +63,10 @@ export default function useExercises(list, queryName) {
   };
 
   const addExercise = (exercise) => {
-    setExerciseIds((prevExercises) => [...prevExercises, exercise]);
+    setsetSelectedExercises((prevExercises) => [...prevExercises, exercise]);
   };
   const removeExercise = (exercise) => {
-    setExerciseIds((prevExercises) =>
+    setsetSelectedExercises((prevExercises) =>
       prevExercises.filter((item) => item !== exercise)
     );
   };
@@ -75,21 +75,22 @@ export default function useExercises(list, queryName) {
     if (list?.length > 0) {
       getExercisesByMuscles();
     } else {
-      setExerciseIds([]);
+      setsetSelectedExercises([]);
     }
   }, [list]);
 
   useEffect(() => {
-    if (exerciseIds.length > 0) getStatsByExercises(exerciseIds);
-  }, [exerciseIds]);
+    if (selectedExercises?.length > 0) getStatsByExercises(selectedExercises);
+  }, [selectedExercises]);
 
   return {
-    setExerciseIds,
-    exerciseIds,
+    setsetSelectedExercises,
+    selectedExercises,
     exercises,
     isLoading,
     addExercise,
     removeExercise,
     latestExercises,
+    setLatestExercises,
   };
 }
