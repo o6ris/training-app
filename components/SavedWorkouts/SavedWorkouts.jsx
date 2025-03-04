@@ -109,7 +109,8 @@ function SavedWorkouts() {
                     />
                     <h2>{exercise.name}</h2>
                   </div>
-                  <div>
+                  {/* TODO: Rework this for better ui */}
+                  {/* <div>
                     <h3>Steps:</h3>
                     <p>{exercise.description.steps}</p>
                   </div>
@@ -120,7 +121,7 @@ function SavedWorkouts() {
                   <div>
                     <h3>Mistakes</h3>
                     <p>{exercise.description.mistakes}</p>
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
