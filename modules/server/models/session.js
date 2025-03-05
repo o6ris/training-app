@@ -15,8 +15,7 @@ const sessionSchema = new Schema({
   ],
   name: {
     type: String,
-    required: [true, "Name must contain more than 2 characters"],
-    unique: true
+    required: [true, "Name must contain more than 1 characters"],
   }
 });
 

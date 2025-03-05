@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import NotificationContext from "@modules/client/contexts/toastNotificationProvider";
 
@@ -10,6 +11,7 @@ export default function useWorkoutSession() {
   const { data: session } = useSession();
   const { handleNotification } = useContext(NotificationContext);
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter();
 
   const changeOneWorkoutName = (value) => {
     setOneWorkout((prevOneWorkout) => ({
@@ -94,21 +96,12 @@ export default function useWorkoutSession() {
       const data = await response.json();
       if (response.ok) {
         handleNotification("Session saved", true);
+        router.push("/workouts");
         return data;
       } else {
-        const error = new Error(data.message || "Something went wrong");
+        const error = new Error(data.message);
         error.status = data.status || response.status;
-        if (data.message.includes("duplicate key")) {
-          const match = data.message.match(/"([^"]+)"/);
-          if (match) {
-            handleNotification(
-              `Name ${match[1]} already exist. Choose another one.`,
-              false
-            );
-          } else {
-            handleNotification(data.message || "Something went wrong", false);
-          }
-        }
+        handleNotification(data.message || "Something went wrong", false);
         throw error;
       }
     } catch (error) {
