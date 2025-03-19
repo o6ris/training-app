@@ -3,7 +3,7 @@
 }
 
 .wrapper_transparent {
-  background-color: var(--bg-color-transparent);
+  background-color: var(--bg-primary-color-transparent);
 }
 
 .header {

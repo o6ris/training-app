@@ -8,6 +8,18 @@
   padding: 0;
 }
 
+.accordion_header_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title_name_finish {
+  color: var(--success-color);
+} 
+
+
 .accordion_header,
 .accordion_title {
   display: flex;
@@ -77,6 +89,9 @@
 
 .accordion_item {
   background-color: var(--secondary-color) !important;
+}
+.accordion_item_finish {
+  background-color: var(--bg-secondary-color-transparent) !important;
 }
 
 .slider_track {

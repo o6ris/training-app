@@ -70,12 +70,12 @@ function Session() {
               key={key}
               textValue={findExercise?.name || "Exercise"}
               title={
-                <div>
+                <div className={classes.accordion_header_wrapper}>
                   <div className={classes.accordion_header}>
                     {isLoading ? (
                       <Skeleton width="40%" height="25px" />
                     ) : (
-                      <h3>{`${findExercise?.name}`}</h3>
+                      <h3 className={exercise.isFinished ? classes.title_name_finish : ""}>{`${findExercise?.name}`}</h3>
                     )}
                     <PopupButton
                       isIconOnly={true}
@@ -83,7 +83,7 @@ function Session() {
                         <Icon
                           name="Info"
                           size={16}
-                          color="white"
+                          color={exercise.isFinished ? "#05ba8f" : "white"}
                           strokeWidth={3}
                         />
                       }
@@ -132,9 +132,10 @@ function Session() {
                       }
                     />
                   </div>
+                    {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
                 </div>
               }
-              classNames={{ base: classes.accordion_item }}
+              classNames={{ base: exercise.isFinished ? classes.accordion_item_finish : classes.accordion_item }}
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
