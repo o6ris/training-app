@@ -22,6 +22,7 @@ function SavedWorkouts() {
     useExercises();
   const { workouts, deleteWorkoutSession } = useWorkoutSession();
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
 
   const router = useRouter();
 
@@ -105,7 +106,7 @@ function SavedWorkouts() {
                       showFallback
                       className="w-12 h-12"
                       name={exercise?.name}
-                      src={`${cloudinaryUrl}${exercise?.image}`}
+                      src={`${imageUrl}${exercise?.image}`}
                     />
                     <h2>{exercise.name}</h2>
                   </div>

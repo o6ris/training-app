@@ -14,6 +14,7 @@ function ExerciseList({
   oneWorkout,
 }) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
 
   const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
@@ -29,7 +30,7 @@ function ExerciseList({
                   <Avatar
                     showFallback
                     name={exercise.name}
-                    src={`${cloudinaryUrl}${exercise?.image}`}
+                    src={`${imageUrl}${exercise?.image}`}
                   />
                   <p>{exercise.name}</p>
                 </>
@@ -46,7 +47,7 @@ function ExerciseList({
                 <div className={classes.exercise_desc_content}>
                   <Image
                     isZoomed
-                    src={`${cloudinaryUrl}${exercise?.image}`}
+                    src={`${imageUrl}${exercise?.image}`}
                     alt={exercise?.name}
                     width={300}
                   />

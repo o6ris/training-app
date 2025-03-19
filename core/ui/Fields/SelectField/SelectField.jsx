@@ -36,6 +36,7 @@ export default function SelectField({
   };
 
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
 
   return (
     <div className={baseStyle.input_container}>
@@ -100,7 +101,7 @@ export default function SelectField({
                 <Avatar
                   showFallback
                   name={item.value}
-                  src={`${cloudinaryUrl}${
+                  src={`${imageUrl}${
                     items.find((el) => el.key === item.key)?.image
                   }`}
                 />

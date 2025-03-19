@@ -40,6 +40,7 @@ function Session() {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
   const router = useRouter();
 
   useEffect(() => {
@@ -96,7 +97,7 @@ function Session() {
                                 showFallback
                                 className="w-24 h-24"
                                 name={findExercise?.name}
-                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                                src={`${imageUrl}${findExercise?.image}`}
                               />
                             }
                             buttonStyle={classes.image_button}
@@ -104,7 +105,7 @@ function Session() {
                             content={
                               <Image
                                 isZoomed
-                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                                src={`${imageUrl}${findExercise?.image}`}
                                 alt={findExercise?.name}
                                 width={400}
                               />
