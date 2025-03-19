@@ -11,7 +11,8 @@
     #132967 65%,
     #02091c 90%
   );
-  --bg-color-transparent: rgb(2 9 28 / 0.5);
+  --bg-primary-color-transparent: rgb(2 9 28 / 0.5);
+  --bg-secondary-color-transparent: rgb(28 38 71 / 0.5);
   --border-radius: 15px;
 
   --font-xs: 0.625rem; /* 10px / 16 = 0.625rem */

@@ -40,6 +40,7 @@ function Session() {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
   const router = useRouter();
 
   useEffect(() => {
@@ -69,12 +70,12 @@ function Session() {
               key={key}
               textValue={findExercise?.name || "Exercise"}
               title={
-                <div>
+                <div className={classes.accordion_header_wrapper}>
                   <div className={classes.accordion_header}>
                     {isLoading ? (
                       <Skeleton width="40%" height="25px" />
                     ) : (
-                      <h3>{`${findExercise?.name}`}</h3>
+                      <h3 className={exercise.isFinished ? classes.title_name_finish : ""}>{`${findExercise?.name}`}</h3>
                     )}
                     <PopupButton
                       isIconOnly={true}
@@ -82,7 +83,7 @@ function Session() {
                         <Icon
                           name="Info"
                           size={16}
-                          color="white"
+                          color={exercise.isFinished ? "#05ba8f" : "white"}
                           strokeWidth={3}
                         />
                       }
@@ -96,7 +97,7 @@ function Session() {
                                 showFallback
                                 className="w-24 h-24"
                                 name={findExercise?.name}
-                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                                src={`${imageUrl}${findExercise?.image}`}
                               />
                             }
                             buttonStyle={classes.image_button}
@@ -104,7 +105,7 @@ function Session() {
                             content={
                               <Image
                                 isZoomed
-                                src={`${cloudinaryUrl}${findExercise?.image}`}
+                                src={`${imageUrl}${findExercise?.image}`}
                                 alt={findExercise?.name}
                                 width={400}
                               />
@@ -131,9 +132,10 @@ function Session() {
                       }
                     />
                   </div>
+                    {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
                 </div>
               }
-              classNames={{ base: classes.accordion_item }}
+              classNames={{ base: exercise.isFinished ? classes.accordion_item_finish : classes.accordion_item }}
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
