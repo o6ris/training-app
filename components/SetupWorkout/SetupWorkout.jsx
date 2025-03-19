@@ -25,6 +25,7 @@ function SetupWorkout({
   const [workoutName, setWorkoutName] = useState("");
 
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
   const router = useRouter();
   const exerciseIds = workoutId
     ? oneWorkout?.exercises.map((exercise) => exercise._id)
@@ -63,7 +64,7 @@ function SetupWorkout({
                       isBordered
                       showFallback
                       name={exercise.name}
-                      src={`${cloudinaryUrl}${exercise?.image}`}
+                      src={`${imageUrl}${exercise?.image}`}
                     />
                   }
                   title={
@@ -83,7 +84,7 @@ function SetupWorkout({
                   <div className={classes.exercise_desc_content}>
                     <Image
                       isZoomed
-                      src={`${cloudinaryUrl}${exercise?.image}`}
+                      src={`${imageUrl}${exercise?.image}`}
                       alt={exercise?.name}
                       width={300}
                     />
