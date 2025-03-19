@@ -1,8 +1,9 @@
 # Changelog
 
-## [0.2.5] - 2025-03-04  
+## [0.2.6] - 2025-03-19  
 
-### 🐛 Fixes
+### 🔄 Refactor  
 
-- **Fix Add workout workflow**: Resolved an issue where adding a new workout with an existing name in db.  
+- **Image Storage Migration**:  
+  - Migrated all images to Supabase for better storage management and scalability. 
 
