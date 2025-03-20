@@ -1,9 +1,8 @@
 # Changelog
 
-## [0.2.6] - 2025-03-19  
+## [0.3.6] - 2025-03-19  
 
-### 🔄 Refactor  
+### 🚀 Upgrades  
 
-- **Image Storage Migration**:  
-  - Migrated all images to Supabase for better storage management and scalability. 
-
+- **Next.js Upgrade**:  
+  - Upgraded the application from Next.js 13 to Next.js 15.2.3.  
