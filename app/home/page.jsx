@@ -10,6 +10,7 @@ export const metadata = {
   title: "GrindPAL | Track your fitness progress",
   description: "Track your workouts at the gym and monitor your progress with GrindPAL.",
   keywords: "workout, fitness, strength training, progress tracker, gym",
+
   openGraph: {
     title: "GrindPAL | Track your fitness progress",
     description: "Track your workouts at the gym and monitor your progress with GrindPAL.",
@@ -24,12 +25,13 @@ export const metadata = {
     // ],
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "GrindPAL | Track your fitness progress",
     description: "Track your workouts at the gym and monitor your progress with GrindPAL.",
     // images: ["/cover.jpg"],
-  },
+  }
 };
 
 export default async function Home() {
