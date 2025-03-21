@@ -16,7 +16,7 @@ const nextConfig = withPWA({
       {
         source: "/",
         destination: "/home",
-        permanent: true,
+        permanent: false,
       },
     ];
   },
