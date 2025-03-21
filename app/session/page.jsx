@@ -40,7 +40,7 @@ function Session() {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
   const router = useRouter();
 
   useEffect(() => {
@@ -65,6 +65,7 @@ function Session() {
             (exo) => exo._id === exercise?.exercise
           );
           const key = (i + 1).toString();
+          const timer = timers[i];
           return (
             <AccordionItem
               key={key}
@@ -75,7 +76,11 @@ function Session() {
                     {isLoading ? (
                       <Skeleton width="40%" height="25px" />
                     ) : (
-                      <h3 className={exercise.isFinished ? classes.title_name_finish : ""}>{`${findExercise?.name}`}</h3>
+                      <h3
+                        className={
+                          exercise.isFinished ? classes.title_name_finish : ""
+                        }
+                      >{`${findExercise?.name}`}</h3>
                     )}
                     <PopupButton
                       isIconOnly={true}
@@ -132,10 +137,14 @@ function Session() {
                       }
                     />
                   </div>
-                    {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
+                  {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
                 </div>
               }
-              classNames={{ base: exercise.isFinished ? classes.accordion_item_finish : classes.accordion_item }}
+              classNames={{
+                base: exercise.isFinished
+                  ? classes.accordion_item_finish
+                  : classes.accordion_item,
+              }}
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
@@ -431,11 +440,49 @@ function Session() {
                     isMultiline={false}
                   />
                 </div>
-                <hr className={classes.section_separation} />
+                <PopupButton
+                  triggerAction={() => !timer?.isRunning && resetTimers()}
+                  triggerButtonContent={
+                    timer?.isRunning
+                      ? getFormattedTime(timer.seconds)
+                      : "Start rest time"
+                  }
+                  buttonStyle={classes.timer_button}
+                  closebutton={"Close"}
+                  isDisabled={
+                    exercise.isFinished ||
+                    (timers.some((timer) => timer.isRunning) &&
+                      !timer?.isRunning)
+                  }
+                  content={
+                    <BasicButton
+                      onAction={() => startTimer(i)}
+                      buttonContent={
+                        timer?.isRunning ? (
+                          getFormattedTime(timer.seconds)
+                        ) : (
+                          <>
+                            <Icon
+                              name="Play"
+                              size={16}
+                              color="#2694F9"
+                              strokeWidth={3}
+                            />
+                            {getFormattedTime(timer?.seconds)}
+                          </>
+                        )
+                      }
+                      isDisabled={
+                        (timer?.isRunning === false && timer?.seconds === 0) ||
+                        exercise.isFinished
+                      }
+                      buttonStyle={classes.timer_button}
+                    />
+                  }
+                />
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
                   {exercise.sets.map((set, index) => {
-                    const timer = timers[i]?.[index];
                     return (
                       <div key={index} className={classes.set_container}>
                         <InputField
@@ -630,54 +677,6 @@ function Session() {
                             input: classes.field_value,
                           }}
                           isDisabled={exercise.isFinished}
-                        />
-                        <PopupButton
-                          triggerAction={() =>
-                            !timer?.isRunning && resetTimers()
-                          }
-                          triggerButtonContent={
-                            timer?.isRunning
-                              ? getFormattedTime(timer.seconds)
-                              : "Start rest time"
-                          }
-                          buttonStyle={classes.timer_button}
-                          closebutton={"Close"}
-                          isDisabled={
-                            (!timer?.isRunning && timer?.seconds === 0) ||
-                            exercise.isFinished ||
-                            (timers.some((exerciseTimers) =>
-                              exerciseTimers.some(
-                                (setTimer) => setTimer.isRunning
-                              )
-                            ) &&
-                              !timer?.isRunning)
-                          }
-                          content={
-                            <BasicButton
-                              onAction={() => startTimer(i, index)}
-                              buttonContent={
-                                timer?.isRunning ? (
-                                  getFormattedTime(timer.seconds)
-                                ) : (
-                                  <>
-                                    <Icon
-                                      name="Play"
-                                      size={16}
-                                      color="#2694F9"
-                                      strokeWidth={3}
-                                    />
-                                    {getFormattedTime(timer?.seconds)}
-                                  </>
-                                )
-                              }
-                              isDisabled={
-                                (timer?.isRunning === false &&
-                                  timer?.seconds === 0) ||
-                                exercise.isFinished
-                              }
-                              buttonStyle={classes.timer_button}
-                            />
-                          }
                         />
                       </div>
                     );
