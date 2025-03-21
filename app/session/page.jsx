@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import WorkoutContext from "@modules/client/contexts/workoutProvider";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import NextImage from "next/image";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
@@ -109,9 +110,11 @@ function Session() {
                             closebutton={"Close"}
                             content={
                               <Image
+                                as={NextImage}
                                 isZoomed
                                 src={`${imageUrl}${findExercise?.image}`}
                                 alt={findExercise?.name}
+                                height={400}
                                 width={400}
                               />
                             }
