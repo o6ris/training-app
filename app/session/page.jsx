@@ -486,69 +486,72 @@ function Session() {
                     return (
                       <div key={index} className={classes.set_container}>
                         <InputField
-                          aria-label="repetions"
+                          ariaLabel="repetions"
                           label={
-                            <div className={classes.label_with_info}>
-                              <span>Reps</span>
-                              <PopupButton
-                                isIconOnly={true}
-                                startContent={
-                                  <Icon
-                                    name="Info"
-                                    size={16}
-                                    color="white"
-                                    strokeWidth={2}
-                                  />
-                                }
-                                buttonStyle={classes.input_info}
-                                title={"How Many Reps Should You Do?"}
-                                closebutton={"Close"}
-                                content={
-                                  <div className={classes.modal_content}>
-                                    <p>
-                                      The number of reps you perform determines
-                                      the type of gains you&apos;ll achieve. The
-                                      ideal rep range depends on the weight you
-                                      lift, the number of sets, and your rest
-                                      time.
-                                    </p>
-                                    <div>
-                                      <h3>
-                                        How to Choose the Right Number of Reps?
-                                      </h3>
-                                      <ul>
-                                        <li>
-                                          - Strength (Heavy weight, long rest,
-                                          low sets):{" "}
-                                          <strong>1 to 5 reps.</strong>{" "}
-                                          Maximizes force production and
-                                          neuromuscular efficiency.
-                                        </li>
-                                        <li>
-                                          - Muscle Growth (Moderate weight,
-                                          moderate rest, moderate sets):{" "}
-                                          <strong>6 to 12 reps.</strong> Best
-                                          for hypertrophy, balancing tension and
-                                          volume.
-                                        </li>
-                                        <li>
-                                          - Endurance (Light weight, short rest,
-                                          lower sets):{" "}
-                                          <strong>12+ reps.</strong> Enhances
-                                          muscular endurance and stamina.
-                                        </li>
-                                      </ul>
+                            index === 0 && (
+                              <div className={classes.label_with_info}>
+                                <span>Reps</span>
+                                <PopupButton
+                                  isIconOnly={true}
+                                  startContent={
+                                    <Icon
+                                      name="Info"
+                                      size={16}
+                                      color="white"
+                                      strokeWidth={2}
+                                    />
+                                  }
+                                  buttonStyle={classes.input_info}
+                                  title={"How Many Reps Should You Do?"}
+                                  closebutton={"Close"}
+                                  content={
+                                    <div className={classes.modal_content}>
+                                      <p>
+                                        The number of reps you perform
+                                        determines the type of gains you&apos;ll
+                                        achieve. The ideal rep range depends on
+                                        the weight you lift, the number of sets,
+                                        and your rest time.
+                                      </p>
+                                      <div>
+                                        <h3>
+                                          How to Choose the Right Number of
+                                          Reps?
+                                        </h3>
+                                        <ul>
+                                          <li>
+                                            - Strength (Heavy weight, long rest,
+                                            low sets):{" "}
+                                            <strong>1 to 5 reps.</strong>{" "}
+                                            Maximizes force production and
+                                            neuromuscular efficiency.
+                                          </li>
+                                          <li>
+                                            - Muscle Growth (Moderate weight,
+                                            moderate rest, moderate sets):{" "}
+                                            <strong>6 to 12 reps.</strong> Best
+                                            for hypertrophy, balancing tension
+                                            and volume.
+                                          </li>
+                                          <li>
+                                            - Endurance (Light weight, short
+                                            rest, lower sets):{" "}
+                                            <strong>12+ reps.</strong> Enhances
+                                            muscular endurance and stamina.
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <p>
+                                        By adjusting your reps based on weight,
+                                        sets, and rest time, you&rsquo;ll
+                                        optimize your training for better
+                                        results and progression!
+                                      </p>
                                     </div>
-                                    <p>
-                                      By adjusting your reps based on weight,
-                                      sets, and rest time, you&rsquo;ll optimize
-                                      your training for better results and
-                                      progression!
-                                    </p>
-                                  </div>
-                                }
-                              />
-                            </div>
+                                  }
+                                />
+                              </div>
+                            )
                           }
                           variant="bordered"
                           value={set.reps}
@@ -572,90 +575,93 @@ function Session() {
                           isDisabled={exercise.isFinished}
                         />
                         <InputField
-                          aria-label="weight"
+                          ariaLabel="weight"
                           label={
-                            <div className={classes.label_with_info}>
-                              <span>Weight (kg)</span>
-                              <PopupButton
-                                isIconOnly={true}
-                                startContent={
-                                  <Icon
-                                    name="Info"
-                                    size={16}
-                                    color="white"
-                                    strokeWidth={2}
-                                  />
-                                }
-                                buttonStyle={classes.input_info}
-                                title={"How to choose the right Weight?"}
-                                closebutton={"Close"}
-                                content={
-                                  <div className={classes.modal_content}>
-                                    <p>
-                                      The weight you lift directly impacts your
-                                      strength, muscle growth, and endurance.
-                                      Choosing the right weight depends on the
-                                      number of reps, sets, and your rest time
-                                      to match your training goal.
-                                    </p>
-                                    <div>
-                                      <h3>How to select the right Weight?</h3>
-                                      <ul>
-                                        <li>
-                                          - Strength (1-5 reps, long rest, low
-                                          sets):{" "}
-                                          <strong>
-                                            Heavy weight (85-100% of 1RM).{" "}
-                                          </strong>
-                                          Focuses on maximum force production,
-                                          with fewer reps and longer rest
-                                          periods.
-                                        </li>
-                                        <li>
-                                          - Muscle Growth (6-12 reps, moderate
-                                          rest, moderate sets):{" "}
-                                          <strong>
-                                            Moderate weight (65-85% of 1RM).{" "}
-                                          </strong>
-                                          Optimal for hypertrophy, balancing
-                                          muscle tension and volume.
-                                        </li>
-                                        <li>
-                                          - Endurance (12+ reps, short rest,
-                                          lower sets):{" "}
-                                          <strong>
-                                            Light weight (50-65% of 1RM).{" "}
-                                          </strong>
-                                          Improves muscular endurance with high
-                                          reps and minimal rest.
-                                        </li>
-                                      </ul>
+                            index === 0 && (
+                              <div className={classes.label_with_info}>
+                                <span>Weight (kg)</span>
+                                <PopupButton
+                                  isIconOnly={true}
+                                  startContent={
+                                    <Icon
+                                      name="Info"
+                                      size={16}
+                                      color="white"
+                                      strokeWidth={2}
+                                    />
+                                  }
+                                  buttonStyle={classes.input_info}
+                                  title={"How to choose the right Weight?"}
+                                  closebutton={"Close"}
+                                  content={
+                                    <div className={classes.modal_content}>
+                                      <p>
+                                        The weight you lift directly impacts
+                                        your strength, muscle growth, and
+                                        endurance. Choosing the right weight
+                                        depends on the number of reps, sets, and
+                                        your rest time to match your training
+                                        goal.
+                                      </p>
+                                      <div>
+                                        <h3>How to select the right Weight?</h3>
+                                        <ul>
+                                          <li>
+                                            - Strength (1-5 reps, long rest, low
+                                            sets):{" "}
+                                            <strong>
+                                              Heavy weight (85-100% of 1RM).{" "}
+                                            </strong>
+                                            Focuses on maximum force production,
+                                            with fewer reps and longer rest
+                                            periods.
+                                          </li>
+                                          <li>
+                                            - Muscle Growth (6-12 reps, moderate
+                                            rest, moderate sets):{" "}
+                                            <strong>
+                                              Moderate weight (65-85% of 1RM).{" "}
+                                            </strong>
+                                            Optimal for hypertrophy, balancing
+                                            muscle tension and volume.
+                                          </li>
+                                          <li>
+                                            - Endurance (12+ reps, short rest,
+                                            lower sets):{" "}
+                                            <strong>
+                                              Light weight (50-65% of 1RM).{" "}
+                                            </strong>
+                                            Improves muscular endurance with
+                                            high reps and minimal rest.
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <div>
+                                        <h3>
+                                          How to know if your weight is correct?
+                                        </h3>
+                                        <ul>
+                                          <li>
+                                            - If you can&rsquo;t complete your
+                                            reps with proper form, reduce the
+                                            weight.
+                                          </li>
+                                          <li>
+                                            - If you can do more reps than
+                                            planned easily, increase the weight.
+                                          </li>
+                                          <li>
+                                            - Your last reps should feel
+                                            challenging but manageable without
+                                            losing form.
+                                          </li>
+                                        </ul>
+                                      </div>
                                     </div>
-                                    <div>
-                                      <h3>
-                                        How to know if your weight is correct?
-                                      </h3>
-                                      <ul>
-                                        <li>
-                                          - If you can&rsquo;t complete your
-                                          reps with proper form, reduce the
-                                          weight.
-                                        </li>
-                                        <li>
-                                          - If you can do more reps than planned
-                                          easily, increase the weight.
-                                        </li>
-                                        <li>
-                                          - Your last reps should feel
-                                          challenging but manageable without
-                                          losing form.
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                }
-                              />
-                            </div>
+                                  }
+                                />
+                              </div>
+                            )
                           }
                           variant="bordered"
                           value={set.weight}
