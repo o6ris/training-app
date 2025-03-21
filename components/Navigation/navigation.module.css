@@ -7,6 +7,13 @@
   width: 100%;
   background-color: var(--primary-light-color);
   padding: 10px 0;
+  height: 60px;
+}
+
+@media all and (display-mode: standalone) {
+  .nav {
+    height: 80px; /* Height when running as a PWA */
+  }
 }
 
 .link {

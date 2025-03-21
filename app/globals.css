@@ -53,7 +53,13 @@ body::-webkit-scrollbar,
 }
 
 body > div {
-	padding-bottom: 60px;
+	padding-bottom: 80px;
 	position: relative;
+}
+
+@media all and (display-mode: standalone) {
+  .body > div {
+    height: 80px; /* Height when running as a PWA */
+  }
 }
 

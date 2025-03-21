@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import WorkoutContext from "@modules/client/contexts/workoutProvider";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import NextImage from "next/image";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
@@ -40,7 +41,7 @@ function Session() {
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
   const router = useRouter();
 
   useEffect(() => {
@@ -65,6 +66,7 @@ function Session() {
             (exo) => exo._id === exercise?.exercise
           );
           const key = (i + 1).toString();
+          const timer = timers[i];
           return (
             <AccordionItem
               key={key}
@@ -75,7 +77,11 @@ function Session() {
                     {isLoading ? (
                       <Skeleton width="40%" height="25px" />
                     ) : (
-                      <h3 className={exercise.isFinished ? classes.title_name_finish : ""}>{`${findExercise?.name}`}</h3>
+                      <h3
+                        className={
+                          exercise.isFinished ? classes.title_name_finish : ""
+                        }
+                      >{`${findExercise?.name}`}</h3>
                     )}
                     <PopupButton
                       isIconOnly={true}
@@ -104,9 +110,11 @@ function Session() {
                             closebutton={"Close"}
                             content={
                               <Image
+                                as={NextImage}
                                 isZoomed
                                 src={`${imageUrl}${findExercise?.image}`}
                                 alt={findExercise?.name}
+                                height={400}
                                 width={400}
                               />
                             }
@@ -132,10 +140,14 @@ function Session() {
                       }
                     />
                   </div>
-                    {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
+                  {exercise.isFinished && <Icon name="Check" color="#05ba8f" />}
                 </div>
               }
-              classNames={{ base: exercise.isFinished ? classes.accordion_item_finish : classes.accordion_item }}
+              classNames={{
+                base: exercise.isFinished
+                  ? classes.accordion_item_finish
+                  : classes.accordion_item,
+              }}
             >
               <div className={classes.session_container}>
                 <div className={classes.stopwatch_buttons}>
@@ -431,77 +443,118 @@ function Session() {
                     isMultiline={false}
                   />
                 </div>
-                <hr className={classes.section_separation} />
+                <PopupButton
+                  triggerAction={() => !timer?.isRunning && resetTimers()}
+                  triggerButtonContent={
+                    timer?.isRunning
+                      ? getFormattedTime(timer.seconds)
+                      : "Start rest time"
+                  }
+                  buttonStyle={classes.timer_button}
+                  closebutton={"Close"}
+                  isDisabled={
+                    exercise.isFinished ||
+                    (timers.some((timer) => timer.isRunning) &&
+                      !timer?.isRunning)
+                  }
+                  content={
+                    <BasicButton
+                      onAction={() => startTimer(i)}
+                      buttonContent={
+                        timer?.isRunning ? (
+                          getFormattedTime(timer.seconds)
+                        ) : (
+                          <>
+                            <Icon
+                              name="Play"
+                              size={16}
+                              color="#2694F9"
+                              strokeWidth={3}
+                            />
+                            {getFormattedTime(timer?.seconds)}
+                          </>
+                        )
+                      }
+                      isDisabled={
+                        (timer?.isRunning === false && timer?.seconds === 0) ||
+                        exercise.isFinished
+                      }
+                      buttonStyle={classes.timer_button}
+                    />
+                  }
+                />
                 {/* Choose reps and weight */}
                 <div className={classes.sets_container}>
                   {exercise.sets.map((set, index) => {
-                    const timer = timers[i]?.[index];
                     return (
                       <div key={index} className={classes.set_container}>
                         <InputField
-                          aria-label="repetions"
+                          ariaLabel="repetions"
                           label={
-                            <div className={classes.label_with_info}>
-                              <span>Reps</span>
-                              <PopupButton
-                                isIconOnly={true}
-                                startContent={
-                                  <Icon
-                                    name="Info"
-                                    size={16}
-                                    color="white"
-                                    strokeWidth={2}
-                                  />
-                                }
-                                buttonStyle={classes.input_info}
-                                title={"How Many Reps Should You Do?"}
-                                closebutton={"Close"}
-                                content={
-                                  <div className={classes.modal_content}>
-                                    <p>
-                                      The number of reps you perform determines
-                                      the type of gains you&apos;ll achieve. The
-                                      ideal rep range depends on the weight you
-                                      lift, the number of sets, and your rest
-                                      time.
-                                    </p>
-                                    <div>
-                                      <h3>
-                                        How to Choose the Right Number of Reps?
-                                      </h3>
-                                      <ul>
-                                        <li>
-                                          - Strength (Heavy weight, long rest,
-                                          low sets):{" "}
-                                          <strong>1 to 5 reps.</strong>{" "}
-                                          Maximizes force production and
-                                          neuromuscular efficiency.
-                                        </li>
-                                        <li>
-                                          - Muscle Growth (Moderate weight,
-                                          moderate rest, moderate sets):{" "}
-                                          <strong>6 to 12 reps.</strong> Best
-                                          for hypertrophy, balancing tension and
-                                          volume.
-                                        </li>
-                                        <li>
-                                          - Endurance (Light weight, short rest,
-                                          lower sets):{" "}
-                                          <strong>12+ reps.</strong> Enhances
-                                          muscular endurance and stamina.
-                                        </li>
-                                      </ul>
+                            index === 0 && (
+                              <div className={classes.label_with_info}>
+                                <span>Reps</span>
+                                <PopupButton
+                                  isIconOnly={true}
+                                  startContent={
+                                    <Icon
+                                      name="Info"
+                                      size={16}
+                                      color="white"
+                                      strokeWidth={2}
+                                    />
+                                  }
+                                  buttonStyle={classes.input_info}
+                                  title={"How Many Reps Should You Do?"}
+                                  closebutton={"Close"}
+                                  content={
+                                    <div className={classes.modal_content}>
+                                      <p>
+                                        The number of reps you perform
+                                        determines the type of gains you&apos;ll
+                                        achieve. The ideal rep range depends on
+                                        the weight you lift, the number of sets,
+                                        and your rest time.
+                                      </p>
+                                      <div>
+                                        <h3>
+                                          How to Choose the Right Number of
+                                          Reps?
+                                        </h3>
+                                        <ul>
+                                          <li>
+                                            - Strength (Heavy weight, long rest,
+                                            low sets):{" "}
+                                            <strong>1 to 5 reps.</strong>{" "}
+                                            Maximizes force production and
+                                            neuromuscular efficiency.
+                                          </li>
+                                          <li>
+                                            - Muscle Growth (Moderate weight,
+                                            moderate rest, moderate sets):{" "}
+                                            <strong>6 to 12 reps.</strong> Best
+                                            for hypertrophy, balancing tension
+                                            and volume.
+                                          </li>
+                                          <li>
+                                            - Endurance (Light weight, short
+                                            rest, lower sets):{" "}
+                                            <strong>12+ reps.</strong> Enhances
+                                            muscular endurance and stamina.
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <p>
+                                        By adjusting your reps based on weight,
+                                        sets, and rest time, you&rsquo;ll
+                                        optimize your training for better
+                                        results and progression!
+                                      </p>
                                     </div>
-                                    <p>
-                                      By adjusting your reps based on weight,
-                                      sets, and rest time, you&rsquo;ll optimize
-                                      your training for better results and
-                                      progression!
-                                    </p>
-                                  </div>
-                                }
-                              />
-                            </div>
+                                  }
+                                />
+                              </div>
+                            )
                           }
                           variant="bordered"
                           value={set.reps}
@@ -525,90 +578,93 @@ function Session() {
                           isDisabled={exercise.isFinished}
                         />
                         <InputField
-                          aria-label="weight"
+                          ariaLabel="weight"
                           label={
-                            <div className={classes.label_with_info}>
-                              <span>Weight (kg)</span>
-                              <PopupButton
-                                isIconOnly={true}
-                                startContent={
-                                  <Icon
-                                    name="Info"
-                                    size={16}
-                                    color="white"
-                                    strokeWidth={2}
-                                  />
-                                }
-                                buttonStyle={classes.input_info}
-                                title={"How to choose the right Weight?"}
-                                closebutton={"Close"}
-                                content={
-                                  <div className={classes.modal_content}>
-                                    <p>
-                                      The weight you lift directly impacts your
-                                      strength, muscle growth, and endurance.
-                                      Choosing the right weight depends on the
-                                      number of reps, sets, and your rest time
-                                      to match your training goal.
-                                    </p>
-                                    <div>
-                                      <h3>How to select the right Weight?</h3>
-                                      <ul>
-                                        <li>
-                                          - Strength (1-5 reps, long rest, low
-                                          sets):{" "}
-                                          <strong>
-                                            Heavy weight (85-100% of 1RM).{" "}
-                                          </strong>
-                                          Focuses on maximum force production,
-                                          with fewer reps and longer rest
-                                          periods.
-                                        </li>
-                                        <li>
-                                          - Muscle Growth (6-12 reps, moderate
-                                          rest, moderate sets):{" "}
-                                          <strong>
-                                            Moderate weight (65-85% of 1RM).{" "}
-                                          </strong>
-                                          Optimal for hypertrophy, balancing
-                                          muscle tension and volume.
-                                        </li>
-                                        <li>
-                                          - Endurance (12+ reps, short rest,
-                                          lower sets):{" "}
-                                          <strong>
-                                            Light weight (50-65% of 1RM).{" "}
-                                          </strong>
-                                          Improves muscular endurance with high
-                                          reps and minimal rest.
-                                        </li>
-                                      </ul>
+                            index === 0 && (
+                              <div className={classes.label_with_info}>
+                                <span>Weight (kg)</span>
+                                <PopupButton
+                                  isIconOnly={true}
+                                  startContent={
+                                    <Icon
+                                      name="Info"
+                                      size={16}
+                                      color="white"
+                                      strokeWidth={2}
+                                    />
+                                  }
+                                  buttonStyle={classes.input_info}
+                                  title={"How to choose the right Weight?"}
+                                  closebutton={"Close"}
+                                  content={
+                                    <div className={classes.modal_content}>
+                                      <p>
+                                        The weight you lift directly impacts
+                                        your strength, muscle growth, and
+                                        endurance. Choosing the right weight
+                                        depends on the number of reps, sets, and
+                                        your rest time to match your training
+                                        goal.
+                                      </p>
+                                      <div>
+                                        <h3>How to select the right Weight?</h3>
+                                        <ul>
+                                          <li>
+                                            - Strength (1-5 reps, long rest, low
+                                            sets):{" "}
+                                            <strong>
+                                              Heavy weight (85-100% of 1RM).{" "}
+                                            </strong>
+                                            Focuses on maximum force production,
+                                            with fewer reps and longer rest
+                                            periods.
+                                          </li>
+                                          <li>
+                                            - Muscle Growth (6-12 reps, moderate
+                                            rest, moderate sets):{" "}
+                                            <strong>
+                                              Moderate weight (65-85% of 1RM).{" "}
+                                            </strong>
+                                            Optimal for hypertrophy, balancing
+                                            muscle tension and volume.
+                                          </li>
+                                          <li>
+                                            - Endurance (12+ reps, short rest,
+                                            lower sets):{" "}
+                                            <strong>
+                                              Light weight (50-65% of 1RM).{" "}
+                                            </strong>
+                                            Improves muscular endurance with
+                                            high reps and minimal rest.
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <div>
+                                        <h3>
+                                          How to know if your weight is correct?
+                                        </h3>
+                                        <ul>
+                                          <li>
+                                            - If you can&rsquo;t complete your
+                                            reps with proper form, reduce the
+                                            weight.
+                                          </li>
+                                          <li>
+                                            - If you can do more reps than
+                                            planned easily, increase the weight.
+                                          </li>
+                                          <li>
+                                            - Your last reps should feel
+                                            challenging but manageable without
+                                            losing form.
+                                          </li>
+                                        </ul>
+                                      </div>
                                     </div>
-                                    <div>
-                                      <h3>
-                                        How to know if your weight is correct?
-                                      </h3>
-                                      <ul>
-                                        <li>
-                                          - If you can&rsquo;t complete your
-                                          reps with proper form, reduce the
-                                          weight.
-                                        </li>
-                                        <li>
-                                          - If you can do more reps than planned
-                                          easily, increase the weight.
-                                        </li>
-                                        <li>
-                                          - Your last reps should feel
-                                          challenging but manageable without
-                                          losing form.
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                }
-                              />
-                            </div>
+                                  }
+                                />
+                              </div>
+                            )
                           }
                           variant="bordered"
                           value={set.weight}
@@ -630,54 +686,6 @@ function Session() {
                             input: classes.field_value,
                           }}
                           isDisabled={exercise.isFinished}
-                        />
-                        <PopupButton
-                          triggerAction={() =>
-                            !timer?.isRunning && resetTimers()
-                          }
-                          triggerButtonContent={
-                            timer?.isRunning
-                              ? getFormattedTime(timer.seconds)
-                              : "Start rest time"
-                          }
-                          buttonStyle={classes.timer_button}
-                          closebutton={"Close"}
-                          isDisabled={
-                            (!timer?.isRunning && timer?.seconds === 0) ||
-                            exercise.isFinished ||
-                            (timers.some((exerciseTimers) =>
-                              exerciseTimers.some(
-                                (setTimer) => setTimer.isRunning
-                              )
-                            ) &&
-                              !timer?.isRunning)
-                          }
-                          content={
-                            <BasicButton
-                              onAction={() => startTimer(i, index)}
-                              buttonContent={
-                                timer?.isRunning ? (
-                                  getFormattedTime(timer.seconds)
-                                ) : (
-                                  <>
-                                    <Icon
-                                      name="Play"
-                                      size={16}
-                                      color="#2694F9"
-                                      strokeWidth={3}
-                                    />
-                                    {getFormattedTime(timer?.seconds)}
-                                  </>
-                                )
-                              }
-                              isDisabled={
-                                (timer?.isRunning === false &&
-                                  timer?.seconds === 0) ||
-                                exercise.isFinished
-                              }
-                              buttonStyle={classes.timer_button}
-                            />
-                          }
                         />
                       </div>
                     );

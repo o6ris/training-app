@@ -156,6 +156,7 @@ export default function useWorkoutSession() {
             workout._id === id ? { ...workout, ...body } : workout
           );
           setTempWorkouts(updatedWorkouts);
+          router.push("/workouts");
           return updatedWorkouts;
         });
         return data;
