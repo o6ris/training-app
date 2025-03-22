@@ -7,55 +7,47 @@ const useTimer = (session) => {
 
   const resetTimers = () => {
     setTimers((prevTimers) => {
-      return session.map((exercise, exerciseIndex) =>
-        exercise.sets.map((_, setIndex) => {
-          return {
-            seconds: exercise.restTime, // Always update to the latest restTime
-            isRunning: false,
-          };
-        })
-      );
+      return session.map((exercise) => {
+        return {
+          seconds: exercise.restTime, // Always update to the latest restTime
+          isRunning: false,
+        };
+      });
     });
 
     // Reset intervalRefs based on the new session structure
-    intervalRefs.current = session.map((exercise) =>
-      exercise.sets.map(() => null)
-    );
+    intervalRefs.current = session.map((exercise) => null);
   };
 
   // Function to start a timer for a specific exercise and set index
-  const startTimer = (exerciseIndex, setIndex) => {
+  const startTimer = (exerciseIndex) => {
     // Prevent multiple intervals for the same timer
-    if (intervalRefs.current[exerciseIndex][setIndex]) return;
+    if (intervalRefs.current[exerciseIndex]) return;
 
-    intervalRefs.current[exerciseIndex][setIndex] = setInterval(() => {
+    intervalRefs.current[exerciseIndex] = setInterval(() => {
       setTimers((prevTimers) => {
-        return prevTimers.map((exerciseTimers, i) =>
-          exerciseTimers.map((timer, j) => {
-            if (i === exerciseIndex && j === setIndex) {
-              if (timer.seconds > 0) {
-                return { ...timer, seconds: timer.seconds - 1 };
-              } else {
-                clearInterval(intervalRefs.current[exerciseIndex][setIndex]);
-                intervalRefs.current[exerciseIndex][setIndex] = null;
-                return { ...timer, isRunning: false };
-              }
+        return prevTimers.map((timer, i) => {
+          if (i === exerciseIndex) {
+            if (timer.seconds > 0) {
+              return { ...timer, seconds: timer.seconds - 1 };
+            } else {
+              clearInterval(intervalRefs.current[exerciseIndex]);
+              intervalRefs.current[exerciseIndex] = null;
+              return { ...timer, isRunning: false };
             }
-            return timer;
-          })
-        );
+          }
+          return timer;
+        });
       });
     }, 1000);
 
     setTimers((prevTimers) => {
-      return prevTimers.map((exerciseTimers, i) =>
-        exerciseTimers.map((timer, j) => {
-          if (i === exerciseIndex && j === setIndex) {
-            return { ...timer, isRunning: true };
-          }
-          return timer;
-        })
-      );
+      return prevTimers.map((timer, i) => {
+        if (i === exerciseIndex) {
+          return { ...timer, isRunning: true };
+        }
+        return timer;
+      });
     });
   };
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import classes from "./setupWorkout.module.css";
 import { useSession } from "next-auth/react";
 import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import NextImage from "next/image";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
@@ -25,7 +26,7 @@ function SetupWorkout({
   const [workoutName, setWorkoutName] = useState("");
 
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
   const router = useRouter();
   const exerciseIds = workoutId
     ? oneWorkout?.exercises.map((exercise) => exercise._id)
@@ -83,9 +84,11 @@ function SetupWorkout({
                 >
                   <div className={classes.exercise_desc_content}>
                     <Image
+                      as={NextImage}
                       isZoomed
                       src={`${imageUrl}${exercise?.image}`}
                       alt={exercise?.name}
+                      height={300}
                       width={300}
                     />
                     <div>

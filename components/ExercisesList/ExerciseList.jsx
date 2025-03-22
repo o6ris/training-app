@@ -1,5 +1,6 @@
 import classes from "./exercisesList.module.css";
 import { Avatar, Image } from "@heroui/react";
+import NextImage from "next/image";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
 
@@ -14,7 +15,7 @@ function ExerciseList({
   oneWorkout,
 }) {
   const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
+  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
 
   const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
@@ -46,9 +47,11 @@ function ExerciseList({
               content={
                 <div className={classes.exercise_desc_content}>
                   <Image
+                    as={NextImage}
                     isZoomed
                     src={`${imageUrl}${exercise?.image}`}
                     alt={exercise?.name}
+                    height={300}
                     width={300}
                   />
                   <div>

@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 * {
 	font-family: 'Inter', sans-serif;
@@ -54,7 +53,13 @@ body::-webkit-scrollbar,
 }
 
 body > div {
-	padding-bottom: 60px;
+	padding-bottom: 80px;
 	position: relative;
+}
+
+@media all and (display-mode: standalone) {
+  .body > div {
+    height: 80px; /* Height when running as a PWA */
+  }
 }
 

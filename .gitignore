@@ -37,3 +37,6 @@ next-env.d.ts
 
 #google
 google-service-key.json
+
+/public/service-worker.js
+/public/workbox-*.js

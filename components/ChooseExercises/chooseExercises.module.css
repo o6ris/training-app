@@ -44,6 +44,12 @@
   backdrop-filter: blur(10px);
 }
 
+@media all and (display-mode: standalone) {
+  .footer_button {
+    padding-bottom: 50px;
+  }
+}
+
 .save_session_button, .cancel_button {
   padding: 10px;
   width: 100%;

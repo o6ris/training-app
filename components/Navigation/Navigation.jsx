@@ -16,7 +16,7 @@ function Navigation() {
     <nav className={classes.nav}>
       <Link className={classes.link} href="/home">
         <Icon
-          name="Home"
+          name="House"
           size={16}
           color={pathname === "/home" ? "#2694F9" : "#02091C"}
           strokeWidth={pathname === "/home" ? 3 : 2}

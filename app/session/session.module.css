@@ -55,20 +55,18 @@
 .sets_container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   width: 100%;
 }
 
 .section_separation{
   margin: 1.5rem auto;
   width: 70%;
+  border: 1px solid var(--primary-color);
 }
 
 .set_container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 0.5fr;
-  row-gap: 0.5rem;
   column-gap: 0.5rem;
   width: 100%;
   align-items: start;
@@ -155,7 +153,8 @@
   width: 100%;
   min-height: 60px !important;
   padding: 0.6rem;
-  border: 2px solid var(--primary-light-color);
+  background-color: var(--primary-color);
+  border: 0px solid var(--primary-light-color);
 }
 
 .field_value {

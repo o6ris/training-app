@@ -4,7 +4,8 @@ import { NextResponse } from "next/server";
 import checkId from "modules/server/utils/checkId";
 import bcrypt from "bcrypt";
 
-export async function PATCH(request, { params }) {
+export async function PATCH(request, props) {
+  const params = await props.params;
   try {
     const { id } = params;
     await connectDb();
@@ -32,7 +33,8 @@ export async function PATCH(request, { params }) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, props) {
+  const params = await props.params;
   try {
     const { id } = params;
     if (!checkId(id)) {
@@ -51,7 +53,8 @@ export async function DELETE(request, { params }) {
   }
 }
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   try {
     const { id } = params;
     if (!checkId(id)) {
