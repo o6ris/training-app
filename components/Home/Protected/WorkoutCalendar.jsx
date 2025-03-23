@@ -9,7 +9,7 @@ import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 
 function WorkoutCalendar() {
-  const [value, setValue] = useState(today(getLocalTimeZone()));
+  const [value, setValue] = useState();
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const { getStatsByDate, statsByDate } = useStats();
@@ -40,7 +40,10 @@ function WorkoutCalendar() {
     <>
       <PopupButton
         autoOpen={isAutoOpen}
-        onCancel={() => setIsAutoOpen(false)}
+        onCancel={() => {
+          setValue(null);
+          setIsAutoOpen(false);
+        }}
         title={`${value?.year}-${value?.month}-${value?.day}`}
         size="full"
         content={
@@ -65,6 +68,7 @@ function WorkoutCalendar() {
         aria-label="Date (Controlled)"
         value={value}
         onChange={handleonChange}
+        onFocusChange={(value) => console.log(value)}
         maxValue={today(getLocalTimeZone())}
         calendarWidth={calendarWidth}
         classNames={{
