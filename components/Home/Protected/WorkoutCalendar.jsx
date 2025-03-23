@@ -10,7 +10,7 @@ import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/style.css";
+import classNames from "react-day-picker/style.module.css";
 
 function WorkoutCalendar() {
   const { data: userSession, status } = useSession();
@@ -45,8 +45,7 @@ function WorkoutCalendar() {
     highlighted: (day) =>
       formattedWorkoutsDates.some((highlightedDate) =>
         isSameDay(highlightedDate, day)
-      ),
-    today: (day) => isSameDay(day, new Date()),
+      )
   };
 
   useEffect(() => {
@@ -97,16 +96,19 @@ function WorkoutCalendar() {
       <div className={classes.calendar_container}>
         <DayPicker
           modifiers={modifiers}
+          classNames={{
+            ...classNames,
+            months: classes.months,
+            month_grid: classes.month_grid,
+            day: classes.day,
+            today: classes.today,
+            chevron: classes.chevron
+          }}
           modifiersStyles={{
             highlighted: {
               color: "#2694f9",
               fontWeight: "bolder",
-            },
-            today: {
-              backgroundColor: "rgba(2, 9, 28, 0.2)",
-              borderRadius: "50%",
-              color: "white",
-            },
+            }
           }}
           animate
           mode="single"

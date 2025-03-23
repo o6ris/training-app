@@ -6,9 +6,32 @@
   background-color: var(--secondary-color) !important;
 }
 
+/* CALENDAR */
+
 .calendar_container {
   background-color: var(--secondary-color); 
   width: 100%;
   padding: 1rem; 
   border-radius: 15px;
+}
+
+.months, .month_grid {
+  width: 100%;
+}
+
+.day button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.today {
+  background-color: rgba(2, 9, 28, 0.2);
+  border-radius: 50%;
+  color: white;
+}
+
+.chevron {
+  fill: var(--primary-light-color);
 }
