@@ -7,16 +7,19 @@ import { Calendar, Accordion, AccordionItem } from "@heroui/react";
 import { today, getLocalTimeZone } from "@internationalized/date";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 
 function WorkoutCalendar() {
   const [value, setValue] = useState();
+  const [selected, setSelected] = useState();
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const { getStatsByDate, statsByDate } = useStats();
 
-  const handleonChange = (value) => {
-    getStatsByDate(value);
-    setValue(value);
+  const handleonSelect = (date) => {
+    getStatsByDate(date);
+    setSelected(date);
   };
 
   useEffect(() => {
@@ -35,13 +38,14 @@ function WorkoutCalendar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  
 
   return (
     <>
       <PopupButton
         autoOpen={isAutoOpen}
         onCancel={() => {
-          setValue(null);
+          setSelected(null);
           setIsAutoOpen(false);
         }}
         title={`${value?.year}-${value?.month}-${value?.day}`}
@@ -64,7 +68,13 @@ function WorkoutCalendar() {
           </Accordion>
         }
       />
-      <Calendar
+      <DayPicker
+      animate
+      mode="single"
+      selected={selected}
+      onSelect={handleonSelect}
+    />
+      {/* <Calendar
         aria-label="Date (Controlled)"
         value={value}
         onChange={handleonChange}
@@ -82,7 +92,7 @@ function WorkoutCalendar() {
           content: classes.calendar_content,
           gridBodyRow: classes.calendar_body_row,
         }}
-      />
+      /> */}
     </>
   );
 }

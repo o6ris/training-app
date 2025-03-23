@@ -63,8 +63,7 @@ export default function useStats() {
   };
 
   const getStatsByDate = async (date) => {
-    const { year, month, day } = date;
-    const formatedDate = `${year}-${month}-${day}`
+    const formatedDate = new Date(date).toISOString().split("T")[0]
 
     try {
       const url = `${baseUrl}/api/stats/statsByDate?user=${userId}&date=${formatedDate}`;
