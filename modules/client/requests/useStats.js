@@ -65,7 +65,7 @@ export default function useStats() {
   const getStatsByDate = async (date) => {
     const { year, month, day } = date;
     const formatedDate = `${year}-${month}-${day}`
-    console.log("formatedDate", formatedDate)
+
     try {
       const url = `${baseUrl}/api/stats/statsByDate?user=${userId}&date=${formatedDate}`;
       const response = await fetch(

@@ -21,3 +21,11 @@
 .calendar_next_button svg path {
   color: var(--primary-color);
 }
+
+.accordion {
+  padding: 0 !important;
+}
+
+.accordion_item {
+  background-color: var(--secondary-color) !important;
+}

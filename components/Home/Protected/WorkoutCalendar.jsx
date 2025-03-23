@@ -3,20 +3,25 @@
 import { useState, useEffect } from "react";
 import useStats from "@modules/client/requests/useStats";
 import classes from "./workoutCalendar.module.css";
-import { Calendar } from "@heroui/react";
+import { Calendar, Accordion, AccordionItem } from "@heroui/react";
 import { today, getLocalTimeZone } from "@internationalized/date";
+import PopupButton from "@core/ui/Button/PopupButton";
+import GlobalStats from "@components/StatComponent/GlobalStats";
 
 function WorkoutCalendar() {
   const [value, setValue] = useState(today(getLocalTimeZone()));
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
+  const [isAutoOpen, setIsAutoOpen] = useState(false);
   const { getStatsByDate, statsByDate } = useStats();
 
   const handleonChange = (value) => {
-    getStatsByDate(value)
-    setValue(value)
-  }
+    getStatsByDate(value);
+    setValue(value);
+  };
 
-  
+  useEffect(() => {
+    if (statsByDate.length > 0) setIsAutoOpen(true);
+  }, [statsByDate]);
 
   function getInitialWidth() {
     return window.innerWidth < 512 ? "100" : "400px";
@@ -32,24 +37,49 @@ function WorkoutCalendar() {
   }, []);
 
   return (
-    <Calendar
-      aria-label="Date (Controlled)"
-      value={value}
-      onChange={handleonChange}
-      maxValue={today(getLocalTimeZone())}
-      calendarWidth={calendarWidth}
-      classNames={{
-        base: classes.calendar_wrapper,
-        headerWrapper: classes.calendar_header,
-        title: classes.calendar_title,
-        gridHeaderRow: classes.calendar_header_row,
-        gridHeaderCell: classes.calendar_header_cells,
-        prevButton: classes.calendar_prev_button,
-        nextButton: classes.calendar_next_button,
-        content: classes.calendar_content,
-        gridBodyRow: classes.calendar_body_row,
-      }}
-    />
+    <>
+      <PopupButton
+        autoOpen={isAutoOpen}
+        onCancel={() => setIsAutoOpen(false)}
+        title={`${value?.year}-${value?.month}-${value?.day}`}
+        size="full"
+        content={
+          <Accordion variant="splitted" className={classes.accordion}>
+            {statsByDate?.length > 0 &&
+              statsByDate.map((stat, i) => {
+                return (
+                  <AccordionItem
+                    key={i}
+                    textValue={stat.exercise.name || "Exercise"}
+                    title={<h3>{stat.exercise.name.toUpperCase()}</h3>}
+                    classNames={{ base: classes.accordion_item }}
+                  >
+                    <GlobalStats stat={stat} />
+                  </AccordionItem>
+                );
+              })}
+          </Accordion>
+        }
+      />
+      <Calendar
+        aria-label="Date (Controlled)"
+        value={value}
+        onChange={handleonChange}
+        maxValue={today(getLocalTimeZone())}
+        calendarWidth={calendarWidth}
+        classNames={{
+          base: classes.calendar_wrapper,
+          headerWrapper: classes.calendar_header,
+          title: classes.calendar_title,
+          gridHeaderRow: classes.calendar_header_row,
+          gridHeaderCell: classes.calendar_header_cells,
+          prevButton: classes.calendar_prev_button,
+          nextButton: classes.calendar_next_button,
+          content: classes.calendar_content,
+          gridBodyRow: classes.calendar_body_row,
+        }}
+      />
+    </>
   );
 }
 

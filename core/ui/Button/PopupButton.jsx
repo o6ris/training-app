@@ -27,6 +27,7 @@ export default function PopupButton({
   confirmButton = "Confirm",
   confirmButtonStyle,
   autoOpen,
+  autoOpenTime = 0,
   isTransparent,
   disableConfirm,
 }) {
@@ -37,24 +38,26 @@ export default function PopupButton({
     if (autoOpen === true) {
       setTimeout(() => {
         onOpenChange(true);
-      }, [1500]);
+      }, [autoOpenTime]);
     }
   }, [autoOpen]);
 
   return (
     <>
-      <Button
-        className={buttonStyle}
-        onPress={() => {
-          onOpen();
-          triggerAction && triggerAction();
-        }}
-        isDisabled={isDisabled}
-        isIconOnly={isIconOnly}
-        startContent={startContent}
-      >
-        {triggerButtonContent}
-      </Button>
+      {triggerButtonContent && (
+        <Button
+          className={buttonStyle}
+          onPress={() => {
+            onOpen();
+            triggerAction && triggerAction();
+          }}
+          isDisabled={isDisabled}
+          isIconOnly={isIconOnly}
+          startContent={startContent}
+        >
+          {triggerButtonContent}
+        </Button>
+      )}
       <Modal
         backdrop="blur"
         size={size}
