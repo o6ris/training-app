@@ -10,7 +10,7 @@ import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 import { DayPicker } from "react-day-picker";
-import classNames from "react-day-picker/style.module.css";
+import "react-day-picker/style.css";
 
 function WorkoutCalendar() {
   const { data: userSession, status } = useSession();
@@ -97,7 +97,6 @@ function WorkoutCalendar() {
         <DayPicker
           modifiers={modifiers}
           classNames={{
-            ...classNames,
             months: classes.months,
             month_grid: classes.month_grid,
             day: classes.day,
