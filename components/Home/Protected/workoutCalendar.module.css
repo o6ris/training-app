@@ -1,31 +1,14 @@
-.calendar_wrapper {
-  background-color: var(--secondary-color);
-}
-
-.calendar_header_row, .calendar_body_row {
-  justify-content: space-around;
-  padding: 0 0.2rem 0.2rem 0.2rem;
-}
-
-.calendar_title {
-  font-weight: var(--font-bold);
-  font-size: var(--font-xl);
-}
-
-.calendar_header_cells span,
-.calendar_title {
-  color: var(--primary-color);
-}
-
-.calendar_prev_button svg path,
-.calendar_next_button svg path {
-  color: var(--primary-color);
-}
-
 .accordion {
   padding: 0 !important;
 }
 
 .accordion_item {
   background-color: var(--secondary-color) !important;
+}
+
+.calendar_container {
+  background-color: var(--secondary-color); 
+  width: 100%;
+  padding: 1rem; 
+  border-radius: 15px;
 }

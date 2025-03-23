@@ -1,25 +1,52 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import useUser from "@modules/client/requests/useUser";
+import { useSession } from "next-auth/react";
 import useStats from "@modules/client/requests/useStats";
 import classes from "./workoutCalendar.module.css";
-import { Calendar, Accordion, AccordionItem } from "@heroui/react";
-import { today, getLocalTimeZone } from "@internationalized/date";
+import { Accordion, AccordionItem } from "@heroui/react";
+import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
 function WorkoutCalendar() {
-  const [value, setValue] = useState();
-  const [selected, setSelected] = useState();
+  const { data: userSession, status } = useSession();
+  const { userId } = useUser(userSession);
+  const [selectedDay, setSelectedDay] = useState();
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
-  const { getStatsByDate, statsByDate } = useStats();
+  const { getStatsByDate, statsByDate, workoutsDates, getWorkoutsDateByMonth  } = useStats(userId);
 
-  const handleonSelect = (date) => {
+
+  const month = new Date(selectedMonth)
+    .toISOString()
+    .split("T")[0]
+    .split("-")[1];
+
+  const dayOnChange = (date) => {
     getStatsByDate(date);
-    setSelected(date);
+    setSelectedDay(date);
+  };
+
+  useEffect(() => {
+    if (userId) getWorkoutsDateByMonth(month);
+  }, [userId, month]);
+
+  const formattedWorkoutsDates = workoutsDates.map(dateStr => {
+    const [year, month, day] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day); // Subtract 1 from month
+  });
+
+  const modifiers = {
+    highlighted: (day) =>
+      formattedWorkoutsDates.some((highlightedDate) =>
+        isSameDay(highlightedDate, day)
+      ),
+    today: (day) => isSameDay(day, new Date()),
   };
 
   useEffect(() => {
@@ -38,17 +65,16 @@ function WorkoutCalendar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
 
   return (
     <>
       <PopupButton
         autoOpen={isAutoOpen}
         onCancel={() => {
-          setSelected(null);
+          setSelectedDay(null);
           setIsAutoOpen(false);
         }}
-        title={`${value?.year}-${value?.month}-${value?.day}`}
+        title={selectedDay && new Date(selectedDay).toISOString().split("T")[0]}
         size="full"
         content={
           <Accordion variant="splitted" className={classes.accordion}>
@@ -68,31 +94,28 @@ function WorkoutCalendar() {
           </Accordion>
         }
       />
-      <DayPicker
-      animate
-      mode="single"
-      selected={selected}
-      onSelect={handleonSelect}
-    />
-      {/* <Calendar
-        aria-label="Date (Controlled)"
-        value={value}
-        onChange={handleonChange}
-        onFocusChange={(value) => console.log(value)}
-        maxValue={today(getLocalTimeZone())}
-        calendarWidth={calendarWidth}
-        classNames={{
-          base: classes.calendar_wrapper,
-          headerWrapper: classes.calendar_header,
-          title: classes.calendar_title,
-          gridHeaderRow: classes.calendar_header_row,
-          gridHeaderCell: classes.calendar_header_cells,
-          prevButton: classes.calendar_prev_button,
-          nextButton: classes.calendar_next_button,
-          content: classes.calendar_content,
-          gridBodyRow: classes.calendar_body_row,
-        }}
-      /> */}
+      <div className={classes.calendar_container}>
+        <DayPicker
+          modifiers={modifiers}
+          modifiersStyles={{
+            highlighted: {
+              color: "#2694f9",
+              fontWeight: "bolder",
+            },
+            today: {
+              backgroundColor: "rgba(2, 9, 28, 0.2)",
+              borderRadius: "50%",
+              color: "white",
+            },
+          }}
+          animate
+          mode="single"
+          month={selectedMonth}
+          onMonthChange={setSelectedMonth}
+          selected={selectedDay}
+          onSelect={dayOnChange}
+        />
+      </div>
     </>
   );
 }

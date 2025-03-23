@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import useUser from "./useUser";
-import { useSession } from "next-auth/react";
 
-export default function useStats() {
-  const { data: userSession, status } = useSession();
-  const { userId } = useUser(userSession);
+export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
+  const [workoutsDates, setWorkoutsDates] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
@@ -75,6 +72,25 @@ export default function useStats() {
       if (response) {
         const stats = await response.json();
         setStatsByDate(stats);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getWorkoutsDateByMonth = async (month) => {
+    console.log("month", month)
+
+    try {
+      const url = `${baseUrl}/api/stats/statsByMonth?user=${userId}&month=${month}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const workoutDates = await response.json();
+        setWorkoutsDates(workoutDates);
       }
     } catch (error) {
       throw error;
@@ -159,6 +175,8 @@ export default function useStats() {
     getStatById,
     getStatsByDate,
     statsByDate,
+    getWorkoutsDateByMonth,
+    workoutsDates,
     range,
     setRange,
     startDate,
