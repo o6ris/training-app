@@ -1,15 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import classes from "./workoutCalendar.module.css"
+import useStats from "@modules/client/requests/useStats";
+import classes from "./workoutCalendar.module.css";
 import { Calendar } from "@heroui/react";
 import { today, getLocalTimeZone } from "@internationalized/date";
 
 function WorkoutCalendar() {
   const [value, setValue] = useState(today(getLocalTimeZone()));
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
+  const { getStatsByDate, statsByDate } = useStats();
 
-  console.log("value", value)
+  const handleonChange = (value) => {
+    getStatsByDate(value)
+    setValue(value)
+  }
+
+  
 
   function getInitialWidth() {
     return window.innerWidth < 512 ? "100" : "400px";
@@ -28,7 +35,7 @@ function WorkoutCalendar() {
     <Calendar
       aria-label="Date (Controlled)"
       value={value}
-      onChange={setValue}
+      onChange={handleonChange}
       maxValue={today(getLocalTimeZone())}
       calendarWidth={calendarWidth}
       classNames={{
@@ -40,7 +47,7 @@ function WorkoutCalendar() {
         prevButton: classes.calendar_prev_button,
         nextButton: classes.calendar_next_button,
         content: classes.calendar_content,
-        gridBodyRow: classes.calendar_body_row
+        gridBodyRow: classes.calendar_body_row,
       }}
     />
   );

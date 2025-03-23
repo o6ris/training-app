@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
+import useUser from "./useUser";
+import { useSession } from "next-auth/react";
 
-export default function useStats(userId) {
+export default function useStats() {
+  const { data: userSession, status } = useSession();
+  const { userId } = useUser(userSession);
   const [stats, setStats] = useState([]);
+  const [statsByDate, setStatsByDate] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const getStats = async () => {
     try {
       setIsLoading(true);
@@ -50,6 +56,26 @@ export default function useStats(userId) {
       if (response) {
         const stat = await response.json();
         setLatestStats({ ...latestStats, [exerciseName]: stat });
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getStatsByDate = async (date) => {
+    const { year, month, day } = date;
+    const formatedDate = `${year}-${month}-${day}`
+    console.log("formatedDate", formatedDate)
+    try {
+      const url = `${baseUrl}/api/stats/statsByDate?user=${userId}&date=${formatedDate}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const stats = await response.json();
+        setStatsByDate(stats);
       }
     } catch (error) {
       throw error;
@@ -132,6 +158,8 @@ export default function useStats(userId) {
     workoutDateslist,
     latestStats,
     getStatById,
+    getStatsByDate,
+    statsByDate,
     range,
     setRange,
     startDate,
