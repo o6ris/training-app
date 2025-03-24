@@ -24,12 +24,29 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
+.day button:focus {
+  border: none;
+  outline: none;
+}
+
+
 .today {
-  background-color: rgba(2, 9, 28, 0.2);
-  border-radius: 50%;
   color: white;
+  position: relative;
+}
+
+.today::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2rem;
+  height: 2px;
+  background-color: var(--primary-light-color)
 }
 
 .chevron {

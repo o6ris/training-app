@@ -101,7 +101,7 @@ function WorkoutCalendar() {
             month_grid: classes.month_grid,
             day: classes.day,
             today: classes.today,
-            chevron: classes.chevron
+            chevron: classes.chevron,
           }}
           modifiersStyles={{
             highlighted: {
