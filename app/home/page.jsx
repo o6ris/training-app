@@ -43,13 +43,13 @@ export default async function Home() {
 
   return (
     <main className={classes.main_wrapper}>
+      <Header session={session} />
       {session ? (
         <>
           <WorkoutCalendar />
         </>
       ) : (
         <>
-          <Header session={session} />
           <Hero session={session} />
           <Benefits />
           <Chart session={session} />
