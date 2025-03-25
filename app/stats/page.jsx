@@ -7,12 +7,10 @@ import useUser from "@modules/client/requests/useUser";
 import useStats from "@modules/client/requests/useStats";
 import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
-import LineChart from "@core/ui/Chart/LineChart";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
-import PopupButton from "@core/ui/Button/PopupButton";
-import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
+import ChartStats from "@components/StatComponent/ChartStats";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -30,9 +28,6 @@ function Stats() {
     isLoading,
   } = useStats(userId);
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
-
-  const getMinutes = (seconds) => Math.floor(seconds / 60);
-  const getSeconds = (seconds) => seconds % 60;
 
   return (
     <div className={classes.data_container}>
@@ -128,20 +123,12 @@ function Stats() {
               >
                 <div className={classes.section_wrapper}>
                   <GlobalStats stat={latestStat} />
-                  <div className={classes.chart_wrapper}>
-                    <div>
-                      <h3>Volume (T)</h3>
-                      <p className={classes.chart_subtitle}>
-                        {formatDate(startDate, false)} -{" "}
-                        {formatDate(new Date(), false)}
-                      </p>
-                    </div>
-                    <LineChart
-                      stats={stats[exerciseName]}
-                      getStatById={getStatById}
-                      range={range}
-                    />
-                  </div>
+                  <ChartStats
+                    stats={stats[exerciseName]}
+                    getStatById={getStatById}
+                    range={range}
+                    startDate={startDate}
+                  />
                 </div>
               </AccordionItem>
             );

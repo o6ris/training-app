@@ -60,16 +60,3 @@
 .accordion_item {
   background-color: var(--secondary-color) !important;
 }
-
-/* CHART */
-
-.chart_wrapper {
-  background-color: var(--primary-color);
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-}
-
-.chart_subtitle {
-  font-size: var(--font-xs);
-  color: var(--primary-accent-color);
-}
