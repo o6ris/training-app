@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useUser from "@modules/client/requests/useUser";
 import { useSession } from "next-auth/react";
 import useStats from "@modules/client/requests/useStats";
@@ -35,6 +35,21 @@ function WorkoutCalendar() {
 
   console.log("workoutsDates", workoutsDates);
   console.log("stats", stats);
+
+  const totalVolume = useMemo(() => {
+    let volume = 0;
+    Object.values(stats).forEach(exerciseArray => {
+      exerciseArray.forEach(exercise => {
+        exercise.sets.forEach(set => {
+          volume += set.reps * set.weight;
+        });
+      });
+    });
+    return Math.floor(volume);
+  }, [stats]);
+  const formattedVolume = new Intl.NumberFormat("fr-FR").format(totalVolume);
+
+  console.log("Total Volume:", totalVolume);
 
   const month = new Date(selectedMonth)
     .toISOString()
@@ -108,80 +123,92 @@ function WorkoutCalendar() {
           </Accordion>
         }
       />
-      {isLoading || workoutsDates.length === 0 ? (
-        <div className={classes.skeleton_container}>
-          <div className={classes.skeleton_header}>
-            <Skeleton
-              style={{ marginBottom: "10px" }}
-              height={"25px"}
-              width={"100px"}
-              classDefault={false}
-              className={classes.skeleton}
-            />
-            <div className={classes.skeleton_chevron}>
+      <div className={classes.wrapper}>
+        <div className={classes.data_wrapper}>
+          <div className={classes.data}>
+            <p className={classes.data_value}>{workoutsDates?.length}</p>
+            <p className={classes.data_title}>Workouts</p>
+          </div>
+          <div className={classes.data}>
+            <p className={classes.data_value}>{formattedVolume}</p>
+            <p className={classes.data_title}>Total volume (kg)</p>
+          </div>
+        </div>
+        {isLoading || workoutsDates.length === 0 ? (
+          <div className={classes.skeleton_container}>
+            <div className={classes.skeleton_header}>
               <Skeleton
                 style={{ marginBottom: "10px" }}
                 height={"25px"}
-                width={"50px"}
+                width={"100px"}
                 classDefault={false}
                 className={classes.skeleton}
               />
-              <Skeleton
-                style={{ marginBottom: "10px" }}
-                height={"25px"}
-                width={"50px"}
-                classDefault={false}
-                className={classes.skeleton}
-              />
+              <div className={classes.skeleton_chevron}>
+                <Skeleton
+                  style={{ marginBottom: "10px" }}
+                  height={"25px"}
+                  width={"50px"}
+                  classDefault={false}
+                  className={classes.skeleton}
+                />
+                <Skeleton
+                  style={{ marginBottom: "10px" }}
+                  height={"25px"}
+                  width={"50px"}
+                  classDefault={false}
+                  className={classes.skeleton}
+                />
+              </div>
+            </div>
+            <div className={classes.skeleton_grid}>
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                (day, index) => (
+                  <span key={index} className={classes.skeleton_day}>
+                    {day}
+                  </span>
+                )
+              )}
+            </div>
+            <div style={{ height: "15rem" }} className={classes.skeleton_grid}>
+              {Array.from({ length: 25 }).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  height={"25px"}
+                  width={"25px"}
+                  classDefault={false}
+                  className={classes.skeleton}
+                />
+              ))}
             </div>
           </div>
-          <div className={classes.skeleton_grid}>
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-              (day, index) => (
-                <span key={index} className={classes.skeleton_day}>
-                  {day}
-                </span>
-              )
-            )}
+        ) : (
+          <div className={classes.calendar_container}>
+            <DayPicker
+              modifiers={modifiers}
+              classNames={{
+                months: classes.months,
+                month_grid: classes.month_grid,
+                day: classes.day,
+                today: classes.today,
+                chevron: classes.chevron,
+              }}
+              modifiersStyles={{
+                highlighted: {
+                  color: "#2694f9",
+                  fontWeight: "bolder",
+                },
+              }}
+              animate
+              mode="single"
+              month={selectedMonth}
+              onMonthChange={setSelectedMonth}
+              selected={selectedDay}
+              onSelect={dayOnChange}
+            />
           </div>
-          <div style={{ height: "15rem" }} className={classes.skeleton_grid}>
-            {Array.from({ length: 25 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                height={"25px"}
-                width={"25px"}
-                classDefault={false}
-                className={classes.skeleton}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className={classes.calendar_container}>
-          <DayPicker
-            modifiers={modifiers}
-            classNames={{
-              months: classes.months,
-              month_grid: classes.month_grid,
-              day: classes.day,
-              today: classes.today,
-              chevron: classes.chevron,
-            }}
-            modifiersStyles={{
-              highlighted: {
-                color: "#2694f9",
-                fontWeight: "bolder",
-              },
-            }}
-            animate
-            mode="single"
-            month={selectedMonth}
-            onMonthChange={setSelectedMonth}
-            selected={selectedDay}
-            onSelect={dayOnChange}
-          />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }
