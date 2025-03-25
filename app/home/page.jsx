@@ -6,6 +6,7 @@ import Hero from "@components/Home/Hero";
 import Benefits from "@components/Home/Benefits";
 import Chart from "@components/Home/Chart";
 import WorkoutCalendar from "@components/Home/Protected/WorkoutCalendar";
+import ButtonLink from "@core/ui/Button/ButtonLink";
 
 export const metadata = {
   title: "GrindPAL | Track your fitness progress",
@@ -45,9 +46,14 @@ export default async function Home() {
     <main className={classes.main_wrapper}>
       <Header session={session} />
       {session ? (
-        <>
+        <div className={classes.sub_wrapper}>
           <WorkoutCalendar />
-        </>
+          <ButtonLink
+            url="/workouts"
+            buttonContent={"Start Workout"}
+            buttonStyle={classes.cta}
+          />
+        </div>
       ) : (
         <>
           <Hero session={session} />
