@@ -41,10 +41,8 @@ export async function GET(request) {
         $lt: endOfMonthDate,
       },
     });
-    const statsByDate = stats.map((stat) => stat.date.toISOString().split("T")[0])
-    const uniqueStatsDate = [...new Set(statsByDate)];
 
-    return NextResponse.json(uniqueStatsDate, { status: 200 });
+    return NextResponse.json(stats, { status: 200 });
   } catch (err) {
     const { message, status } = err;
     return NextResponse.json({ message, status }, { status: status || 404 });

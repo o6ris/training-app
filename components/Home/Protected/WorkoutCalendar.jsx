@@ -19,7 +19,17 @@ function WorkoutCalendar() {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
-  const { getStatsByDate, statsByDate, workoutsDates, getWorkoutsDateByMonth  } = useStats(userId);
+  const {
+    getStatsByDate,
+    statsByDate,
+    statsByMonth,
+    workoutsDates,
+    getStatsByMonth,
+    isLoading,
+  } = useStats(userId);
+
+  console.log("workoutsDates", workoutsDates);
+  console.log("statsByMonth", statsByMonth);
 
 
   const month = new Date(selectedMonth)
@@ -33,10 +43,10 @@ function WorkoutCalendar() {
   };
 
   useEffect(() => {
-    if (userId) getWorkoutsDateByMonth(month);
+    if (userId) getStatsByMonth(month);
   }, [userId, month]);
 
-  const formattedWorkoutsDates = workoutsDates.map(dateStr => {
+  const formattedWorkoutsDates = workoutsDates.map((dateStr) => {
     const [year, month, day] = dateStr.split("-").map(Number);
     return new Date(year, month - 1, day); // Subtract 1 from month
   });
@@ -45,7 +55,7 @@ function WorkoutCalendar() {
     highlighted: (day) =>
       formattedWorkoutsDates.some((highlightedDate) =>
         isSameDay(highlightedDate, day)
-      )
+      ),
   };
 
   useEffect(() => {
@@ -107,7 +117,7 @@ function WorkoutCalendar() {
             highlighted: {
               color: "#2694f9",
               fontWeight: "bolder",
-            }
+            },
           }}
           animate
           mode="single"

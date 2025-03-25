@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
+  const [statsByMonth, setStatsByMonth] = useState([]);
   const [workoutsDates, setWorkoutsDates] = useState([]);
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState();
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
@@ -60,7 +61,7 @@ export default function useStats(userId) {
   };
 
   const getStatsByDate = async (date) => {
-    const formatedDate = new Date(date).toISOString().split("T")[0]
+    const formatedDate = new Date(date).toISOString().split("T")[0];
 
     try {
       const url = `${baseUrl}/api/stats/statsByDate?user=${userId}&date=${formatedDate}`;
@@ -78,22 +79,36 @@ export default function useStats(userId) {
     }
   };
 
-  const getWorkoutsDateByMonth = async (month) => {
-    console.log("month", month)
-
+  const getStatsByMonth = async (month) => {
     try {
+      setIsLoading(true)
       const url = `${baseUrl}/api/stats/statsByMonth?user=${userId}&month=${month}`;
       const response = await fetch(
         url,
         { method: "GET" },
         { next: { revalidate: 10 } }
       );
-      if (response) {
-        const workoutDates = await response.json();
-        setWorkoutsDates(workoutDates);
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const stats = await response.json();
+
+      if (!stats || stats.length === 0) {
+        console.error("No stats found");
+        return;
       }
+
+      const statsByDate = stats.map(
+        (stat) => new Date(stat.date).toISOString().split("T")[0]
+      );
+      const uniqueStatsDate = [...new Set(statsByDate)];
+
+      setStatsByMonth(stats);
+      setWorkoutsDates(uniqueStatsDate);
     } catch (error) {
-      throw error;
+      console.error("Error fetching stats:", error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -175,7 +190,8 @@ export default function useStats(userId) {
     getStatById,
     getStatsByDate,
     statsByDate,
-    getWorkoutsDateByMonth,
+    statsByMonth,
+    getStatsByMonth,
     workoutsDates,
     range,
     setRange,
