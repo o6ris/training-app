@@ -15,9 +15,8 @@ import { DayPicker } from "react-day-picker";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import "react-day-picker/style.css";
 
-function WorkoutCalendar() {
-  const { data: userSession } = useSession();
-  const { userId } = useUser(userSession);
+function WorkoutCalendar({session}) {
+  const { userId } = useUser(session);
   const [selectedDay, setSelectedDay] = useState();
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
@@ -28,13 +27,9 @@ function WorkoutCalendar() {
     workoutsDates,
     getStatsByMonth,
     getStatById,
-    startDate,
     firstDateOfMonth,
     isLoading,
   } = useStats(userId);
-
-  console.log("workoutsDates", workoutsDates);
-  console.log("stats", stats);
 
   const totalVolume = useMemo(() => {
     let volume = 0;
@@ -48,8 +43,6 @@ function WorkoutCalendar() {
     return Math.floor(volume);
   }, [stats]);
   const formattedVolume = new Intl.NumberFormat("fr-FR").format(totalVolume);
-
-  console.log("Total Volume:", totalVolume);
 
   const month = new Date(selectedMonth)
     .toISOString()

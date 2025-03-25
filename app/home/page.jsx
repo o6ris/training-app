@@ -47,7 +47,7 @@ export default async function Home() {
       <Header session={session} />
       {session ? (
         <div className={classes.sub_wrapper}>
-          <WorkoutCalendar />
+          <WorkoutCalendar session={session} />
           <ButtonLink
             url="/workouts"
             buttonContent={"Start Workout"}
