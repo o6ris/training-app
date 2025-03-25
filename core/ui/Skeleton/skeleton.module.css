@@ -2,9 +2,9 @@
   border-radius: 50px;
   background: linear-gradient(
     to right,
-    var(--primary-color) 25%,
+    var(--secondary-color) 25%,
     #1a2b5a 50%,
-    var(--primary-color) 80%
+    var(--secondary-color) 80%
   );
   background-size: 200% 100%; /* Gradient covers double the width */
   animation: pulse 5s linear infinite; 

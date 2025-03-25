@@ -12,6 +12,7 @@ import GlobalStats from "@components/StatComponent/GlobalStats";
 import ChartStats from "@components/StatComponent/ChartStats";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { DayPicker } from "react-day-picker";
+import Skeleton from "@core/ui/Skeleton/Skeleton";
 import "react-day-picker/style.css";
 
 function WorkoutCalendar() {
@@ -107,30 +108,80 @@ function WorkoutCalendar() {
           </Accordion>
         }
       />
-      <div className={classes.calendar_container}>
-        <DayPicker
-          modifiers={modifiers}
-          classNames={{
-            months: classes.months,
-            month_grid: classes.month_grid,
-            day: classes.day,
-            today: classes.today,
-            chevron: classes.chevron,
-          }}
-          modifiersStyles={{
-            highlighted: {
-              color: "#2694f9",
-              fontWeight: "bolder",
-            },
-          }}
-          animate
-          mode="single"
-          month={selectedMonth}
-          onMonthChange={setSelectedMonth}
-          selected={selectedDay}
-          onSelect={dayOnChange}
-        />
-      </div>
+      {isLoading || workoutsDates.length === 0 ? (
+        <div className={classes.skeleton_container}>
+          <div className={classes.skeleton_header}>
+            <Skeleton
+              style={{ marginBottom: "10px" }}
+              height={"25px"}
+              width={"100px"}
+              classDefault={false}
+              className={classes.skeleton}
+            />
+            <div className={classes.skeleton_chevron}>
+              <Skeleton
+                style={{ marginBottom: "10px" }}
+                height={"25px"}
+                width={"50px"}
+                classDefault={false}
+                className={classes.skeleton}
+              />
+              <Skeleton
+                style={{ marginBottom: "10px" }}
+                height={"25px"}
+                width={"50px"}
+                classDefault={false}
+                className={classes.skeleton}
+              />
+            </div>
+          </div>
+          <div className={classes.skeleton_grid}>
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+              (day, index) => (
+                <span key={index} className={classes.skeleton_day}>
+                  {day}
+                </span>
+              )
+            )}
+          </div>
+          <div style={{ height: "15rem" }} className={classes.skeleton_grid}>
+            {Array.from({ length: 25 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                height={"25px"}
+                width={"25px"}
+                classDefault={false}
+                className={classes.skeleton}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className={classes.calendar_container}>
+          <DayPicker
+            modifiers={modifiers}
+            classNames={{
+              months: classes.months,
+              month_grid: classes.month_grid,
+              day: classes.day,
+              today: classes.today,
+              chevron: classes.chevron,
+            }}
+            modifiersStyles={{
+              highlighted: {
+                color: "#2694f9",
+                fontWeight: "bolder",
+              },
+            }}
+            animate
+            mode="single"
+            month={selectedMonth}
+            onMonthChange={setSelectedMonth}
+            selected={selectedDay}
+            onSelect={dayOnChange}
+          />
+        </div>
+      )}
     </>
   );
 }

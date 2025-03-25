@@ -132,7 +132,7 @@ export default function useStats(userId) {
   };
 
   const firstDateOfMonth = (date = new Date()) =>
-    new Date(date.getFullYear(), date.getMonth(), 1);
+    new Date(date?.getFullYear(), date?.getMonth(), 1);
 
   useEffect(() => {
     renderStartDate();
