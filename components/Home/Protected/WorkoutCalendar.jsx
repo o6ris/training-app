@@ -134,7 +134,7 @@ function WorkoutCalendar() {
             <p className={classes.data_title}>Total volume (kg)</p>
           </div>
         </div>
-        {isLoading || workoutsDates.length === 0 ? (
+        {isLoading ? (
           <div className={classes.skeleton_container}>
             <div className={classes.skeleton_header}>
               <Skeleton

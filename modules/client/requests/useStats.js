@@ -4,7 +4,7 @@ export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
   const [workoutsDates, setWorkoutsDates] = useState([]);
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
@@ -92,7 +92,7 @@ export default function useStats(userId) {
 
       const stats = await response.json();
 
-      if (!stats || stats.length === 0) {
+      if (!stats) {
         console.error("No stats found");
         return;
       }
