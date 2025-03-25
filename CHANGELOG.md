@@ -1,29 +1,37 @@
-# Changelog
+# Changelog  
 
-## [0.4.6] - 2025-03-19  
+## [0.5.6] - 2025-03-25  
 
 ### 🚀 Features  
 
-- **Progressive Web App (PWA)**:  
-  - Transformed the web app into a PWA for better offline support and improved user experience.  
-  - Updated icons to support PWA requirements.  
+- **Workout Calendar**:  
+  - Created a new `WorkoutCalendar` component for visualizing workout data by date.  
+  - Integrated DayPicker library for a better calendar experience.  
+  - Displayed workout stats on the calendar and added a button to navigate to all stats.  
+  - Implemented month-based workout stats and visualized them on a graph.  
+  - Added a skeleton loader for calendar data.  
 
-- **Workout Timer**:  
-  - Implemented a global timer per exercise to enhance workout tracking.  
+- **Stats API**:  
+  - Created `statsByDate` and `statsByMonth` routes to fetch workout data based on the selected date or month.  
+  - Fetch stats by date and store them in the front-end state.  
+  - Implemented logic to check if the user exists before fetching stats.  
 
 ### 🎨 UI Improvements  
 
-- **Standalone View Adaptation**:  
-  - Adjusted styles to optimize the experience for PWA standalone mode.  
-  - Modified session input colors for better readability.  
-  - Improved session page layout by displaying labels only on the first index of reps & weights.  
+- **Workout Calendar Styling**:  
+  - Adapted calendar width and styling for better responsiveness.  
+  - Styled the "today" button on the calendar for better user visibility.  
 
 ### 🔄 Refactor  
 
-- **Image Optimization**:  
-  - Replaced standard `<img>` elements with Next.js `<Image>` for better performance.  
+- **Global Stats Component**:  
+  - Refactored global stats to use the `GlobalStats` component for better maintainability.  
+  - Created a `ChartStats` component to display stats in a graph format. 
+
+- **Stats Transformation**:  
+  - Refactored stats fetching logic to combine all stats by month and transform them into unique dates.  
 
 ### 🛠 Fixes  
 
-- **Workout Navigation**:  
-  - After updating a workout, the app now correctly navigates to saved workouts. 
+- **Loading State**:  
+  - Fixed the loading state in the `WorkoutCalendar` by setting `isLoading` to `true` on render and `false` after data fetch.  
