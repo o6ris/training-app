@@ -9,28 +9,30 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
+import ChartStats from "@components/StatComponent/ChartStats";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
 function WorkoutCalendar() {
-  const { data: userSession, status } = useSession();
+  const { data: userSession } = useSession();
   const { userId } = useUser(userSession);
   const [selectedDay, setSelectedDay] = useState();
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-  const [calendarWidth, setCalendarWidth] = useState(getInitialWidth());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const {
     getStatsByDate,
     statsByDate,
-    statsByMonth,
+    stats,
     workoutsDates,
     getStatsByMonth,
+    getStatById,
+    startDate,
+    firstDateOfMonth,
     isLoading,
   } = useStats(userId);
 
   console.log("workoutsDates", workoutsDates);
-  console.log("statsByMonth", statsByMonth);
-
+  console.log("stats", stats);
 
   const month = new Date(selectedMonth)
     .toISOString()
@@ -62,19 +64,6 @@ function WorkoutCalendar() {
     if (statsByDate.length > 0) setIsAutoOpen(true);
   }, [statsByDate]);
 
-  function getInitialWidth() {
-    return window.innerWidth < 512 ? "100" : "400px";
-  }
-
-  useEffect(() => {
-    function handleResize() {
-      setCalendarWidth(window.innerWidth < 600 ? "100" : "400px");
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <>
       <PopupButton
@@ -97,6 +86,13 @@ function WorkoutCalendar() {
                     classNames={{ base: classes.accordion_item }}
                   >
                     <GlobalStats stat={stat} />
+                    <ChartStats
+                      stats={stats[stat.exercise.name]}
+                      getStatById={getStatById}
+                      range={"month"}
+                      startDate={firstDateOfMonth(selectedDay)}
+                      customStartDate={firstDateOfMonth(selectedDay)}
+                    />
                   </AccordionItem>
                 );
               })}

@@ -40,7 +40,18 @@ export async function GET(request) {
         $gte: startOfMonthDate,
         $lt: endOfMonthDate,
       },
-    });
+    }).populate([
+      {
+        path: "exercise",
+        model: Exercise,
+        select: "name",
+      },
+      {
+        path: "user",
+        model: User,
+        select: "name",
+      },
+    ]);
 
     return NextResponse.json(stats, { status: 200 });
   } catch (err) {

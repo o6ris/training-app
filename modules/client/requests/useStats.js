@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
-  const [statsByMonth, setStatsByMonth] = useState([]);
   const [workoutsDates, setWorkoutsDates] = useState([]);
   const [isLoading, setIsLoading] = useState();
   const [latestStats, setLatestStats] = useState({});
@@ -103,7 +102,7 @@ export default function useStats(userId) {
       );
       const uniqueStatsDate = [...new Set(statsByDate)];
 
-      setStatsByMonth(stats);
+      setStats(stats);
       setWorkoutsDates(uniqueStatsDate);
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -132,6 +131,9 @@ export default function useStats(userId) {
     }
   };
 
+  const firstDateOfMonth = (date = new Date()) =>
+    new Date(date.getFullYear(), date.getMonth(), 1);
+
   useEffect(() => {
     renderStartDate();
   }, [range]);
@@ -142,6 +144,7 @@ export default function useStats(userId) {
     }
   }, [userId, range]);
 
+  // TODO: optimize with spread operator
   const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
     const workoutDate = entry.date;
     acc.add(workoutDate);
@@ -190,9 +193,9 @@ export default function useStats(userId) {
     getStatById,
     getStatsByDate,
     statsByDate,
-    statsByMonth,
     getStatsByMonth,
     workoutsDates,
+    firstDateOfMonth,
     range,
     setRange,
     startDate,
