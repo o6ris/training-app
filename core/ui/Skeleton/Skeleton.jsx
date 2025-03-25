@@ -1,11 +1,11 @@
 import React from "react";
 import classes from "./skeleton.module.css";
 
-function Skeleton({ width, height, className }) {
+function Skeleton({ width, height, className, style, classDefault = true }) {
   return (
     <div
-      style={{ width: width, height: height }}
-      className={`${classes.skeleton} ${className}`}
+      style={{ width: width, height: height, ...style }}
+      className={`${classDefault && classes.skeleton} ${className}`}
     />
   );
 }

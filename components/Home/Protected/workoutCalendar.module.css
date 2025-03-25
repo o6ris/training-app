@@ -1,0 +1,132 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.data_wrapper {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 0.5rem;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  background-color: var(--secondary-color);
+  width: 100%;
+  min-height: fit-content;
+}
+
+.data_value {
+  font-size: var(--font-3xl);
+  font-weight: var(--font-black);
+}
+
+.data_title {
+  font-size: var(--font-r);
+  font-weight: var(--font-black);
+}
+
+.accordion {
+  padding: 0 !important;
+}
+
+.accordion_item {
+  background-color: var(--secondary-color) !important;
+}
+
+.stats_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.see_stats_button {
+  background-color: var(--primary-accent-color);
+}
+
+/* CALENDAR */
+
+.skeleton_container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeleton_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton_chevron {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.skeleton_day {
+  font-size: var(--font-s);
+}
+
+.skeleton_grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.skeleton {
+  background-color: var(--primary-color);
+  border-radius: 50px;
+}
+
+.calendar_container, .skeleton_container {
+  background-color: var(--secondary-color); 
+  width: 100%;
+  padding: 1rem; 
+  border-radius: 15px;
+}
+
+.months, .month_grid {
+  width: 100%;
+}
+
+.day button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.day button:focus {
+  border: none;
+  outline: none;
+}
+
+
+.today {
+  color: white;
+  position: relative;
+}
+
+.today::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2rem;
+  height: 2px;
+  background-color: var(--primary-light-color)
+}
+
+.chevron {
+  fill: var(--primary-light-color);
+}

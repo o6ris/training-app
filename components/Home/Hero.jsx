@@ -34,7 +34,7 @@ function Hero({ session }) {
         <ButtonLink
           animated={true}
           url={session === null ? "/login" : "/workouts"}
-          buttonContent={"Get Started"}
+          buttonContent={"Start Workout"}
           buttonStyle={classes.cta}
         />
       </article>
