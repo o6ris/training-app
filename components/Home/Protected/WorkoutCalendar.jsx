@@ -10,6 +10,7 @@ import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 import ChartStats from "@components/StatComponent/ChartStats";
+import ButtonLink from "@core/ui/Button/ButtonLink";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
@@ -85,14 +86,21 @@ function WorkoutCalendar() {
                     title={<h3>{stat.exercise.name.toUpperCase()}</h3>}
                     classNames={{ base: classes.accordion_item }}
                   >
-                    <GlobalStats stat={stat} />
-                    <ChartStats
-                      stats={stats[stat.exercise.name]}
-                      getStatById={getStatById}
-                      range={"month"}
-                      startDate={firstDateOfMonth(selectedDay)}
-                      customStartDate={firstDateOfMonth(selectedDay)}
-                    />
+                    <div className={classes.stats_wrapper}>
+                      <GlobalStats stat={stat} />
+                      <ChartStats
+                        stats={stats[stat.exercise.name]}
+                        getStatById={getStatById}
+                        range={"month"}
+                        startDate={firstDateOfMonth(selectedDay)}
+                        customStartDate={firstDateOfMonth(selectedDay)}
+                      />
+                      <ButtonLink
+                        url={`/stats?id=${stat.exercise._id}`}
+                        buttonContent="See all stats"
+                        buttonStyle={classes.see_stats_button}
+                      />
+                    </div>
                   </AccordionItem>
                 );
               })}

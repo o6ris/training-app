@@ -6,6 +6,17 @@
   background-color: var(--secondary-color) !important;
 }
 
+.stats_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.see_stats_button {
+  background-color: var(--primary-accent-color);
+}
+
 /* CALENDAR */
 
 .calendar_container {
