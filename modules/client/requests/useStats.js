@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 
 export default function useStats(userId) {
   const [stats, setStats] = useState([]);
-  const [isLoading, setIsLoading] = useState([]);
+  const [statsByDate, setStatsByDate] = useState([]);
+  const [workoutsDates, setWorkoutsDates] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [latestStats, setLatestStats] = useState({});
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const getStats = async () => {
     try {
       setIsLoading(true);
@@ -56,6 +59,58 @@ export default function useStats(userId) {
     }
   };
 
+  const getStatsByDate = async (date) => {
+    const formatedDate = new Date(date).toISOString().split("T")[0];
+
+    try {
+      const url = `${baseUrl}/api/stats/statsByDate?user=${userId}&date=${formatedDate}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+      if (response) {
+        const stats = await response.json();
+        setStatsByDate(stats);
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getStatsByMonth = async (month) => {
+    try {
+      setIsLoading(true)
+      const url = `${baseUrl}/api/stats/statsByMonth?user=${userId}&month=${month}`;
+      const response = await fetch(
+        url,
+        { method: "GET" },
+        { next: { revalidate: 10 } }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const stats = await response.json();
+
+      if (!stats) {
+        console.error("No stats found");
+        return;
+      }
+
+      const statsByDate = stats.map(
+        (stat) => new Date(stat.date).toISOString().split("T")[0]
+      );
+      const uniqueStatsDate = [...new Set(statsByDate)];
+
+      setStats(stats);
+      setWorkoutsDates(uniqueStatsDate);
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
   const renderStartDate = () => {
     const now = new Date();
     switch (range) {
@@ -76,6 +131,9 @@ export default function useStats(userId) {
     }
   };
 
+  const firstDateOfMonth = (date = new Date()) =>
+    new Date(date?.getFullYear(), date?.getMonth(), 1);
+
   useEffect(() => {
     renderStartDate();
   }, [range]);
@@ -86,6 +144,7 @@ export default function useStats(userId) {
     }
   }, [userId, range]);
 
+  // TODO: optimize with spread operator
   const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
     const workoutDate = entry.date;
     acc.add(workoutDate);
@@ -132,6 +191,11 @@ export default function useStats(userId) {
     workoutDateslist,
     latestStats,
     getStatById,
+    getStatsByDate,
+    statsByDate,
+    getStatsByMonth,
+    workoutsDates,
+    firstDateOfMonth,
     range,
     setRange,
     startDate,

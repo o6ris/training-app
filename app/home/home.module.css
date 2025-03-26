@@ -4,3 +4,19 @@
   /* gap: 2rem; */
 }
 
+.sub_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cta {
+  background-color: var(--primary-accent-color);
+  width: fit-content !important;
+  padding: 0 1rem !important;
+  box-shadow: 5px 5px 15px #02091c;
+  align-self: center;
+  width: 100% !important;
+}
+
