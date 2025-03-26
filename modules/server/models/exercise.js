@@ -40,6 +40,9 @@ const exerciseSchema = new Schema({
   },
   image: {
     type: String,
+  },
+  tiny_image: {
+    type: String,
   }
 });
 

@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./session.module.css";
 import WorkoutContext from "@modules/client/contexts/workoutProvider";
-import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import { Accordion, AccordionItem, Image } from "@heroui/react";
 import NextImage from "next/image";
 import useTimer from "@modules/client/utils/useTimer";
 import InputField from "@core/ui/Fields/InputField/InputField";
@@ -39,8 +39,6 @@ function Session() {
   const { startTimer, getFormattedTime, timers, resetTimers } =
     useTimer(session);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
   const router = useRouter();
 
@@ -99,11 +97,14 @@ function Session() {
                           <PopupButton
                             isIconOnly={true}
                             startContent={
-                              <Avatar
-                                showFallback
-                                className="w-24 h-24"
-                                name={findExercise?.name}
-                                src={`${imageUrl}${findExercise?.image}`}
+                              <Image
+                                as={NextImage}
+                                src={findExercise?.tiny_image}
+                                alt={findExercise?.name}
+                                height={40}
+                                width={40}
+                                unoptimized={true}
+                                loading="lazy"
                               />
                             }
                             buttonStyle={classes.image_button}
