@@ -14,9 +14,8 @@ function ExerciseList({
   deleteWorkoutExercise,
   oneWorkout,
 }) {
-  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  
   const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
-
   const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
   return (
@@ -28,10 +27,14 @@ function ExerciseList({
               buttonStyle={classes.select_button}
               triggerButtonContent={
                 <>
-                  <Avatar
-                    showFallback
-                    name={exercise.name}
-                    src={`${imageUrl}${exercise?.image}`}
+                  <Image
+                    as={NextImage}
+                    src={exercise?.tiny_image}
+                    alt={exercise?.name}
+                    height={30}
+                    width={30}
+                    unoptimized={true}
+                    loading="lazy"
                   />
                   <p>{exercise.name}</p>
                 </>
@@ -53,6 +56,7 @@ function ExerciseList({
                     alt={exercise?.name}
                     height={300}
                     width={300}
+                    loading="lazy"
                   />
                   <div>
                     <h3>Steps:</h3>
