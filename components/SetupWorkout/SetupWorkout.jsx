@@ -80,6 +80,7 @@ function SetupWorkout({
                             ? () => deleteWorkoutExercise(exercise._id)
                             : () => removeExercise(exercise)
                         }
+                        confirmButton="Remove"
                       />
                     </div>
                   }

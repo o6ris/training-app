@@ -2,7 +2,7 @@ import classes from "./deleteButton.module.css"
 import PopupButton from "@core/ui/Button/PopupButton";
 import Icon from "@core/ui/Icons/Icon";
 
-function DeleteButton({ content, onConfirm }) {
+function DeleteButton({ content, onConfirm, confirmButton = "Delete" }) {
   return (
     <PopupButton
       isIconOnly={true}
@@ -12,7 +12,7 @@ function DeleteButton({ content, onConfirm }) {
       }
       content={content}
       onConfirm={onConfirm}
-      confirmButton="Delete"
+      confirmButton={confirmButton}
       confirmButtonStyle={classes.remove_button}
     />
   );

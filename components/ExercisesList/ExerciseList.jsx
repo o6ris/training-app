@@ -79,8 +79,9 @@ function ExerciseList({
                 onConfirm={
                   workoutId
                     ? () => deleteWorkoutExercise(exercise._id)
-                    : () => removeExercise(exercise._id)
+                    : () => removeExercise(exercise)
                 }
+                confirmButton="Remove"
               />
             )}
           </div>
