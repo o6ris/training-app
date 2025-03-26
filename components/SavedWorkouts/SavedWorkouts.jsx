@@ -6,7 +6,8 @@ import classes from "./savedWorkouts.module.css";
 import WorkoutContext from "@modules/client/contexts/workoutProvider";
 import useExercises from "@modules/client/requests/useExercises";
 import useWorkoutSession from "@modules/client/requests/useWorkoutSession";
-import { Accordion, AccordionItem, Avatar } from "@heroui/react";
+import { Accordion, AccordionItem, Image } from "@heroui/react";
+import NextImage from "next/image";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import BasicButton from "@core/ui/Button/BasicButton";
@@ -21,8 +22,7 @@ function SavedWorkouts() {
   const { latestExercises, setLatestExercises, setsetSelectedExercises } =
     useExercises();
   const { workouts, deleteWorkoutSession } = useWorkoutSession();
-  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`
+
 
   const router = useRouter();
 
@@ -102,12 +102,15 @@ function SavedWorkouts() {
                   className={classes.exercise_desc_content}
                 >
                   <div className={classes.exercise_title}>
-                    <Avatar
-                      showFallback
-                      className="w-12 h-12"
-                      name={exercise?.name}
-                      src={`${imageUrl}${exercise?.image}`}
-                    />
+                  <Image
+                    as={NextImage}
+                    src={exercise?.tiny_image}
+                    alt={exercise?.name}
+                    height={50}
+                    width={50}
+                    unoptimized={true}
+                    loading="lazy"
+                  />
                     <h2>{exercise.name}</h2>
                   </div>
                   {/* TODO: Rework this for better ui */}

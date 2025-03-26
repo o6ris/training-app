@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import classes from "./setupWorkout.module.css";
 import { useSession } from "next-auth/react";
-import { Accordion, AccordionItem, Avatar, Image } from "@heroui/react";
+import { Accordion, AccordionItem, Image } from "@heroui/react";
 import NextImage from "next/image";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
@@ -25,7 +25,6 @@ function SetupWorkout({
   const { data: session } = useSession();
   const [workoutName, setWorkoutName] = useState("");
 
-  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
   const router = useRouter();
   const exerciseIds = workoutId
@@ -61,11 +60,14 @@ function SetupWorkout({
                   key={i + 1}
                   aria-label={exercise.name}
                   startContent={
-                    <Avatar
-                      isBordered
-                      showFallback
-                      name={exercise.name}
-                      src={`${imageUrl}${exercise?.image}`}
+                    <Image
+                      as={NextImage}
+                      src={exercise?.tiny_image}
+                      alt={exercise?.name}
+                      height={40}
+                      width={40}
+                      unoptimized={true}
+                      loading="lazy"
                     />
                   }
                   title={

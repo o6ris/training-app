@@ -1,5 +1,5 @@
 import classes from "./exercisesList.module.css";
-import { Avatar, Image } from "@heroui/react";
+import { Image } from "@heroui/react";
 import NextImage from "next/image";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
@@ -31,8 +31,8 @@ function ExerciseList({
                     as={NextImage}
                     src={exercise?.tiny_image}
                     alt={exercise?.name}
-                    height={30}
-                    width={30}
+                    height={40}
+                    width={40}
                     unoptimized={true}
                     loading="lazy"
                   />
