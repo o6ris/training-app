@@ -1,5 +1,5 @@
 import classes from "./exercisesList.module.css";
-import { Avatar, Image } from "@heroui/react";
+import { Image } from "@heroui/react";
 import NextImage from "next/image";
 import DeleteButton from "@components/DeleteButton/DeleteButton";
 import PopupButton from "@core/ui/Button/PopupButton";
@@ -14,9 +14,8 @@ function ExerciseList({
   deleteWorkoutExercise,
   oneWorkout,
 }) {
-  const cloudinaryUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
+  
   const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}`;
-
   const exerciseIds = exercisesToDisplay.map((exercise) => exercise._id);
 
   return (
@@ -28,10 +27,14 @@ function ExerciseList({
               buttonStyle={classes.select_button}
               triggerButtonContent={
                 <>
-                  <Avatar
-                    showFallback
-                    name={exercise.name}
-                    src={`${imageUrl}${exercise?.image}`}
+                  <Image
+                    as={NextImage}
+                    src={exercise?.tiny_image}
+                    alt={exercise?.name}
+                    height={40}
+                    width={40}
+                    unoptimized={true}
+                    loading="lazy"
                   />
                   <p>{exercise.name}</p>
                 </>
@@ -53,6 +56,7 @@ function ExerciseList({
                     alt={exercise?.name}
                     height={300}
                     width={300}
+                    loading="lazy"
                   />
                   <div>
                     <h3>Steps:</h3>
@@ -75,8 +79,9 @@ function ExerciseList({
                 onConfirm={
                   workoutId
                     ? () => deleteWorkoutExercise(exercise._id)
-                    : () => removeExercise(exercise._id)
+                    : () => removeExercise(exercise)
                 }
+                confirmButton="Remove"
               />
             )}
           </div>

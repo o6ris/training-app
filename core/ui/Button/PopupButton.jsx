@@ -44,7 +44,7 @@ export default function PopupButton({
 
   return (
     <>
-      {triggerButtonContent && (
+      {(triggerButtonContent || isIconOnly) && (
         <Button
           className={buttonStyle}
           onPress={() => {
