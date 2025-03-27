@@ -1,18 +1,18 @@
 // app/blog/[slug]/page.tsx
 
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import {remark} from 'remark';
-import html from 'remark-html';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { remark } from "remark";
+import html from "remark-html";
 import Image from "next/image";
-import classes from "../blog.module.css"
+import classes from "../blog.module.css";
 
-const blogDirectory = path.join(process.cwd(), 'content/posts');
+const blogDirectory = path.join(process.cwd(), "content/posts");
 
 async function getPostData(slug) {
   const fullPath = path.join(blogDirectory, `${slug}.md`);
-  const fileContent = fs.readFileSync(fullPath, 'utf-8');
+  const fileContent = fs.readFileSync(fullPath, "utf-8");
   const { data, content } = matter(fileContent);
 
   const processedContent = await remark().use(html).process(content);
@@ -24,7 +24,7 @@ async function getPostData(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = params;
   const post = await getPostData(slug);
-  
+
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return {
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: post.title,
       description: post.summary,
-      type: 'article',
+      type: "article",
       url: `${baseUrl}/blog/${slug}`,
       authors: [baseUrl],
       images: [
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
           width: 1024,
           height: 576,
           alt: post.title,
-          type: 'https://imgur.com/a/urIk06L',
+          type: post.image,
         },
       ],
     },
@@ -56,14 +56,17 @@ export default async function BlogPost({ params }) {
 
   return (
     <div className={classes.article_wrapper}>
-      <Image 
-      src="https://i.imgur.com/5is2QRA.jpeg" 
-      alt="How important are rest days" 
-      width={800} 
-      height={600} 
-      priority
-    />
-      <div className="markdown_content" dangerouslySetInnerHTML={{ __html: post.content }} />
+      <Image
+        src={post.image}
+        alt="How important are rest days"
+        width={800}
+        height={600}
+        priority
+      />
+      <div
+        className="markdown_content"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 }

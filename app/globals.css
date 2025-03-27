@@ -77,3 +77,12 @@ body > div {
 	margin-bottom: 1rem;
 }
 
+.markdown_content ul {
+	list-style-type: disc;
+	padding-left: 20px;
+}
+
+.markdown_content ol {
+	list-style-type: decimal;
+	padding-left: 20px;
+}

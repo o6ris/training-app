@@ -3,7 +3,7 @@ title: "How important are rest days?"
 summary: "Understanding the role of rest and recovery in a fitness regimen is a common question."
 tags: ["fitness", "rest days", "recovery", "health"]
 date: "2025-03-26"
-image: "https://imgur.com/a/urIk06L"
+image: "https://i.imgur.com/5is2QRA.jpeg"
 ---
 
 # How important are rest days?
