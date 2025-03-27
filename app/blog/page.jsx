@@ -33,7 +33,6 @@ export default async function BlogIndex() {
   return (
     <div className={classes.blog_wrapper}>
       <div className={classes.blog_header}>
-        <h1>Blog</h1>
         <p>
           Welcome to the GrindPal Blog! Here, we dive into expert fitness tips,
           effective workout strategies, and the science behind muscle growth.
