@@ -5,6 +5,8 @@ import path from 'path';
 import matter from 'gray-matter';
 import {remark} from 'remark';
 import html from 'remark-html';
+import Image from "next/image";
+import classes from "../blog.module.css"
 
 const blogDirectory = path.join(process.cwd(), 'content/posts');
 
@@ -41,7 +43,7 @@ export async function generateMetadata({ params }) {
           width: 1024,
           height: 576,
           alt: post.title,
-          type: 'image/png',
+          type: 'https://imgur.com/a/urIk06L',
         },
       ],
     },
@@ -53,7 +55,14 @@ export default async function BlogPost({ params }) {
   const post = await getPostData(slug);
 
   return (
-    <div>
+    <div className={classes.article_wrapper}>
+      <Image 
+      src="https://i.imgur.com/5is2QRA.jpeg" 
+      alt="How important are rest days" 
+      width={800} 
+      height={600} 
+      priority
+    />
       <div className="markdown_content" dangerouslySetInnerHTML={{ __html: post.content }} />
     </div>
   );
