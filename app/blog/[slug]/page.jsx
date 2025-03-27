@@ -58,7 +58,7 @@ export default async function BlogPost({ params }) {
     <div className={classes.article_wrapper}>
       <Image
         src={post.image}
-        alt="How important are rest days"
+        alt={post.title}
         width={800}
         height={600}
         priority

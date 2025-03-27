@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import classes from "./blogSection.module.css";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Icon from "@core/ui/Icons/Icon";
+import Image from "next/image";
 
 function BlogSection({ posts }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
@@ -35,26 +36,43 @@ function BlogSection({ posts }) {
   }, [emblaApi, onSelect]);
 
   return (
-    <div>
+    <div className={classes.carrousel_wrapper}>
+      <h2>Blog section</h2>
       <div className={classes.embla} ref={emblaRef}>
         <div className={classes.embla__container}>
-          <div className={classes.embla__slide}>Slide 1</div>
-          <div className={classes.embla__slide}>Slide 2</div>
-          <div className={classes.embla__slide}>Slide 3</div>
+          {posts.map((post, i) => {
+            return (
+              <div className={classes.embla__slide} key={i}>
+                <div className={classes.image_container}>
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    width={800}
+                    height={600}
+                    priority
+                    className={classes.carrousel_image}
+                  />
+                </div>
+                <h3>{post.title}</h3>
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="embla__buttons">
+      <div className={classes.buttons}>
         <BasicButton
           isIconOnly={true}
           startContent={<Icon name="ChevronLeft" />}
           isDisabled={prevBtnDisabled}
           onAction={onPrevButtonClick}
+          buttonStyle={classes.button}
         />
         <BasicButton
           isIconOnly={true}
           startContent={<Icon name="ChevronRight" />}
           isDisabled={nextBtnDisabled}
           onAction={onNextButtonClick}
+          buttonStyle={classes.button}
         />
       </div>
     </div>
