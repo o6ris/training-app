@@ -1,12 +1,13 @@
 // app/blog/[slug]/page.tsx
 
+import classes from "../blog.module.css";
+import Link from "next/link";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import Image from "next/image";
-import classes from "../blog.module.css";
 
 const blogDirectory = path.join(process.cwd(), "content/posts");
 
@@ -56,6 +57,9 @@ export default async function BlogPost({ params }) {
 
   return (
     <div className={classes.article_wrapper}>
+      <p className={classes.breadcrumb}>
+        <Link href={"/blog"}>blog</Link> {">"} <span>{post.title}</span>
+      </p>
       <Image
         src={post.image}
         alt={post.title}
