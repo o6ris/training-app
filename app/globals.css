@@ -63,3 +63,13 @@ body > div {
   }
 }
 
+.markdown_content {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.markdown_content p, .markdown_content ul {
+	margin-bottom: 1rem;
+}
+
