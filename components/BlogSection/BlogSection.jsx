@@ -6,6 +6,8 @@ import classes from "./blogSection.module.css";
 import BasicButton from "@core/ui/Button/BasicButton";
 import Icon from "@core/ui/Icons/Icon";
 import Image from "next/image";
+import Link from "next/link";
+import ButtonLink from "@core/ui/Button/ButtonLink";
 
 function BlogSection({ posts }) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
@@ -43,7 +45,10 @@ function BlogSection({ posts }) {
           {posts.map((post, i) => {
             return (
               <div className={classes.embla__slide} key={i}>
-                <div className={classes.image_container}>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className={classes.image_container}
+                >
                   <Image
                     src={post.image}
                     alt={post.title}
@@ -52,11 +57,14 @@ function BlogSection({ posts }) {
                     priority
                     className={classes.carrousel_image}
                   />
-                </div>
+                </Link>
                 <h3>{post.title}</h3>
               </div>
             );
           })}
+          <div className={`${classes.embla__slide} ${classes.all_posts}`}>
+            <ButtonLink url="/blog" buttonContent="Read more posts..." buttonStyle={classes.all_posts_button} />
+          </div>
         </div>
       </div>
       <div className={classes.buttons}>

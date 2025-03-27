@@ -47,24 +47,31 @@ export const metadata = {
 const blogDirectory = path.join(process.cwd(), "content/posts");
 async function getAllPosts() {
   const fileNames = fs.readdirSync(blogDirectory);
-  const posts = fileNames.map((fileName) => {
+
+  const topPosts = [];
+
+  fileNames.forEach((fileName) => {
     const fullPath = path.join(blogDirectory, fileName);
     const fileContent = fs.readFileSync(fullPath, "utf-8");
     const { data } = matter(fileContent);
 
-    return {
+    const post = {
       slug: fileName.replace(/\.md$/, ""),
       title: data.title,
       summary: data.summary,
       image: data.image,
-      date: new Date(data.date), // Ensure the date is a Date object
+      date: new Date(data.date),
     };
+
+    topPosts.push(post);
+
+    topPosts.sort((a, b) => b.date - a.date);
+    if (topPosts.length > 5) {
+      topPosts.pop();
+    }
   });
 
-  // Sort posts by date in descending order (most recent first)
-  posts.sort((a, b) => b.date - a.date);
-
-  return posts;
+  return topPosts;
 }
 
 export default async function Home() {
