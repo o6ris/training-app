@@ -1,6 +1,6 @@
 ---
 title: "Top 10 Exercises to Have Big Arms"
-summary: "top 10 exercises, ranked from least to most effective, for building well-developed arms"
+summary: "Top 10 exercises, ranked from least to most effective, for building well-developed arms"
 tags: ["fitness", "rest days", "recovery", "health"]
 date: "2025-03-27"
 image: "https://i.imgur.com/m3rOuOe.jpeg"
