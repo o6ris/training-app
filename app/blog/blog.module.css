@@ -1,0 +1,12 @@
+.layout {
+  position: relative;
+  left: -1rem;
+  top: -1rem;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 0; /* Override the parent's padding */
+  margin: 0;
+  background-color: var(--primary-light-color) !important;
+  padding: 1rem;
+  margin-bottom: -60px;
+}

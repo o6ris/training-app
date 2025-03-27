@@ -69,6 +69,10 @@ body > div {
 	gap: 0.5rem;
 }
 
+.markdown_content * {
+	color: var(--primary-color);
+}
+
 .markdown_content p, .markdown_content ul {
 	margin-bottom: 1rem;
 }

@@ -8,6 +8,7 @@
   background-color: var(--primary-light-color);
   padding: 10px 0;
   height: 60px;
+  box-shadow: 0px -1px 50px var(--secondary-color);
 }
 
 @media all and (display-mode: standalone) {
