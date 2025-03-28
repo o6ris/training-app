@@ -13,6 +13,12 @@ const nextConfig = withPWA({
   output: "standalone",
   images: {
     domains: ["amqqrxjjxodlusbprjvh.supabase.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+      },
+    ],
   },
   async redirects() {
     return [
