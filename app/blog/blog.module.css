@@ -36,6 +36,12 @@
   flex-direction: column;
   gap: 2rem;
 }
+@media only screen and (min-width: 600px) {
+  .articles_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 .one_article {
   display: flex;
@@ -53,12 +59,10 @@
 @media only screen and (min-width: 600px) {
   .image_container {
     max-width: 100%; 
-    max-height: 100%; 
+    max-height: 350px; 
     box-shadow: 0px 3px 5px rgb(174, 174, 174);
   }
 }
-
-
 
 .button_wrapper {
   display: flex;
