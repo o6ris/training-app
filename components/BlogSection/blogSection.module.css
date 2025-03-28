@@ -20,6 +20,17 @@
   flex: 0 0 100%;
   min-width: 0;
 }
+@media only screen and (min-width: 600px) {
+  .embla__slide {
+    flex: 0 0 calc(100% / 2);
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .embla__slide {
+    flex: 0 0 calc(100% / 3);
+  }
+}
+
 
 .image_container {
   max-width: 100%; 
@@ -36,11 +47,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--secondary-color);
   border-radius: 15px;
 }
 
 .all_posts_button {
+  background-color: var(--secondary-color);
   box-shadow: 0px 3px 5px black;
   width: fit-content;
 }

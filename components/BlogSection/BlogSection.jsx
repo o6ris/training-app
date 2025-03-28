@@ -10,10 +10,30 @@ import Link from "next/link";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 
 function BlogSection({ posts }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [slidesToScroll, setSlidesToScroll] = useState(3);
+
+  useEffect(() => {
+    const updateSlidesToScroll = () => {
+      if (window.innerWidth < 600) {
+        setSlidesToScroll(1);
+      } else if (window.innerWidth < 1000) {
+        setSlidesToScroll(2);
+      } else {
+        setSlidesToScroll(3);
+      }
+    };
+
+    updateSlidesToScroll(); 
+    window.addEventListener("resize", updateSlidesToScroll);
+
+    return () => {
+      window.removeEventListener("resize", updateSlidesToScroll);
+    };
+  }, []);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({align: "start", slidesToScroll: slidesToScroll});
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
-  console.log("posts", posts)
 
   const onPrevButtonClick = useCallback(() => {
     if (!emblaApi) return;
