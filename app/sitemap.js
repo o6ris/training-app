@@ -13,7 +13,7 @@ function getAllPosts() {
     const { data } = matter(fileContent);
 
     return {
-      url: fileName.replace(/\.md$/, ""),
+      url: `${baseUrl}/blog/${fileName.replace(/\.md$/, "")}`,
       lastModified: new Date(data.date),
     };
   });
