@@ -1,17 +1,26 @@
 # Changelog  
 
-## [0.5.7] - 2025-03-25  
+## [0.6.7] - 2025-03-28  
 
 ### 🚀 Features  
 
-- **Image Handling**:  
-  - Uploaded all tiny images to the `public` folder and used them for exercise avatars.  
-  - Updated `Avatar` image logic to use public images for exercises instead of stored ones.  
+- **Blog System**:  
+  - Created a blog system with individual article pages (`blog/slug`).  
+  - Added images to blog articles.  
+  - Implemented a `BlogLayout` with a white theme, applied throughout the blog pages.  
+  - Developed a `BlogSection` slider on the homepage to display the latest articles.  
+  - Fetched and displayed only the 5 most recent blog posts on the homepage.  
+  - Created a dedicated blog page to list all articles.  
+  - Implemented navigation within the blog page.  
+  - Set up SEO for the blog page.  
 
-### 🛠 Fixes  
+- **Sitemap & Navigation**:  
+  - Generated a sitemap to enhance indexing.  
+  - Updated layout to display navigation only for logged-in users.  
 
-- **Popup Button**:  
-  - Fixed the display issue with the delete button on the `PopupButton` component.  
+### 🎨 UI Improvements  
 
-- **Exercise List**:  
-  - Ensured that exercises can be unselected in the `ExerciseList` component.  
+- **Blog Styling**:  
+  - Adjusted the number of slides displayed in `BlogSection` based on screen size.  
+  - Displayed blog posts in a grid format on larger screens while maintaining a mobile-friendly view.  
+
