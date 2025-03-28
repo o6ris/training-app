@@ -32,10 +32,10 @@ function Header({ session }) {
           </Button>
         ) : (
           <>
-            <Link className={classes.link} href={"/login"}>
+            <Link className={classes.link} href={"/login"} style={{ color: pathname.includes("home") ? "" : "#02091c" }}>
               Login
             </Link>
-            <Link className={classes.link} href={"/signup"}>
+            <Link className={classes.link} href={"/signup"} style={{ color: pathname.includes("home") ? "" : "#02091c" }}>
               Signup
             </Link>
           </>

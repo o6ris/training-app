@@ -66,7 +66,7 @@ export default async function RootLayout({ children }) {
       <body className={`${inter.className}`}>
         <Providers session={session}>
           {children}
-          <Navigation />
+          {session && <Navigation />}
         </Providers>
       </body>
     </html>
