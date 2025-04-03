@@ -60,7 +60,7 @@ export async function generateMetadata() {
 }
 
 
-export default async function BlogIndex() {
+export default async function Blog() {
   const posts = await getAllPosts();
 
   return (
