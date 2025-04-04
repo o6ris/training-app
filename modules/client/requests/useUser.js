@@ -68,7 +68,7 @@ export default function useUser() {
       );
       if (response) {
         if (response.ok) {
-          setIsEditable(false);
+          setIsEditable && setIsEditable(false);
         }
         const user = await response.json();
       }

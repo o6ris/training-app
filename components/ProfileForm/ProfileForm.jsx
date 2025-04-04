@@ -1,5 +1,6 @@
 "use client";
 
+import classes from "./profileForm.module.css";
 import InputField from "@core/ui/Fields/InputField/InputField";
 
 function ProfileForm({
@@ -9,7 +10,7 @@ function ProfileForm({
   isEmailValid,
 }) {
   return (
-    <>
+    <div className={classes.form_wrapper}>
       <InputField
         label={"Name"}
         variant="bordered"
@@ -52,15 +53,17 @@ function ProfileForm({
         onChange={(value) => handleOnChange("weight", value)}
         isDisabled={!isEditable}
       />
-      <InputField
-        label={<>Email {!isEmailValid && <span>(add valid format)</span>}</>}
-        variant="bordered"
-        placeholder="john.doe@mail.com"
-        labelPlacement="outside"
-        value={credentials?.email}
-        isDisabled={true}
-      />
-    </>
+      {isEmailValid && (
+        <InputField
+          label={<>Email {!isEmailValid && <span>(add valid format)</span>}</>}
+          variant="bordered"
+          placeholder="john.doe@mail.com"
+          labelPlacement="outside"
+          value={credentials?.email}
+          isDisabled={true}
+        />
+      )}
+    </div>
   );
 }
 
