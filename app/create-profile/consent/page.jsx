@@ -52,7 +52,7 @@ function ConsentPage() {
         Unlock exclusive tips, updates, and special offers from GrindPal. (No
         worries, you can hit &apos;unsubscribe&apos; anytime!)
       </Switch>
-      {!credentials.policy ? (
+      {!credentials?.policy ? (
         <BasicButton
           isDisabled={true}
           buttonContent="Start Working out"

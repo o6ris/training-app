@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 function Navigation() {
   const pathname = usePathname();
 
-  const hiddenRoutes = ["/workouts/create-session"];
+  const hiddenRoutes = ["/workouts/create-session", "/create-profile", "/create-profile/consent"];
   if (hiddenRoutes.includes(pathname)) {
     return null;
   }
