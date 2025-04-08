@@ -23,14 +23,25 @@ const userSchema = new Schema({
   },
   age: {
     type: Number,
-    min: [10, "Too young! "],
+    min: [16, "Too young! "],
   },
   height: {
     type: Number,
-    min: [50, "Too short! "],
   },
   weight: {
     type: Number,
+  },
+  policy: {
+    type: Boolean,
+    default: false,
+  },
+  newsletter: {
+    type: Boolean,
+    default: false,
+  },
+  first_connexion: {
+    type: Boolean,
+    default: true,
   },
 });
 
