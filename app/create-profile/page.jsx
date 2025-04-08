@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import classes from "./createprofile.module.css";
 import ProfileForm from "@components/ProfileForm/ProfileForm";
 import Link from "next/link";
 import useUser from "@modules/client/requests/useUser";
+import ClipLoader from "react-spinners/ClipLoader";
 import Icon from "@core/ui/Icons/Icon";
 
 function CreateProfile() {
   const [credentials, setCredentials] = useState();
+  const [isPending, startTransition] = useTransition();
   const { user, editUser } = useUser();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ function CreateProfile() {
 
   return (
     <div className={classes.wrapper}>
-      <h1>Complet your Profile</h1>
+      <h1>Complete your Profile</h1>
       <ProfileForm
         credentials={credentials}
         handleOnChange={handleOnChange}
@@ -32,9 +34,23 @@ function CreateProfile() {
       <div className={classes.footer}>
         <Link
           href="/create-profile/consent"
-          onClick={() => editUser(user._id, credentials, null)}
+          onClick={() =>
+            startTransition(() => {
+              editUser(user._id, credentials, null);
+            })
+          }
         >
-          Next <Icon name="MoveRight" />
+          Next{" "}
+          {isPending ? (
+            <ClipLoader
+              color={"#EDF1FF"}
+              loading={isPending}
+              size={20}
+              aria-label="Loading Spinner"
+            />
+          ) : (
+            <Icon name="MoveRight" />
+          )}
         </Link>
       </div>
     </div>
