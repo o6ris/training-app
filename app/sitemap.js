@@ -39,6 +39,14 @@ export default function sitemap() {
         url: `${baseUrl}/blog`,
         lastModified: new Date(),
       },
+      {
+        url: `${baseUrl}/privacy-policy`,
+        lastModified: new Date(),
+      },
+      {
+        url: `${baseUrl}/terms-of-use`,
+        lastModified: new Date(),
+      },
       ...posts,
     ];
   } catch (error) {

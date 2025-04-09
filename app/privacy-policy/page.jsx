@@ -1,4 +1,25 @@
-import classes from "./privacyPolicy.module.css"
+import classes from "./privacyPolicy.module.css";
+
+export const metadata = {
+  title: "GrindPal Privacy Policy",
+  description:
+    "Learn how GrindPal collects, uses, and protects your personal data. Read our privacy policy to understand your rights and our data handling practices.",
+  keywords: [
+    "privacy policy",
+    "user data protection",
+    "fitness app privacy",
+    "GrindPal data policy",
+    "secure fitness tracking",
+    "data rights",
+  ].join(", "),
+  openGraph: {
+    title: "GrindPal Privacy Policy",
+    description:
+      "Learn how GrindPal collects, uses, and protects your personal data. Read our privacy policy to understand your rights and our data handling practices.",
+    type: "website",
+    url: `${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`,
+  },
+};
 
 export default function PrivacyPolicy() {
   return (

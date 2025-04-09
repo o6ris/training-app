@@ -1,5 +1,26 @@
 import classes from "./termsOfUse.module.css";
 
+export const metadata = {
+  title: "GrindPal Terms of Use",
+  description:
+    "Review GrindPal Terms of Use to understand your rights and responsibilities when using our fitness tracking platform and related services.",
+  keywords: [
+    "terms of use",
+    "user agreement",
+    "fitness app terms",
+    "GrindPal terms",
+    "workout app conditions",
+    "usage policy",
+  ].join(", "),
+  openGraph: {
+    title: "GrindPal Terms of Use",
+    description:
+      "Review GrindPal Terms of Use to understand your rights and responsibilities when using our fitness tracking platform and related services.",
+    type: "website",
+    url: `${process.env.NEXT_PUBLIC_API_URL}/terms-of-use`,
+  },
+};
+
 export default function TermsOfUse() {
   return (
     <main className={classes.main}>
