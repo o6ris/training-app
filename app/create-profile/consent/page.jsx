@@ -24,34 +24,65 @@ function ConsentPage() {
   };
   return (
     <div className={classes.switch_content}>
-      <Switch
-        color="secondary"
-        isSelected={credentials?.policy}
-        onValueChange={(value) =>
-          setCredentials((prevCredentials) => ({
-            ...prevCredentials,
-            policy: value,
-            first_connexion: false,
-          }))
-        }
-        classNames={switchStyle}
-      >
-        I agree to the Privacy Policy and Terms of Service.
-      </Switch>
-      <Switch
-        color="secondary"
-        isSelected={credentials?.newsletter}
-        onValueChange={(value) =>
-          setCredentials((prevCredentials) => ({
-            ...prevCredentials,
-            newsletter: value,
-          }))
-        }
-        classNames={switchStyle}
-      >
-        Unlock exclusive tips, updates, and special offers from GrindPal. (No
-        worries, you can hit &apos;unsubscribe&apos; anytime!)
-      </Switch>
+      <div className="flex gap-2">
+        <Switch
+          color="secondary"
+          isSelected={credentials?.policy}
+          onValueChange={(value) =>
+            setCredentials((prevCredentials) => ({
+              ...prevCredentials,
+              policy: value,
+              first_connexion: false,
+            }))
+          }
+          classNames={switchStyle}
+          id="agree-policy"
+        />
+
+        <label htmlFor="agree-policy" className="cursor-pointer text-sm">
+          I agree to the{" "}
+          <a
+            href="/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a
+            href="/terms-of-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Terms of Service
+          </a>
+          .
+        </label>
+      </div>
+
+      <div className="flex gap-2">
+        <Switch
+          color="secondary"
+          isSelected={credentials?.newsletter}
+          onValueChange={(value) =>
+            setCredentials((prevCredentials) => ({
+              ...prevCredentials,
+              newsletter: value,
+            }))
+          }
+          classNames={switchStyle}
+          id="newsletter-switch"
+        />
+
+        <label htmlFor="newsletter-switch" className="cursor-pointer text-sm">
+          Unlock exclusive tips, updates, and special offers from GrindPal. (No
+          worries, you can hit &apos;unsubscribe&apos; anytime!)
+        </label>
+      </div>
       {!credentials?.policy ? (
         <BasicButton
           isDisabled={true}

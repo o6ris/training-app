@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import classes from "./profile.module.css";
 import ProfileForm from "@components/ProfileForm/ProfileForm";
 import InputField from "@core/ui/Fields/InputField/InputField";
@@ -184,6 +185,11 @@ function Profile() {
           <Icon name="LogOut" size={16} color="#BA0505" strokeWidth={3} />
         }
       />
+      <div className="flex gap-2 mt-6 justify-center items-center">
+        <Link className="text-xs text-gray-700" href="/terms-of-use">Terms of use</Link>
+        <span className="text-xs text-gray-700">-</span>
+        <Link className="text-xs text-gray-700" href="/privacy-policy">Privacy policy</Link>
+      </div>
     </div>
   );
 }

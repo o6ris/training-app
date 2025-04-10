@@ -98,6 +98,11 @@ export default async function Home() {
         </>
       )}
       <BlogSection posts={posts} />
+      <div className="flex gap-2 mt-6 justify-center items-center">
+        <Link className="text-xs text-gray-700" href="/terms-of-use">Terms of use</Link>
+        <span className="text-xs text-gray-700">-</span>
+        <Link className="text-xs text-gray-700" href="/privacy-policy">Privacy policy</Link>
+      </div>
     </main>
   );
 }
