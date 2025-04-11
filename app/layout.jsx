@@ -5,11 +5,11 @@ import { getServerSession } from "next-auth";
 import { Inter } from "next/font/google";
 import Navigation from "@components/Navigation/Navigation";
 
-
 const APP_NAME = "Grindpal";
 const APP_DEFAULT_TITLE = "Grindpal";
 const APP_TITLE_TEMPLATE = "%s - Grindpal";
-const APP_DESCRIPTION = "Web application designed for seamless workout tracking. Log workouts effortlessly, monitor progress over time, and analyze performance through interactive charts, all in one platform";
+const APP_DESCRIPTION =
+  "Web application designed for seamless workout tracking. Log workouts effortlessly, monitor progress over time, and analyze performance through interactive charts, all in one platform";
 
 export const metadata = {
   applicationName: APP_NAME,
@@ -18,7 +18,7 @@ export const metadata = {
     template: APP_TITLE_TEMPLATE,
   },
   description: APP_DESCRIPTION,
-  manifest: "/manifest.json", 
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

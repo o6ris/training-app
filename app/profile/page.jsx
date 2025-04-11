@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import classes from "./profile.module.css";
+import ProfileForm from "@components/ProfileForm/ProfileForm";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
-import PopupButton from "@core/ui/Button/PopupButton";
 import useUser from "@modules/client/requests/useUser";
 import Icon from "@core/ui/Icons/Icon";
 
@@ -16,8 +17,7 @@ function Profile() {
   const editToggle = () => setIsEditable(!isEditable);
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
-  const { data: userSession, status } = useSession();
-  const { user, editUser } = useUser(userSession);
+  const { user, editUser } = useUser();
 
   const validateEmail = /^[a-z0-9._-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
   const isEmailValid = validateEmail.test(credentials?.email);
@@ -37,171 +37,146 @@ function Profile() {
     t[name] = value;
     setCredentials(t);
   };
-
   return (
-    <div className={classes.container}>
-      <InputField
-        label={"Name"}
-        variant="bordered"
-        placeholder="john"
-        labelPlacement="outside"
-        value={credentials?.name}
-        onChange={(value) => handleOnChange("name", value)}
-        isDisabled={!isEditable}
-      />
-      <InputField
-        variant="bordered"
-        label="Age"
-        placeholder="35"
-        labelPlacement="outside"
-        value={credentials?.age}
-        type="number"
-        endContent={"years"}
-        onChange={(value) => handleOnChange("age", value)}
-        isDisabled={!isEditable}
-      />
-      <InputField
-        variant="bordered"
-        label="Height"
-        placeholder="170"
-        labelPlacement="outside"
-        value={credentials?.height}
-        type="number"
-        endContent={"cm"}
-        onChange={(value) => handleOnChange("height", value)}
-        isDisabled={!isEditable}
-      />
-      <InputField
-        variant="bordered"
-        label="Weight"
-        placeholder="70"
-        labelPlacement="outside"
-        value={credentials?.weight}
-        type="number"
-        endContent={"kg"}
-        onChange={(value) => handleOnChange("weight", value)}
-        isDisabled={!isEditable}
-      />
-      <InputField
-        label={<>Email {!isEmailValid && <span>(add valid format)</span>}</>}
-        variant="bordered"
-        placeholder="john.doe@mail.com"
-        labelPlacement="outside"
-        value={credentials?.email}
-        isDisabled={true}
-      />
-      <div className={classes.buttons_wrapper}>
-        <BasicButton
-          onAction={editToggle}
-          buttonContent={isEditable ? "Cancel" : "Edit"}
-          buttonStyle={`${classes.button} ${classes.edit_button}`}
-          startContent={
-            !isEditable ? (
-              <Icon name="Pencil" size={16} color="#EDF1FF" strokeWidth={3} />
-            ) : (
-              <Icon name="X" size={16} color="#EDF1FF" strokeWidth={3} />
-            )
-          }
+    <div className={classes.profile_wrapper}>
+      <div className={classes.container}>
+        <ProfileForm
+          credentials={credentials}
+          handleOnChange={handleOnChange}
+          isEditable={isEditable}
+          isEmailValid={isEmailValid}
         />
-        <BasicButton
-          onAction={() => editUser(user._id, credentials, setIsEditable)}
-          buttonContent={"Validate"}
-          buttonStyle={`${classes.validate_button} ${classes.button}`}
-          isDisabled={!isEditable}
-          startContent={
-            <Icon name="Check" size={16} color="#EDF1FF" strokeWidth={3} />
-          }
-        />
-      </div>
-      {!editCreds && (
-        <BasicButton
-          onAction={() => setEditCreds(true)}
-          buttonContent={"Change password ?"}
-          buttonStyle={`${classes.display_creds}`}
-        />
-      )}
-      {editCreds && (
-        <>
-          <InputField
-            label="Password"
-            variant="bordered"
-            placeholder=""
-            labelPlacement="outside"
-            onChange={(value) => handleOnChange("password", value)}
-            type={isVisible ? "text" : "password"}
-            endContent={
-              <BasicButton
-                buttonStyle={classes.visible_button}
-                buttonContent={
-                  isVisible ? (
-                    <Icon name="Eye" size={16} color="white" strokeWidth={3} />
-                  ) : (
-                    <Icon
-                      name="EyeOff"
-                      size={16}
-                      color="white"
-                      strokeWidth={3}
-                    />
-                  )
-                }
-                isIconOnly={true}
-                onAction={toggleVisible}
-              />
-            }
-          />
-          <InputField
-            label={
-              <>
-                New password{" "}
-                {!isPasswordSame && <span>(add same password)</span>}
-              </>
-            }
-            variant="bordered"
-            placeholder=""
-            labelPlacement="outside"
-            onChange={(value) => handleOnChange("confirmedPassword", value)}
-            type={isVisible ? "text" : "password"}
-            endContent={
-              <BasicButton
-                buttonStyle={classes.visible_button}
-                buttonContent={
-                  isVisible ? (
-                    <Icon name="Eye" size={16} color="white" strokeWidth={3} />
-                  ) : (
-                    <Icon
-                      name="EyeOff"
-                      size={16}
-                      color="white"
-                      strokeWidth={3}
-                    />
-                  )
-                }
-                isIconOnly={true}
-                onAction={toggleVisible}
-              />
-            }
-          />
-          <div className={classes.buttons_wrapper}>
-            <BasicButton
-              onAction={() => setEditCreds(false)}
-              buttonContent={"Cancel"}
-              buttonStyle={`${classes.button} ${classes.edit_button}`}
-              startContent={
+        <div className={classes.buttons_wrapper}>
+          <BasicButton
+            onAction={editToggle}
+            buttonContent={isEditable ? "Cancel" : "Edit"}
+            buttonStyle={`${classes.button} ${classes.edit_button}`}
+            startContent={
+              !isEditable ? (
+                <Icon name="Pencil" size={16} color="#EDF1FF" strokeWidth={3} />
+              ) : (
                 <Icon name="X" size={16} color="#EDF1FF" strokeWidth={3} />
+              )
+            }
+          />
+          <BasicButton
+            onAction={() => {
+              editToggle();
+              editUser(user._id, credentials, setIsEditable);
+            }}
+            buttonContent={"Validate"}
+            buttonStyle={`${classes.validate_button} ${classes.button}`}
+            isDisabled={!isEditable}
+            startContent={
+              <Icon name="Check" size={16} color="#EDF1FF" strokeWidth={3} />
+            }
+          />
+        </div>
+        {!editCreds && (
+          <BasicButton
+            onAction={() => setEditCreds(true)}
+            buttonContent={"Change password ?"}
+            buttonStyle={`${classes.display_creds}`}
+          />
+        )}
+        {editCreds && (
+          <>
+            <InputField
+              label="Password"
+              variant="bordered"
+              placeholder=""
+              labelPlacement="outside"
+              onChange={(value) => handleOnChange("password", value)}
+              type={isVisible ? "text" : "password"}
+              endContent={
+                <BasicButton
+                  buttonStyle={classes.visible_button}
+                  buttonContent={
+                    isVisible ? (
+                      <Icon
+                        name="Eye"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    ) : (
+                      <Icon
+                        name="EyeOff"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    )
+                  }
+                  isIconOnly={true}
+                  onAction={toggleVisible}
+                />
               }
             />
-            <BasicButton
-              onAction={() => editUser(user._id, credentials, setEditCreds)}
-              buttonContent={"Validate"}
-              buttonStyle={`${classes.validate_button} ${classes.button}`}
-              isDisabled={!isPasswordSame}
-              startContent={
-                <Icon name="Check" size={16} color="#EDF1FF" strokeWidth={3} />
+            <InputField
+              label={
+                <>
+                  New password{" "}
+                  {!isPasswordSame && <span>(add same password)</span>}
+                </>
+              }
+              variant="bordered"
+              placeholder=""
+              labelPlacement="outside"
+              onChange={(value) => handleOnChange("confirmedPassword", value)}
+              type={isVisible ? "text" : "password"}
+              endContent={
+                <BasicButton
+                  buttonStyle={classes.visible_button}
+                  buttonContent={
+                    isVisible ? (
+                      <Icon
+                        name="Eye"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    ) : (
+                      <Icon
+                        name="EyeOff"
+                        size={16}
+                        color="white"
+                        strokeWidth={3}
+                      />
+                    )
+                  }
+                  isIconOnly={true}
+                  onAction={toggleVisible}
+                />
               }
             />
-          </div>
-        </>
-      )}
+            <div className={classes.buttons_wrapper}>
+              <BasicButton
+                onAction={() => setEditCreds(false)}
+                buttonContent={"Cancel"}
+                buttonStyle={`${classes.button} ${classes.edit_button}`}
+                startContent={
+                  <Icon name="X" size={16} color="#EDF1FF" strokeWidth={3} />
+                }
+              />
+              <BasicButton
+                onAction={() => editUser(user._id, credentials, setEditCreds)}
+                buttonContent={"Validate"}
+                buttonStyle={`${classes.validate_button} ${classes.button}`}
+                isDisabled={!isPasswordSame}
+                startContent={
+                  <Icon
+                    name="Check"
+                    size={16}
+                    color="#EDF1FF"
+                    strokeWidth={3}
+                  />
+                }
+              />
+            </div>
+          </>
+        )}
+      </div>
       <BasicButton
         onAction={() => signOut({ callbackUrl: "/login" })}
         buttonContent={"Logout"}
@@ -210,6 +185,11 @@ function Profile() {
           <Icon name="LogOut" size={16} color="#BA0505" strokeWidth={3} />
         }
       />
+      <div className="flex gap-2 mt-6 justify-center items-center">
+        <Link className="text-xs text-gray-700" href="/terms-of-use">Terms of use</Link>
+        <span className="text-xs text-gray-700">-</span>
+        <Link className="text-xs text-gray-700" href="/privacy-policy">Privacy policy</Link>
+      </div>
     </div>
   );
 }

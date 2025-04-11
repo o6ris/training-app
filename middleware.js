@@ -21,5 +21,6 @@ export const config = {
     "/workouts/:path*",
     "/session/:path*",
     "/stats/:path*",
+    "/create-profile/:path*",
   ], // Protect these routes
 };

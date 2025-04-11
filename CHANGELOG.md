@@ -1,26 +1,27 @@
-# Changelog  
+## [0.7.7] - 2025-04-10
 
-## [0.6.7] - 2025-03-28  
+### 🔐 Auth & Profile
 
-### 🚀 Features  
+- **Password Reset**:  
+  - Implemented password reset via Brevo in `request reset` route.
 
-- **Blog System**:  
-  - Created a blog system with individual article pages (`blog/slug`).  
-  - Added images to blog articles.  
-  - Implemented a `BlogLayout` with a white theme, applied throughout the blog pages.  
-  - Developed a `BlogSection` slider on the homepage to display the latest articles.  
-  - Fetched and displayed only the 5 most recent blog posts on the homepage.  
-  - Created a dedicated blog page to list all articles.  
-  - Implemented navigation within the blog page.  
-  - Set up SEO for the blog page.  
+- **Login & Profile Flow**:
+  - Added back navigation from `forgot-password` and `reset-password` to login.
+  - Created a `create-profile` protected route for onboarding after signup.
+  - Allowed editing of profile when navigating from `create-profile`.
+  - User model now include `policy`, `newsletter`, and `first_connexion` flags.
+  - Users can consent to newsletter and privacy policy during profile creation.
+  - Navigation is hidden during onboarding in `create-profile`.
 
-- **Sitemap & Navigation**:  
-  - Generated a sitemap to enhance indexing.  
-  - Updated layout to display navigation only for logged-in users.  
+### 📄 Legal Compliance
 
-### 🎨 UI Improvements  
+- **Privacy & Terms**:
+  - Created `Terms of Use` and `Privacy Policy` pages.
+  - Added SEO metadata and included them in the sitemap.
+  - Linked to privacy/terms pages from home and profile.
 
-- **Blog Styling**:  
-  - Adjusted the number of slides displayed in `BlogSection` based on screen size.  
-  - Displayed blog posts in a grid format on larger screens while maintaining a mobile-friendly view.  
+### 🛠️ Improvements
 
+- Refactored metadata handling for better SEO on blog pages.
+- Fixed `next.config.js` with proper CORS scope.
+- Ensured navigation appears consistently after signup and across pages.

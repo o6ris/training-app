@@ -27,40 +27,37 @@ async function getAllPosts() {
   return posts;
 }
 
-export async function generateMetadata() {
-  return {
+export const metadata = {
+  title: "GrindPal Blog - Fitness Tips & Training Strategies",
+  description:
+    "Explore expert fitness tips, workout guides, and the latest training strategies to optimize your performance and recovery on the GrindPal Blog.",
+  keywords: [
+    "fitness blog",
+    "workout tips",
+    "muscle growth",
+    "strength training",
+    "exercise guides",
+    "training strategies",
+  ].join(", "),
+  openGraph: {
     title: "GrindPal Blog - Fitness Tips & Training Strategies",
     description:
       "Explore expert fitness tips, workout guides, and the latest training strategies to optimize your performance and recovery on the GrindPal Blog.",
-    keywords: [
-      "fitness blog",
-      "workout tips",
-      "muscle growth",
-      "strength training",
-      "exercise guides",
-      "training strategies",
-    ].join(", "),
-    openGraph: {
-      title: "GrindPal Blog - Fitness Tips & Training Strategies",
-      description:
-        "Explore expert fitness tips, workout guides, and the latest training strategies to optimize your performance and recovery on the GrindPal Blog.",
-      type: "website",
-      url: `${process.env.NEXT_PUBLIC_API_URL}/blog`,
-      images: [
-        {
-          url: `https://i.imgur.com/m3rOuOe.jpeg`,
-          width: 1200,
-          height: 630,
-          alt: "GrindPal Blog Banner",
-          type: "image/png",
-        },
-      ],
-    },
-  };
-}
+    type: "website",
+    url: `${process.env.NEXT_PUBLIC_API_URL}/blog`,
+    images: [
+      {
+        url: `https://i.imgur.com/m3rOuOe.jpeg`,
+        width: 1200,
+        height: 630,
+        alt: "GrindPal Blog Banner",
+        type: "image/png",
+      },
+    ],
+  },
+};
 
-
-export default async function BlogIndex() {
+export default async function Blog() {
   const posts = await getAllPosts();
 
   return (

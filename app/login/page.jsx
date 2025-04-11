@@ -1,6 +1,6 @@
 "use client";
 
-import classes from "./pageLogin.module.css"
+import classes from "./pageLogin.module.css";
 import Login from "components/Login/Login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/"); // Redirect to home or another route
+      if (session.user.first_connexion) {
+        router.push("/create-profile");
+      } else {
+        router.push("/");
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
-  
   if (status === "unauthenticated") {
     return (
       <main className={classes.login_wrapper}>

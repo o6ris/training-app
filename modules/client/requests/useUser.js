@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
-export default function useUser(userSession) {
+export default function useUser() {
+  const { data: userSession } = useSession();
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState();
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -66,7 +68,7 @@ export default function useUser(userSession) {
       );
       if (response) {
         if (response.ok) {
-          setIsEditable(false);
+          setIsEditable && setIsEditable(false);
         }
         const user = await response.json();
       }

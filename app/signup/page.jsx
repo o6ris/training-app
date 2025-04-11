@@ -1,6 +1,6 @@
 "use client";
 
-import classes from "./pageSignup.module.css"
+import classes from "./pageSignup.module.css";
 import Signup from "components/Signup/Signup";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,14 @@ export default function Home() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/"); // Redirect to home or another route
+      if (session.user.first_connexion) {
+        router.push("/create-profile");
+      } else {
+        router.push("/");
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
-  
   if (status === "unauthenticated") {
     return (
       <main className={classes.signup_wrapper}>
