@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import classes from "./forgotPassword.module.css";
 import InputField from "@core/ui/Fields/InputField/InputField";
 import BasicButton from "@core/ui/Button/BasicButton";
@@ -62,6 +63,9 @@ function ForgotPassword() {
           isDisabled={disabledButton}
           onAction={() => getNewPassword(email)}
         />
+        <div className={classes.go_back_button}>
+          <Link href="/login">Back to login</Link>
+        </div>
       </form>
     </div>
   );

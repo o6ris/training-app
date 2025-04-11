@@ -36,7 +36,6 @@ const exerciseSchema = new Schema({
   ],
   description: {
     type: descriptionSchema,
-    // required: [true, "Description is required"],
   },
   image: {
     type: String,

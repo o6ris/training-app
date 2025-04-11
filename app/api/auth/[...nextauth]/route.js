@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import User from "@modules/server/models/user";
-// import Whitelisted from "@modules/server/models/whitelistedEmail";
 import connectDb from "lib/mongodb";
 
 export const authOptions = {
@@ -44,27 +43,11 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "credentials") {
-        // await connectDb();
-        // try {
-        //   const whiteListedEmailSet = new Set(await Whitelisted.distinct("email"));
-        //   if(!whiteListedEmailSet.has(user.email)) {
-        //     throw { message: "Email is not whitelisted", status: 400 };
-        //   }
-        //   return true;
-        // } catch (err) {
-        //   return false;
-        // }
         return true;
       }
       if (account?.provider === "google") {
         await connectDb();
         try {
-          // const whiteListedEmailSet = new Set(
-          //   await Whitelisted.distinct("email")
-          // );
-          // if (!whiteListedEmailSet.has(user.email)) {
-          //   throw { message: "Email is not whitelisted", status: 400 };
-          // }
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
             const newUser = new User({
@@ -79,6 +62,24 @@ export const authOptions = {
           return false;
         }
       }
+    },
+    async jwt({ token }) {
+      await connectDb();
+      try{
+        const user =  await User.findOne({ email: token.email })
+        if (user) {
+          token.first_connexion = user.first_connexion;
+          token.policy = user.policy;
+        }
+        return token;
+      } catch(error) {
+        console.error("error", error)
+      }
+    },
+    async session({ session, token }) {
+      session.user.first_connexion = token.first_connexion;
+      session.user.policy = token.policy;
+      return session;
     },
   },
 };
