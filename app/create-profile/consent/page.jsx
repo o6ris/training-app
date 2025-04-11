@@ -52,13 +52,13 @@ function ConsentPage() {
           </a>{" "}
           and{" "}
           <a
-            href="/terms-of-service"
+            href="/terms-of-use"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 underline"
             onClick={(e) => e.stopPropagation()}
           >
-            Terms of Service
+            Terms of use
           </a>
           .
         </label>

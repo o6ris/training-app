@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import classes from "./signup.module.css";

@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import classes from "./navigation.module.css";
 import Icon from "@core/ui/Icons/Icon";
 import Link from "next/link";
@@ -7,8 +10,22 @@ import { usePathname } from "next/navigation";
 
 function Navigation() {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+  const router = useRouter()
 
-  const hiddenRoutes = ["/workouts/create-session", "/create-profile", "/create-profile/consent"];
+  useEffect(() => {
+    if (status === "authenticated" && session.user.first_connexion) {
+      router.push("/create-profile/consent");
+    }
+  }, [status, router, session]);
+
+  const hiddenRoutes = [
+    "/workouts/create-session",
+    "/create-profile",
+    "/create-profile/consent",
+    "/privacy-policy",
+    "terms-of-use",
+  ];
   if (hiddenRoutes.includes(pathname)) {
     return null;
   }
