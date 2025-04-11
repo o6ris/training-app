@@ -11,10 +11,17 @@ import { usePathname } from "next/navigation";
 function Navigation() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const router = useRouter()
+  const router = useRouter();
+  console.log("pathname", pathname);
+  console.log("test", !pathname.includes("create-profile"));
 
   useEffect(() => {
-    if (status === "authenticated" && session.user.first_connexion) {
+    if (
+      status === "authenticated" &&
+      session.user.first_connexion &&
+      !pathname.includes("signup") &&
+      !pathname.includes("login")
+    ) {
       router.push("/create-profile/consent");
     }
   }, [status, router, session]);
