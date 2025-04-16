@@ -1,4 +1,5 @@
 import Stats from "@modules/server/models/stats";
+import Muscle from "@modules/server/models/muscle";
 import Exercise from "modules/server/models/exercise";
 import User from "@modules/server/models/user";
 import connectDb from "@lib/mongodb";
@@ -79,7 +80,12 @@ export async function GET(request) {
       {
         path: "exercise",
         model: Exercise,
-        select: "name",
+        select: ["name", "muscle"],
+        populate: {
+          path: "muscle",
+          model: Muscle,
+          select: "name",
+        },
       },
       {
         path: "user",

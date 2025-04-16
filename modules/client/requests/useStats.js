@@ -1,6 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { usePathname } from "next/navigation";
+import useUser from "@modules/client/requests/useUser";
+import { useSession } from "next-auth/react";
 
-export default function useStats(userId) {
+export default function useStats(month) {
+  const [filter, setFilter] = useState("exercise");
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
   const [workoutsDates, setWorkoutsDates] = useState([]);
@@ -9,6 +13,9 @@ export default function useStats(userId) {
   const [range, setRange] = useState("month");
   const [startDate, setStartDate] = useState("");
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const { data: session } = useSession();
+  const { userId } = useUser(session);
+  const pathname = usePathname();
 
   const getStats = async () => {
     try {
@@ -80,7 +87,7 @@ export default function useStats(userId) {
 
   const getStatsByMonth = async (month) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const url = `${baseUrl}/api/stats/statsByMonth?user=${userId}&month=${month}`;
       const response = await fetch(
         url,
@@ -100,14 +107,14 @@ export default function useStats(userId) {
       const statsByDate = stats.map(
         (stat) => new Date(stat.date).toISOString().split("T")[0]
       );
-      const uniqueStatsDate = [...new Set(statsByDate)];
 
+      const uniqueStatsDate = [...new Set(statsByDate)];
       setStats(stats);
       setWorkoutsDates(uniqueStatsDate);
     } catch (error) {
       console.error("Error fetching stats:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -139,10 +146,16 @@ export default function useStats(userId) {
   }, [range]);
 
   useEffect(() => {
-    if (userId) {
+    if (userId && range && pathname.includes("stats")) {
       getStats();
     }
   }, [userId, range]);
+
+  useEffect(() => {
+    if (userId && month && pathname.includes("home")) {
+      getStatsByMonth(month);
+    }
+  }, [userId, month]);
 
   // TODO: optimize with spread operator
   const uniqueWorkoutDates = stats?.reduce((acc, entry) => {
@@ -152,6 +165,46 @@ export default function useStats(userId) {
   }, new Set());
 
   const workoutDateslist = Array.from(uniqueWorkoutDates);
+
+  const statsByMuscles = useMemo(() => {
+    if (!stats) return {};
+  
+    return stats.reduce((acc, entry) => {
+      let muscleName = entry.exercise.muscle[0].name;
+      if (muscleName === "glutes" || muscleName === "legs") {
+        muscleName = "legs & glutes";
+      }
+  
+      const entryVolume = entry.sets.reduce((sum, set) => sum + set.weight * set.reps, 0);
+      const entryDate = new Date(entry.date).toISOString().slice(0, 10);
+  
+      if (!acc[muscleName]) {
+        acc[muscleName] = {
+          volumeByDate: {},
+          totalVolume: 0,
+        };
+      }
+  
+      acc[muscleName].volumeByDate[entryDate] = 
+        (acc[muscleName].volumeByDate[entryDate] || 0) + entryVolume;
+  
+      acc[muscleName].totalVolume += entryVolume;
+  
+      return acc;
+    }, {});
+  }, [stats]);
+
+  const totalVolumeAll = Object.values(statsByMuscles).reduce((sum, group) => {
+    return sum + group.totalVolume;
+  }, 0);
+
+  for (const muscle in statsByMuscles) {
+    const muscleGroup = statsByMuscles[muscle];
+    muscleGroup.percentage =
+      ((muscleGroup.totalVolume / totalVolumeAll) * 100).toFixed(1) + "%";
+  }
+
+  console.log("statsByMuscles", statsByMuscles);
 
   // Group data by exercise name
   const statsByExercises = stats?.reduce((acc, entry) => {
@@ -200,5 +253,7 @@ export default function useStats(userId) {
     setRange,
     startDate,
     isLoading,
+    setFilter,
+    filter,
   };
 }
