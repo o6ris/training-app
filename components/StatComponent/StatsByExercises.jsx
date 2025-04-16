@@ -1,9 +1,8 @@
-import classes from "./globalStats.module.css";
+import classes from "./statsByExercises.module.css";
 import PopupButton from "@core/ui/Button/PopupButton";
 import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 
-function GlobalStats({ stat }) {
-
+function StatsByExercises({ stat }) {
   const getMinutes = (seconds) => Math.floor(seconds / 60);
   const getSeconds = (seconds) => seconds % 60;
 
@@ -65,4 +64,4 @@ function GlobalStats({ stat }) {
   );
 }
 
-export default GlobalStats;
+export default StatsByExercises;

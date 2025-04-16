@@ -7,9 +7,9 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
-import GlobalStats from "@components/StatComponent/GlobalStats";
+import StatsByExercises from "@components/StatComponent/StatsByExercises";
 import ChartStats from "@components/StatComponent/ChartStats";
-import FilterButton from "@core/ui/Button/FilterButton"
+import FilterButton from "@core/ui/Button/FilterButton";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -31,35 +31,35 @@ function Stats() {
   return (
     <div className={classes.data_container}>
       <div className={classes.header}>
-      <SelectField
-        items={[
-          {
-            key: "month",
-            value: "Last month",
-          },
-          {
-            key: "trim",
-            value: "Last 3 months",
-          },
-          {
-            key: "sem",
-            value: "Last 6 months",
-          },
-          {
-            key: "year",
-            value: "Last 12 months",
-          },
-        ]}
-        variant="bordered"
-        ariaLabel="Range"
-        labelPlacement="outside"
-        selectOnChange={(value) => {
-          return setRange(Array.from(value).join(""));
-        }}
-        value={range}
-        disallowEmptySelection={true}
-      />
-      <FilterButton setFilter={setFilter} filter={filter} />
+        <SelectField
+          items={[
+            {
+              key: "month",
+              value: "Last month",
+            },
+            {
+              key: "trim",
+              value: "Last 3 months",
+            },
+            {
+              key: "sem",
+              value: "Last 6 months",
+            },
+            {
+              key: "year",
+              value: "Last 12 months",
+            },
+          ]}
+          variant="bordered"
+          ariaLabel="Range"
+          labelPlacement="outside"
+          selectOnChange={(value) => {
+            return setRange(Array.from(value).join(""));
+          }}
+          value={range}
+          disallowEmptySelection={true}
+        />
+        <FilterButton setFilter={setFilter} filter={filter} />
       </div>
 
       <div className={classes.global_data_wrapper}>
@@ -124,7 +124,7 @@ function Stats() {
                 classNames={{ base: classes.accordion_item }}
               >
                 <div className={classes.section_wrapper}>
-                  <GlobalStats stat={latestStat} />
+                  <StatsByExercises stat={latestStat} />
                   <ChartStats
                     stats={stats[exerciseName]}
                     getStatById={getStatById}
