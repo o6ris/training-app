@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import classes from "./stats.module.css";
-import { useSession } from "next-auth/react";
-import useUser from "@modules/client/requests/useUser";
 import useStats from "@modules/client/requests/useStats";
 import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
@@ -11,11 +9,10 @@ import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import GlobalStats from "@components/StatComponent/GlobalStats";
 import ChartStats from "@components/StatComponent/ChartStats";
+import FilterButton from "@core/ui/Button/FilterButton"
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
-  const { data: userSession, status } = useSession();
-  const { userId } = useUser(userSession);
   const {
     stats,
     workoutDateslist,
@@ -26,11 +23,14 @@ function Stats() {
     setRange,
     startDate,
     isLoading,
-  } = useStats(userId);
+    setFilter,
+    filter,
+  } = useStats();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
   return (
     <div className={classes.data_container}>
+      <div className={classes.header}>
       <SelectField
         items={[
           {
@@ -59,6 +59,8 @@ function Stats() {
         value={range}
         disallowEmptySelection={true}
       />
+      <FilterButton setFilter={setFilter} filter={filter} />
+      </div>
 
       <div className={classes.global_data_wrapper}>
         {isLoading ? (

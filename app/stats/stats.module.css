@@ -4,6 +4,13 @@
   gap: 0.5rem;
 }
 
+.header {
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
 .global_data_wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;

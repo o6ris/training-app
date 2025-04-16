@@ -4,7 +4,7 @@ import useUser from "@modules/client/requests/useUser";
 import { useSession } from "next-auth/react";
 
 export default function useStats(month) {
-  const [filter, setFilter] = useState("exercise");
+  const [filter, setFilter] = useState("exercises");
   const [stats, setStats] = useState([]);
   const [statsByDate, setStatsByDate] = useState([]);
   const [workoutsDates, setWorkoutsDates] = useState([]);
