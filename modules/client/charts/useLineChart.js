@@ -88,9 +88,9 @@ export default function useLineChart(
                         sum + current.reps * (current.weight / 1000),
                       0
                     )
-                  : stat.volume,
+                  : stat.volume/1000,
               _id: filter === "exercises" ? stat._id : null,
-              exerciseName:  filter === "exercises" ? stat.exercise.name : "test",
+              exerciseName:  filter === "exzercises" ? stat.exercise.name : "test",
             }
           : null;
       })
