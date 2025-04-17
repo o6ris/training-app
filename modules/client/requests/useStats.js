@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import useUser from "@modules/client/requests/useUser";
 import { useSession } from "next-auth/react";
+import { startOfWeek, format } from "date-fns";
 
 export default function useStats(month) {
   const [filter, setFilter] = useState("exercises");
@@ -180,32 +181,33 @@ export default function useStats(month) {
         0
       );
 
-      const entryDate = new Date(entry.date).toISOString().slice(0, 10); // "YYYY-MM-DD"
+      const rawDate = new Date(entry.date);
+      const weekStartDate = startOfWeek(rawDate, { weekStartsOn: 1 }); // Monday as start of week
+      const weekKey = format(weekStartDate, "yyyy-MM-dd");
 
       if (!acc[muscleName]) {
         acc[muscleName] = {
-          volumeByDateMap: {}, // use an object for quick access
+          volumeByWeekMap: {},
           totalVolume: 0,
         };
       }
-
-      // Accumulate volume by date
-      if (!acc[muscleName].volumeByDateMap[entryDate]) {
-        acc[muscleName].volumeByDateMap[entryDate] = 0;
+  
+      if (!acc[muscleName].volumeByWeekMap[weekKey]) {
+        acc[muscleName].volumeByWeekMap[weekKey] = 0;
       }
-
-      acc[muscleName].volumeByDateMap[entryDate] += entryVolume;
+  
+      acc[muscleName].volumeByWeekMap[weekKey] += entryVolume;
       acc[muscleName].totalVolume += entryVolume;
 
       return acc;
     }, {});
 
-    // Transform volumeByDateMap into array
+    // Transform volumeByWeekMap into array
     Object.values(result).forEach((group) => {
-      group.volumeByDate = Object.entries(group.volumeByDateMap).map(
+      group.volumeByDate = Object.entries(group.volumeByWeekMap).map(
         ([date, volume]) => ({ date, volume })
       );
-      delete group.volumeByDateMap; // clean up
+      delete group.volumeByWeekMap; // clean up
     });
 
     return result;
