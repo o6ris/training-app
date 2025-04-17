@@ -28,6 +28,8 @@ function Stats() {
   } = useStats();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
+  console.log("stats", stats);
+
   return (
     <div className={classes.data_container}>
       <div className={classes.header}>
@@ -108,28 +110,46 @@ function Stats() {
           variant="splitted"
           className={classes.accordion}
         >
-          {Object.keys(stats).map((exerciseName, i) => {
+          {Object.keys(stats).map((name, i) => {
             const key = (i + 1).toString();
-            const latestStat = latestStats[exerciseName];
+            const latestStat = latestStats[name];
             return (
               <AccordionItem
                 key={key}
-                textValue={exerciseName || "Exercise"}
+                textValue={name || "Exercise"}
                 title={
                   <div className={classes.title_wrapper}>
-                    <h3>{exerciseName.toUpperCase()}</h3>
-                    <span>{formatDate(latestStat?.date, false)}</span>
+                    <h3>{name.toUpperCase()}</h3>
+                    <span>
+                      {filter === "exercises"
+                        ? formatDate(latestStat?.date, false)
+                        : formatDate(
+                            stats[name]?.volumeByDate[
+                              stats[name]?.volumeByDate.length - 1
+                            ].date,
+                            false
+                          )}
+                    </span>
                   </div>
                 }
                 classNames={{ base: classes.accordion_item }}
               >
                 <div className={classes.section_wrapper}>
-                  <StatsByExercises stat={latestStat} />
+                  {filter === "exercises" ? (
+                    <StatsByExercises stat={latestStat} />
+                  ) : (
+                    "muscles stats"
+                  )}
                   <ChartStats
-                    stats={stats[exerciseName]}
+                    stats={
+                      filter === "exercises"
+                        ? stats[name]
+                        : stats[name].volumeByDate
+                    }
                     getStatById={getStatById}
                     range={range}
                     startDate={startDate}
+                    filter={filter}
                   />
                 </div>
               </AccordionItem>

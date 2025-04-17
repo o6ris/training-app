@@ -2,7 +2,7 @@ import classes from "./chartStats.module.css";
 import LineChart from "@core/ui/Chart/LineChart";
 import formatDate from "@modules/client/utils/formatDate";
 
-function ChartStats({ stats, getStatById, range, startDate, customStartDate }) {
+function ChartStats({ stats, getStatById, range, startDate, customStartDate, filter }) {
   return (
     <div className={classes.chart_wrapper}>
       <div>
@@ -11,7 +11,7 @@ function ChartStats({ stats, getStatById, range, startDate, customStartDate }) {
           {formatDate(startDate, false)} - {formatDate(new Date(), false)}
         </p>
       </div>
-      <LineChart stats={stats} getStatById={getStatById} range={range} customStartDate={customStartDate} />
+      <LineChart stats={stats} getStatById={getStatById} range={range} customStartDate={customStartDate} filter={filter} />
     </div>
   );
 }

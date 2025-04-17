@@ -168,30 +168,47 @@ export default function useStats(month) {
 
   const statsByMuscles = useMemo(() => {
     if (!stats) return {};
-  
-    return stats.reduce((acc, entry) => {
+
+    const result = stats.reduce((acc, entry) => {
       let muscleName = entry.exercise.muscle[0].name;
       if (muscleName === "glutes" || muscleName === "legs") {
         muscleName = "legs & glutes";
       }
-  
-      const entryVolume = entry.sets.reduce((sum, set) => sum + set.weight * set.reps, 0);
-      const entryDate = new Date(entry.date).toISOString().slice(0, 10);
-  
+
+      const entryVolume = entry.sets.reduce(
+        (sum, set) => sum + set.weight * set.reps,
+        0
+      );
+
+      const entryDate = new Date(entry.date).toISOString().slice(0, 10); // "YYYY-MM-DD"
+
       if (!acc[muscleName]) {
         acc[muscleName] = {
-          volumeByDate: {},
+          volumeByDateMap: {}, // use an object for quick access
           totalVolume: 0,
         };
       }
-  
-      acc[muscleName].volumeByDate[entryDate] = 
-        (acc[muscleName].volumeByDate[entryDate] || 0) + entryVolume;
-  
+
+      // Accumulate volume by date
+      if (!acc[muscleName].volumeByDateMap[entryDate]) {
+        acc[muscleName].volumeByDateMap[entryDate] = 0;
+      }
+
+      acc[muscleName].volumeByDateMap[entryDate] += entryVolume;
       acc[muscleName].totalVolume += entryVolume;
-  
+
       return acc;
     }, {});
+
+    // Transform volumeByDateMap into array
+    Object.values(result).forEach((group) => {
+      group.volumeByDate = Object.entries(group.volumeByDateMap).map(
+        ([date, volume]) => ({ date, volume })
+      );
+      delete group.volumeByDateMap; // clean up
+    });
+
+    return result;
   }, [stats]);
 
   const totalVolumeAll = Object.values(statsByMuscles).reduce((sum, group) => {
@@ -203,8 +220,6 @@ export default function useStats(month) {
     muscleGroup.percentage =
       ((muscleGroup.totalVolume / totalVolumeAll) * 100).toFixed(1) + "%";
   }
-
-  console.log("statsByMuscles", statsByMuscles);
 
   // Group data by exercise name
   const statsByExercises = stats?.reduce((acc, entry) => {
@@ -239,7 +254,7 @@ export default function useStats(month) {
   });
 
   return {
-    stats: orderedStatsByExercises,
+    stats: filter === "exercises" ? orderedStatsByExercises : statsByMuscles,
     allExerciseList: sortedExerciseGroups,
     workoutDateslist,
     latestStats,

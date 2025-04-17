@@ -53,7 +53,8 @@ export default function useLineChart(
   stats,
   range,
   customEndDate = null,
-  customStartDate = null
+  customStartDate = null,
+  filter
 ) {
   Chart.register(CategoryScale, zoomPlugin);
 
@@ -80,12 +81,16 @@ export default function useLineChart(
         return stat
           ? {
               x: formatDate(date, false).slice(0, 5),
-              y: stat.sets.reduce(
-                (sum, current) => sum + current.reps * (current.weight / 1000),
-                0
-              ),
-              _id: stat._id,
-              exerciseName: stat.exercise.name,
+              y:
+                filter === "exercises"
+                  ? stat.sets.reduce(
+                      (sum, current) =>
+                        sum + current.reps * (current.weight / 1000),
+                      0
+                    )
+                  : stat.volume,
+              _id: filter === "exercises" ? stat._id : null,
+              exerciseName:  filter === "exercises" ? stat.exercise.name : "test",
             }
           : null;
       })

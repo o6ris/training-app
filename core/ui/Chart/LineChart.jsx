@@ -3,8 +3,8 @@ import classes from "./lineChart.module.css"
 import { Line } from "react-chartjs-2";
 import useLineChart from "@modules/client/charts/useLineChart";
 
-function LineChart({ stats, getStatById, range, customEndDate, customStartDate }) {
-  const { chartData } = useLineChart(stats, range, customEndDate, customStartDate);
+function LineChart({ stats, getStatById, range, customEndDate, customStartDate, filter }) {
+  const { chartData } = useLineChart(stats, range, customEndDate, customStartDate, filter);
   const chartRef = useRef(null);
 
   const handleClick = (event) => {
