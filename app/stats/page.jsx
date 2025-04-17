@@ -10,6 +10,7 @@ import Skeleton from "@core/ui/Skeleton/Skeleton";
 import StatsByExercises from "@components/StatComponent/StatsByExercises";
 import ChartStats from "@components/StatComponent/ChartStats";
 import FilterButton from "@core/ui/Button/FilterButton";
+import DonutChartStats from "@components/StatComponent/DonutChartStats";
 import Icon from "@core/ui/Icons/Icon";
 
 // Get all previous exercises stats by exercises id and uer id
@@ -89,6 +90,7 @@ function Stats() {
           </div>
         )}
       </div>
+      {filter === "muscles" && <DonutChartStats stats={stats} />}
       {isLoading ? (
         <>
           <Skeleton
@@ -121,7 +123,6 @@ function Stats() {
                 title={
                   <div className={classes.title_wrapper}>
                     <h3>{name.toUpperCase()}</h3>
-
                     {filter === "exercises" ? (
                       <span>{formatDate(latestStat?.date, false)}</span>
                     ) : (
