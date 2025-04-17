@@ -191,11 +191,11 @@ export default function useStats(month) {
           totalVolume: 0,
         };
       }
-  
+
       if (!acc[muscleName].volumeByWeekMap[weekKey]) {
         acc[muscleName].volumeByWeekMap[weekKey] = 0;
       }
-  
+
       acc[muscleName].volumeByWeekMap[weekKey] += entryVolume;
       acc[muscleName].totalVolume += entryVolume;
 
@@ -207,6 +207,18 @@ export default function useStats(month) {
       group.volumeByDate = Object.entries(group.volumeByWeekMap).map(
         ([date, volume]) => ({ date, volume })
       );
+      group.volumeByDate.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      // ✅ Add growth calculation
+      const first = group.volumeByDate[0]?.volume || 0;
+      const last =
+        group.volumeByDate[group.volumeByDate.length - 1]?.volume || 0;
+      let growth = 0;
+      if (first > 0) {
+        growth = ((last - first) / first) * 100;
+      }
+      group.growth = `${growth.toFixed(2)}%`;
+
       delete group.volumeByWeekMap; // clean up
     });
 
@@ -222,6 +234,25 @@ export default function useStats(month) {
     muscleGroup.percentage =
       ((muscleGroup.totalVolume / totalVolumeAll) * 100).toFixed(1) + "%";
   }
+
+  const sortedStatsByMuscles = useMemo(() => {
+    const stats = Object.entries(statsByMuscles)
+      .map(([muscle, data]) => ({
+        muscle,
+        ...data,
+      }))
+      .sort((a, b) => {
+        const growthA = parseFloat(a.growth);
+        const growthB = parseFloat(b.growth);
+        return growthB - growthA;
+      });
+
+    return stats;
+  }, [statsByMuscles]);
+
+  const sortedStatsObject = Object.fromEntries(
+    sortedStatsByMuscles.map(({ muscle, ...rest }) => [muscle, rest])
+  );
 
   // Group data by exercise name
   const statsByExercises = stats?.reduce((acc, entry) => {
@@ -256,7 +287,7 @@ export default function useStats(month) {
   });
 
   return {
-    stats: filter === "exercises" ? orderedStatsByExercises : statsByMuscles,
+    stats: filter === "exercises" ? orderedStatsByExercises : sortedStatsObject,
     allExerciseList: sortedExerciseGroups,
     workoutDateslist,
     latestStats,

@@ -10,6 +10,7 @@ import Skeleton from "@core/ui/Skeleton/Skeleton";
 import StatsByExercises from "@components/StatComponent/StatsByExercises";
 import ChartStats from "@components/StatComponent/ChartStats";
 import FilterButton from "@core/ui/Button/FilterButton";
+import Icon from "@core/ui/Icons/Icon";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
@@ -120,16 +121,38 @@ function Stats() {
                 title={
                   <div className={classes.title_wrapper}>
                     <h3>{name.toUpperCase()}</h3>
-                    <span>
-                      {filter === "exercises"
-                        ? formatDate(latestStat?.date, false)
-                        : formatDate(
-                            stats[name]?.volumeByDate[
-                              stats[name]?.volumeByDate.length - 1
-                            ].date,
-                            false
-                          )}
-                    </span>
+
+                    {filter === "exercises" ? (
+                      <span>{formatDate(latestStat?.date, false)}</span>
+                    ) : (
+                      <div className={classes.percentage_wrapper}>
+                        <span
+                          className={`${
+                            parseFloat(stats[name]?.growth) > 0
+                              ? classes.growth_up
+                              : classes.growth_down
+                          } `}
+                        >
+                          {stats[name]?.growth}
+                        </span>
+                        <div>
+                          <Icon
+                            name={
+                              parseFloat(stats[name]?.growth) > 0
+                                ? "ChevronsUp"
+                                : "ChevronsDown"
+                            }
+                            strokeWidth={2}
+                            size={16}
+                            color={
+                              parseFloat(stats[name]?.growth) > 0
+                                ? "#05ba8f"
+                                : "#ba0505"
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 }
                 classNames={{ base: classes.accordion_item }}

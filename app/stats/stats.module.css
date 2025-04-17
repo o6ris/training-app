@@ -39,6 +39,19 @@
   font-size: var(--font-r);
 }
 
+.percentage_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.growth_up {
+  color: var(--success-color) !important;
+}
+
+.growth_down {
+  color: var(--danger-color) !important;
+}
+
 .data {
   display: flex;
   flex-direction: column;
