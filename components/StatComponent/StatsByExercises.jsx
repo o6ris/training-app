@@ -1,9 +1,8 @@
-import classes from "./globalStats.module.css";
+import classes from "./statsByExercises.module.css";
 import PopupButton from "@core/ui/Button/PopupButton";
 import VolumeDetails from "@components/VolumeDetails/VolumeDetails";
 
-function GlobalStats({ stat }) {
-
+function StatsByExercises({ stat }) {
   const getMinutes = (seconds) => Math.floor(seconds / 60);
   const getSeconds = (seconds) => seconds % 60;
 
@@ -30,12 +29,12 @@ function GlobalStats({ stat }) {
                 {(() => {
                   const value = stat?.sets.reduce(
                     (sum, current) =>
-                      sum + (current.reps * current.weight) / 1000,
+                      sum + (current.reps * current.weight),
                     0
                   );
                   return Number.isInteger(value)
                     ? value
-                    : parseFloat(value.toFixed(2));
+                    : parseFloat(value.toFixed(1));
                 })()}
               </p>
             </>
@@ -43,7 +42,7 @@ function GlobalStats({ stat }) {
           content={<VolumeDetails stat={stat} />}
           title="Volume details"
         />
-        <p className={classes.data_title}>Volume(T)</p>
+        <p className={classes.data_title}>Volume(kg)</p>
       </div>
       <div className={`${classes.data} ${classes.rest_time}`}>
         <p className={classes.data_value}>{`${getMinutes(stat?.rest_time)
@@ -65,4 +64,4 @@ function GlobalStats({ stat }) {
   );
 }
 
-export default GlobalStats;
+export default StatsByExercises;

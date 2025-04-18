@@ -8,18 +8,22 @@ import classes from "./workoutCalendar.module.css";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { isSameDay } from "date-fns";
 import PopupButton from "@core/ui/Button/PopupButton";
-import GlobalStats from "@components/StatComponent/GlobalStats";
+import StatsByExercises from "@components/StatComponent/StatsByExercises";
 import ChartStats from "@components/StatComponent/ChartStats";
 import ButtonLink from "@core/ui/Button/ButtonLink";
 import { DayPicker } from "react-day-picker";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import "react-day-picker/style.css";
 
-function WorkoutCalendar({session}) {
+function WorkoutCalendar({ session }) {
   const { userId } = useUser(session);
   const [selectedDay, setSelectedDay] = useState();
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [isAutoOpen, setIsAutoOpen] = useState(false);
+  const month = new Date(selectedMonth)
+    .toISOString()
+    .split("T")[0]
+    .split("-")[1];
   const {
     getStatsByDate,
     statsByDate,
@@ -29,13 +33,13 @@ function WorkoutCalendar({session}) {
     getStatById,
     firstDateOfMonth,
     isLoading,
-  } = useStats(userId);
+  } = useStats(month);
 
   const totalVolume = useMemo(() => {
     let volume = 0;
-    Object.values(stats).forEach(exerciseArray => {
-      exerciseArray.forEach(exercise => {
-        exercise.sets.forEach(set => {
+    Object.values(stats).forEach((exerciseArray) => {
+      exerciseArray.forEach((exercise) => {
+        exercise.sets.forEach((set) => {
           volume += set.reps * set.weight;
         });
       });
@@ -44,19 +48,10 @@ function WorkoutCalendar({session}) {
   }, [stats]);
   const formattedVolume = new Intl.NumberFormat("fr-FR").format(totalVolume);
 
-  const month = new Date(selectedMonth)
-    .toISOString()
-    .split("T")[0]
-    .split("-")[1];
-
   const dayOnChange = (date) => {
     getStatsByDate(date);
     setSelectedDay(date);
   };
-
-  useEffect(() => {
-    if (userId) getStatsByMonth(month);
-  }, [userId, month]);
 
   const formattedWorkoutsDates = workoutsDates.map((dateStr) => {
     const [year, month, day] = dateStr.split("-").map(Number);
@@ -96,7 +91,7 @@ function WorkoutCalendar({session}) {
                     classNames={{ base: classes.accordion_item }}
                   >
                     <div className={classes.stats_wrapper}>
-                      <GlobalStats stat={stat} />
+                      <StatsByExercises stat={stat} />
                       <ChartStats
                         stats={stats[stat.exercise.name]}
                         getStatById={getStatById}

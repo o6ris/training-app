@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import classes from "./stats.module.css";
-import { useSession } from "next-auth/react";
-import useUser from "@modules/client/requests/useUser";
 import useStats from "@modules/client/requests/useStats";
 import { Accordion, AccordionItem } from "@heroui/react";
 import formatDate from "@modules/client/utils/formatDate";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
-import GlobalStats from "@components/StatComponent/GlobalStats";
+import StatsByExercises from "@components/StatComponent/StatsByExercises";
+import StatsByMuscles from "@components/StatComponent/StatsByMuscles";
 import ChartStats from "@components/StatComponent/ChartStats";
+import FilterButton from "@core/ui/Button/FilterButton";
+import DonutChartStats from "@components/StatComponent/DonutChartStats";
+import Icon from "@core/ui/Icons/Icon";
 
 // Get all previous exercises stats by exercises id and uer id
 function Stats() {
-  const { data: userSession, status } = useSession();
-  const { userId } = useUser(userSession);
   const {
     stats,
     workoutDateslist,
@@ -26,39 +26,44 @@ function Stats() {
     setRange,
     startDate,
     isLoading,
-  } = useStats(userId);
+    setFilter,
+    filter,
+  } = useStats();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
   return (
     <div className={classes.data_container}>
-      <SelectField
-        items={[
-          {
-            key: "month",
-            value: "Last month",
-          },
-          {
-            key: "trim",
-            value: "Last 3 months",
-          },
-          {
-            key: "sem",
-            value: "Last 6 months",
-          },
-          {
-            key: "year",
-            value: "Last 12 months",
-          },
-        ]}
-        variant="bordered"
-        ariaLabel="Range"
-        labelPlacement="outside"
-        selectOnChange={(value) => {
-          return setRange(Array.from(value).join(""));
-        }}
-        value={range}
-        disallowEmptySelection={true}
-      />
+      <div className={classes.header}>
+        <SelectField
+          items={[
+            {
+              key: "month",
+              value: "Last month",
+            },
+            {
+              key: "trim",
+              value: "Last 3 months",
+            },
+            {
+              key: "sem",
+              value: "Last 6 months",
+            },
+            {
+              key: "year",
+              value: "Last 12 months",
+            },
+          ]}
+          variant="bordered"
+          ariaLabel="Range"
+          labelPlacement="outside"
+          selectOnChange={(value) => {
+            return setRange(Array.from(value).join(""));
+          }}
+          value={range}
+          disallowEmptySelection={true}
+        />
+        <FilterButton setFilter={setFilter} filter={filter} />
+      </div>
 
       <div className={classes.global_data_wrapper}>
         {isLoading ? (
@@ -84,18 +89,27 @@ function Stats() {
           </div>
         )}
       </div>
-      {isLoading ? (
-        <>
+      {filter === "muscles" &&
+        (isLoading ? (
           <Skeleton
             height={"12rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
+        ) : (
+          <DonutChartStats stats={stats} />
+        ))}
+      {isLoading ? (
+        <>
           <Skeleton
-            height={"1rem"}
+            height={"18rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
           <Skeleton
-            height={"1rem"}
+            height={"4rem"}
+            className={`${classes.data} ${classes.global_data}`}
+          />
+          <Skeleton
+            height={"4rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
         </>
@@ -106,28 +120,73 @@ function Stats() {
           variant="splitted"
           className={classes.accordion}
         >
-          {Object.keys(stats).map((exerciseName, i) => {
+          {Object.keys(stats).map((name, i) => {
             const key = (i + 1).toString();
-            const latestStat = latestStats[exerciseName];
+            const latestStat = latestStats[name];
             return (
               <AccordionItem
                 key={key}
-                textValue={exerciseName || "Exercise"}
+                textValue={name || "Exercise"}
                 title={
                   <div className={classes.title_wrapper}>
-                    <h3>{exerciseName.toUpperCase()}</h3>
-                    <span>{formatDate(latestStat?.date, false)}</span>
+                    <h3>{name.toUpperCase()}</h3>
+                    {filter === "exercises" ? (
+                      <span>{formatDate(latestStat?.date, false)}</span>
+                    ) : (
+                      <div className={classes.percentage_wrapper}>
+                        <span
+                          className={`${
+                            parseFloat(stats[name]?.growth) > 0
+                              ? classes.growth_up
+                              : classes.growth_down
+                          } `}
+                        >
+                          {stats[name]?.growth}
+                        </span>
+                        <div
+                          className={`${
+                            parseFloat(stats[name]?.growth) > 0
+                              ? classes.growth_icon_up
+                              : classes.growth_icon_down
+                          } `}
+                        >
+                          <Icon
+                            name={
+                              parseFloat(stats[name]?.growth) > 0
+                                ? "ChevronsUp"
+                                : "ChevronsDown"
+                            }
+                            strokeWidth={2}
+                            size={16}
+                            color={
+                              parseFloat(stats[name]?.growth) > 0
+                                ? "#05ba8f"
+                                : "#ba0505"
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 }
                 classNames={{ base: classes.accordion_item }}
               >
                 <div className={classes.section_wrapper}>
-                  <GlobalStats stat={latestStat} />
+                  {filter === "exercises" ? (
+                    <StatsByExercises stat={latestStat} />
+                  ) : (
+                    <StatsByMuscles stat={stats[name]} />
+                  )}
                   <ChartStats
-                    stats={stats[exerciseName]}
+                    stats={
+                      filter === "exercises"
+                        ? stats[name]
+                        : stats[name].volumeByDate
+                    }
                     getStatById={getStatById}
                     range={range}
                     startDate={startDate}
+                    filter={filter}
                   />
                 </div>
               </AccordionItem>
