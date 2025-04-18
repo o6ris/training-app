@@ -90,19 +90,27 @@ function Stats() {
           </div>
         )}
       </div>
-      {filter === "muscles" && <DonutChartStats stats={stats} />}
-      {isLoading ? (
-        <>
+      {filter === "muscles" &&
+        (isLoading ? (
           <Skeleton
             height={"12rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
+        ) : (
+          <DonutChartStats stats={stats} />
+        ))}
+      {isLoading ? (
+        <>
           <Skeleton
-            height={"1rem"}
+            height={"18rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
           <Skeleton
-            height={"1rem"}
+            height={"4rem"}
+            className={`${classes.data} ${classes.global_data}`}
+          />
+          <Skeleton
+            height={"4rem"}
             className={`${classes.data} ${classes.global_data}`}
           />
         </>
