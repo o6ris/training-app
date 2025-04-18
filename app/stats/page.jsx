@@ -8,6 +8,7 @@ import formatDate from "@modules/client/utils/formatDate";
 import SelectField from "@core/ui/Fields/SelectField/SelectField";
 import Skeleton from "@core/ui/Skeleton/Skeleton";
 import StatsByExercises from "@components/StatComponent/StatsByExercises";
+import StatsByMuscles from "@components/StatComponent/StatsByMuscles";
 import ChartStats from "@components/StatComponent/ChartStats";
 import FilterButton from "@core/ui/Button/FilterButton";
 import DonutChartStats from "@components/StatComponent/DonutChartStats";
@@ -171,6 +172,11 @@ function Stats() {
                 classNames={{ base: classes.accordion_item }}
               >
                 <div className={classes.section_wrapper}>
+                  {filter === "exercises" ? (
+                    <StatsByExercises stat={latestStat} />
+                  ) : (
+                    <StatsByMuscles stat={stats[name]} />
+                  )}
                   <ChartStats
                     stats={
                       filter === "exercises"

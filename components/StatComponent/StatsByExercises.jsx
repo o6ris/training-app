@@ -29,12 +29,12 @@ function StatsByExercises({ stat }) {
                 {(() => {
                   const value = stat?.sets.reduce(
                     (sum, current) =>
-                      sum + (current.reps * current.weight) / 1000,
+                      sum + (current.reps * current.weight),
                     0
                   );
                   return Number.isInteger(value)
                     ? value
-                    : parseFloat(value.toFixed(2));
+                    : parseFloat(value.toFixed(1));
                 })()}
               </p>
             </>
@@ -42,7 +42,7 @@ function StatsByExercises({ stat }) {
           content={<VolumeDetails stat={stat} />}
           title="Volume details"
         />
-        <p className={classes.data_title}>Volume(T)</p>
+        <p className={classes.data_title}>Volume(kg)</p>
       </div>
       <div className={`${classes.data} ${classes.rest_time}`}>
         <p className={classes.data_value}>{`${getMinutes(stat?.rest_time)
