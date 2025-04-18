@@ -1,9 +1,9 @@
 import Stats from "@modules/server/models/stats";
 import Exercise from "modules/server/models/exercise";
+import Muscle from "@modules/server/models/muscle";
 import User from "@modules/server/models/user";
 import connectDb from "@lib/mongodb";
 import checkId from "modules/server/utils/checkId";
-import { startOfMonth, endOfMonth } from "date-fns";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -44,7 +44,12 @@ export async function GET(request) {
       {
         path: "exercise",
         model: Exercise,
-        select: "name",
+        select: ["name", "muscle"],
+        populate: {
+          path: "muscle",
+          model: Muscle,
+          select: "name",
+        },
       },
       {
         path: "user",

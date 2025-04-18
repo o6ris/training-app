@@ -12,8 +12,6 @@ function Navigation() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log("pathname", pathname);
-  console.log("test", !pathname.includes("create-profile"));
 
   useEffect(() => {
     if (

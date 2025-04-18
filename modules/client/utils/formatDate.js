@@ -5,7 +5,7 @@ function formatDate(date, isMonthLong) {
 		month: `${isMonthLong ? "long" : "numeric"}`,
 		day: 'numeric',
 	};
-	return formatedDate?.toLocaleDateString('fr-FR', options);
+	return formatedDate?.toLocaleDateString('en-EN', options);
 }
 
 export default formatDate;
