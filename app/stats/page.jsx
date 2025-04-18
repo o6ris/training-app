@@ -142,7 +142,13 @@ function Stats() {
                         >
                           {stats[name]?.growth}
                         </span>
-                        <div>
+                        <div
+                          className={`${
+                            parseFloat(stats[name]?.growth) > 0
+                              ? classes.growth_icon_up
+                              : classes.growth_icon_down
+                          } `}
+                        >
                           <Icon
                             name={
                               parseFloat(stats[name]?.growth) > 0
@@ -165,11 +171,6 @@ function Stats() {
                 classNames={{ base: classes.accordion_item }}
               >
                 <div className={classes.section_wrapper}>
-                  {filter === "exercises" ? (
-                    <StatsByExercises stat={latestStat} />
-                  ) : (
-                    "muscles stats"
-                  )}
                   <ChartStats
                     stats={
                       filter === "exercises"
