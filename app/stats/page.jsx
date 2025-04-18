@@ -30,8 +30,6 @@ function Stats() {
   } = useStats();
   const [accordionKey, setAccordionKey] = useState(new Set(["1"]));
 
-  console.log("stats", stats);
-
   return (
     <div className={classes.data_container}>
       <div className={classes.header}>

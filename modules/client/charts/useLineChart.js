@@ -24,7 +24,7 @@ const filterStatsByRange = (stats, range, customEndDate, customStartDate) => {
     case "month":
       customStartDate
         ? (startDate = customStartDate)
-        : (startDate = new Date(now.setDate(now.getDate() - 30)));
+        : (startDate = new Date(now.setDate(now.getDate() - 35)));
       break;
     case "trim":
       startDate = new Date(now.setMonth(now.getMonth() - 3));

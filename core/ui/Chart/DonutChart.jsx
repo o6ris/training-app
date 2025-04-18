@@ -15,7 +15,6 @@ export default function DonutChart({ stats }) {
             id: "spacerBetweenChartAndLegend",
             afterInit(chart, args, options) {
               const originalFit = chart.legend.fit;
-              console.log("originalFit", originalFit);
               chart.legend.fit = function fit() {
                 originalFit.bind(chart.legend)();
                 this.height += options.spacing || 20;
